@@ -7,7 +7,7 @@ This package is my desire to track certain celestial elements of our solar syste
 Documentation is in two flavors:
 
 * TypeDoc Output
-* Documents located in [pages—](pages/index.md)- This includes more detail examples supplementing the ``example`` folder.
+* Documents located in [pages](pages/index.md) - This includes more detail examples supplementing the ``example`` folder.
 
 ## 🙏 Acknowledgements
 

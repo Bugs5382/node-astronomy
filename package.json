@@ -1,0 +1,81 @@
+{
+  "name": "node-astronomy",
+  "version": "0.0.0-development",
+  "description": "An NPM package that can give you astronomy information about various cosmic and natural objects in our solar system.",
+  "keywords": [
+    "astronomy",
+    "sun",
+    "moon",
+    "time",
+    "planets",
+    "earth"
+  ],
+  "homepage": "https://github.com/Bugs5382/node-astronomy#readme",
+  "bugs": {
+    "url": "https://github.com/Bugs5382/node-astronomy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bugs5382/node-astronomy.git"
+  },
+  "license": "MIT",
+  "author": "Shane Froebel",
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/cjs/index.js"
+    }
+  },
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/types/index.d.ts",
+  "files": [
+    "lib/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "format:check": "prettier --check '**/*.{md,ts,json,mts}'",
+    "format:write": "prettier --write '**/*.{md,ts,json,mts}'",
+    "lint": "npm run lint:npm && eslint | snazzy",
+    "lint:fix": "npm run lint:npm && eslint --fix | snazzy",
+    "lint:npm": "npmPkgJsonLint .",
+    "lint:package": "npx sort-package-json",
+    "test": "vitest run",
+    "test:coverage": "vitest --coverage",
+    "test:verbose": "vitest run --reporter verbose",
+    "test:watch": "vitest watch",
+    "typedoc": "typedoc",
+    "typedoc:watch": "typedoc -watch"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "@shipgirl/typedoc-plugin-versions": "^0.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "@vitest/coverage-v8": "^3.1.4",
+    "@vitest/ui": "^3.1.4",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
+    "npm-check-updates": "^18.0.1",
+    "npm-package-json-lint": "^8.0.0",
+    "npm-package-json-lint-config-default": "^7.0.1",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "snazzy": "^9.0.0",
+    "sort-package-json": "^3.2.1",
+    "tsup": "^8.5.0",
+    "typedoc": "^0.28.4",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1",
+    "vitest": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=20.15.0"
+  }
+}

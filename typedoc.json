@@ -1,0 +1,22 @@
+{
+  "tsconfig": "tsconfig.json",
+  "entryPoints": ["src/index.ts"],
+  "excludeExternals": true,
+  "excludeInternal": true,
+  "includeVersion": true,
+  "githubPages": false,
+  "plugin": ["@shipgirl/typedoc-plugin-versions"],
+  "out": "./docs",
+  "name": "Node Astronomy",
+  "navigationLinks": {
+    "GitHub": "https://github.com/Bugs5382/node-astronomy"
+  },
+  "visibilityFilters": {
+    "protected": true,
+    "private": false,
+    "inherited": false,
+    "external": true,
+    "@alpha": false,
+    "@beta": false
+  }
+}

@@ -11,9 +11,9 @@ labels: bug
 
 ## Environment
 
--   TypeScript version:
--   Node.js version:
--   OS:
+- TypeScript version:
+- Node.js version:
+- OS:
 
 ## Expected Behavior
 
@@ -27,7 +27,6 @@ labels: bug
 
 <!--
 
-Please provide the code causing the issue, as comprehensively as possible. 
+Please provide the code causing the issue, as comprehensively as possible.
 
 -->
-

@@ -1,3 +1,9 @@
+import {
+  EPOCH_J1900,
+  EPOCH_J1950,
+  EPOCH_J2000,
+  EPOCH_J2100,
+} from "@/constants";
 import { ITimeOfInterest } from "@/time/types";
 
 /**
@@ -12,25 +18,44 @@ import { ITimeOfInterest } from "@/time/types";
  */
 export class TimeOfInterest {
   /**
-   * The date/time of the point in which all other calluclations are done.
+   * The date/time of the point in which all other calculations are done.
    * @since 0.1.0
    * @private
    */
   private time: Date;
   /**
    * Julian Date
-   * @private
+   * @since 0.1.0
    */
-  jd: number | undefined;
+  public readonly jd: number | undefined;
+  /**
+   * Number of Julian centuries (T) since J2000.0, calculated from the Julian Date (JD).
+   * This value is used in astronomical calculations
+   * to express time in centuries relative to the standard epoch J2000.0.
+   * @since 0.1.0
+   */
+  public readonly T: number;
+
   /**
    * @since 0.1.0
    * @param props
    */
   constructor(props: ITimeOfInterest = {}) {
-    this.jd = undefined;
     this.time = props.time || new Date();
+    this.jd = this.toJulianDay();
+    this.T = this.getJulianCenturies(this.jd);
   }
 
+  /**
+   * Number of Julian centuries (T) since J2000.0, calculated from the Julian Date (JD).
+   * This value is used in astronomical calculations
+   * to express time in centuries relative to the standard epoch J2000.0.
+   * @since 0.1.0
+   */
+  getJulianCenturies(jd: number): number {
+    const epoch = this._getEpoch(jd);
+    return (jd - epoch) / 36525.0;
+  }
   /**
    * Calculates the Julian Day number from the current time.
    * @since 0..1.0
@@ -38,13 +63,55 @@ export class TimeOfInterest {
   toJulianDay() {
     return this._calculateJulianDay();
   }
-
   /**
    * Calculates the Julian Day number from the current time.
    * @since 0.1.0
    */
   async toJulianDayAsync() {
     return this._calculateJulianDay();
+  }
+  /**
+   * Calculates the Julian Day number from the current time.
+   * @since 0..1.0
+   */
+  isLeapYear() {
+    return this._isLeapYear();
+  }
+  /**
+   * Calculates the Julian Day number from the current time.
+   * @since 0.1.0
+   */
+  async isLeapYearAsync() {
+    return this._isLeapYear();
+  }
+
+  /**
+   * Returns the most appropriate epoch (J1900, J1950, J2000, J2100) for the stored JD.
+   * @since 0.1.0
+   */
+  private _getEpoch(jd: number): number {
+    if (jd < EPOCH_J1950) {
+      return EPOCH_J1900;
+    } else if (jd < EPOCH_J2000) {
+      return EPOCH_J1950;
+    } else if (jd < EPOCH_J2100) {
+      return EPOCH_J2000;
+    } else {
+      return EPOCH_J2100;
+    }
+  }
+
+  /**
+   * @since 0.1.0
+   * @private
+   */
+  private _isLeapYear(): boolean {
+    const year = this.time.getFullYear();
+    if (year / 4 !== Math.floor(year / 4)) {
+      return false;
+    } else if (year / 100 !== Math.floor(year / 100)) {
+      return true;
+    } else return year / 400 === Math.floor(year / 400);
   }
 
   /**
@@ -83,14 +150,13 @@ export class TimeOfInterest {
       );
     }
 
-    this.jd =
+    return (
       Math.floor(365.25 * (year + 4716)) +
       Math.floor(30.6001 * (month + 1)) +
       dayFraction +
       B -
-      1524.5;
-
-    return this.jd;
+      1524.5
+    );
   }
 }
 

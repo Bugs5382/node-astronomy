@@ -9,22 +9,29 @@ describe("time of Interest", () => {
     });
   });
 
-  describe("functions", () => {
+  describe("unit testing", () => {
     beforeAll(async () => {
       const mockDate = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
       vi.setSystemTime(mockDate);
     });
     test("...julianDate", () => {
       const toi = new TimeOfInterest();
-      const jd = toi.toJulianDay();
-
-      expect(jd).toBeCloseTo(2451545.0, 5);
+      console.log(toi.T);
+      expect(toi.jd).toBeCloseTo(2451545.0, 5);
+      expect(toi.T).toEqual(0);
     });
     test("...julianDate async", async () => {
       const toi = new TimeOfInterest();
-      const jd = await toi.toJulianDayAsync();
-
-      expect(jd).toBeCloseTo(2451545.0, 5);
+      expect(toi.jd).toBeCloseTo(2451545.0, 5);
+      expect(toi.T).toEqual(0);
+    });
+    test("...isLeapYear", () => {
+      const toi = new TimeOfInterest();
+      expect(toi.isLeapYear()).toEqual(true);
+    });
+    test("...isLeapYear async", async () => {
+      const toi = new TimeOfInterest();
+      expect(await toi.isLeapYearAsync()).toEqual(true);
     });
   });
 });

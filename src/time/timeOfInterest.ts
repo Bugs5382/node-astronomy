@@ -102,7 +102,41 @@ export class TimeOfInterest {
   async isLeapYearAsync() {
     return this._isLeapYear();
   }
+  /**
+   * @since 0.1.0
+   */
+  getDayOfYear() {
+    return this._getDayOfYear();
+  }
 
+  /**
+   * @since 0.1.0
+   */
+  async getDayOfYearAsync() {
+    return this._getDayOfYear();
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  getDayOfWeek() {
+    return this._getDayOfWeek();
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  async getDayOfWeekAsync() {
+    return this._getDayOfWeek();
+  }
+
+  /**
+   * @since 0.1.0
+   * @private
+   */
+  private _getDayOfWeek(): number {
+    return Math.floor((this._timeToJulianDay() + 1.5) % 7);
+  }
   /**
    * @param T
    * @private
@@ -217,6 +251,66 @@ export class TimeOfInterest {
       B -
       1524.5
     );
+  }
+
+  /**
+   *
+   */
+  _timeToJulianDay(): number {
+    const tmpYear = parseFloat(
+      this.time.getUTCFullYear() + "." + this.getDayOfYear(),
+    );
+
+    let Y;
+    let M;
+    if (this.time.getUTCMonth() > 2) {
+      Y = this.time.getUTCFullYear();
+      M = this.time.getUTCMonth();
+    } else {
+      Y = this.time.getUTCFullYear() - 1;
+      M = this.time.getUTCMonth() + 12;
+    }
+
+    const D = this.time.getUTCDate();
+    const H =
+      this.time.getUTCHours() / 24 +
+      this.time.getUTCMinutes() / 1440 +
+      this.time.getUTCSeconds() / 86400;
+
+    let A;
+    let B;
+    if (tmpYear >= 1582.288) {
+      // YYYY-MM-DD >= 1582-10-15
+      A = Math.floor(Y / 100);
+      B = 2 - A + Math.floor(A / 4);
+    } else if (tmpYear <= 1582.277) {
+      // YY-MM-DD <= 1582-10-04
+      B = 0;
+    } else {
+      throw new Error("Date between 1582-10-04 and 1582-10-15 is not defined.");
+    }
+
+    // Meeus 7.1
+    return (
+      Math.floor(365.25 * (Y + 4716)) +
+      Math.floor(30.6001 * (M + 1)) +
+      D +
+      H +
+      B -
+      1524.5
+    );
+  }
+
+  /**
+   * @since 0.1.0
+   * @private
+   */
+  _getDayOfYear(): number {
+    const K = this.isLeapYear() ? 1 : 2;
+    const M = this.time.getMonth();
+    const D = this.time.getDate();
+
+    return Math.floor((275 * M) / 9) - K * Math.floor((M + 9) / 12) + D - 30;
   }
 }
 

@@ -37,15 +37,33 @@ export class TimeOfInterest {
   public readonly T: number;
 
   /**
+   * Creates a new JulianTime instance based on one of the provided inputs: `T`, `jd`, or `time`.
+   * @remarks
+   * Priority of input properties:
+   * - If `T` (Julian centuries since J2000.0) is provided, it takes precedence over `jd` and `time`.
+   *   - `jd` is calculated from `T`, and `time` is derived from the computed `jd`.
+   * - If `T` is not provided but `jd` (Julian Day Number) is, it takes precedence over `time`.
+   *   - `time` is derived from the provided `jd`, and `T` is calculated from it.
+   * - If neither `T` nor `jd` is provided, the current system time or `props.time` is used.
+   *   - Both `jd` and `T` are computed based on that time.
+   *
+   * @param props - An object containing optional time information (`T`, `jd`, or `time`)
    * @since 0.1.0
-   * @param props
    */
   constructor(props: ITimeOfInterest = {}) {
-    this.time = props.time || new Date();
-    this.jd = this.toJulianDay();
-    this.T = this.getJulianCenturies(this.jd);
-  }
+    if (props.T != null) {
+      this.T = props.T;
+      this.jd = this._getJulianDayFromCenturies(this.T);
+      this.time = this._julianDateToDate(this.jd);
+    } else {
+      this.time = props.jd
+        ? this._julianDateToDate(props.jd)
+        : props.time || new Date();
 
+      this.jd = props.jd || this.toJulianDay();
+      this.T = this.getJulianCenturies(this.jd);
+    }
+  }
   /**
    * Number of Julian centuries (T) since J2000.0, calculated from the Julian Date (JD).
    * This value is used in astronomical calculations
@@ -86,8 +104,52 @@ export class TimeOfInterest {
   }
 
   /**
+   * @param T
+   * @private
+   */
+  private _getJulianDayFromCenturies(T: number): number {
+    return T * 36525 + 2451545.0;
+  }
+
+  /**
+   *
+   * @param jd
+   * @private
+   */
+  private _julianDateToDate(jd: number) {
+    const jdAdjusted = jd + 0.5;
+
+    const Z = Math.floor(jdAdjusted);
+    const F = jdAdjusted - Z;
+    let A = Z;
+
+    if (Z >= 2299161) {
+      const alpha = Math.floor((Z - 1867216.25) / 36524.25);
+      A = Z + 1 + alpha - Math.floor(alpha / 4);
+    }
+
+    const B = A + 1524;
+    const C = Math.floor((B - 122.1) / 365.25);
+    const D = Math.floor(365.25 * C);
+    const E = Math.floor((B - D) / 30.6001);
+
+    const day = B - D - Math.floor(30.6001 * E) + F;
+    const month = E < 14 ? E - 1 : E - 13;
+    const year = month > 2 ? C - 4716 : C - 4715;
+
+    const dayFrac = day - Math.floor(day);
+    const hours = Math.floor(dayFrac * 24);
+    const minutes = Math.floor((dayFrac * 24 - hours) * 60);
+    const seconds = Math.floor(((dayFrac * 24 - hours) * 60 - minutes) * 60);
+
+    return new Date(
+      Date.UTC(year, month - 1, Math.floor(day), hours, minutes, seconds),
+    );
+  }
+  /**
    * Returns the most appropriate epoch (J1900, J1950, J2000, J2100) for the stored JD.
    * @since 0.1.0
+   * @private
    */
   private _getEpoch(jd: number): number {
     if (jd < EPOCH_J1950) {
@@ -100,7 +162,6 @@ export class TimeOfInterest {
       return EPOCH_J2100;
     }
   }
-
   /**
    * @since 0.1.0
    * @private
@@ -113,7 +174,6 @@ export class TimeOfInterest {
       return true;
     } else return year / 400 === Math.floor(year / 400);
   }
-
   /**
    * Calculates the Julian Day number from the current time.
    * @since 0.1.0

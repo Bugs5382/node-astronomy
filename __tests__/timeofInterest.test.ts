@@ -1,11 +1,27 @@
 import { beforeAll, describe, expect, test, vi } from "vitest";
-import TimeOfInterest from "../src/time/timeOfInterest";
+import { TimeOfInterest } from "../src/time";
 
 describe("time of Interest", () => {
   describe("sanity checks", () => {
     test("... the instance", () => {
       const timeOfInterest = new TimeOfInterest();
       expect(timeOfInterest).toBeInstanceOf(TimeOfInterest);
+    });
+  });
+
+  describe("base tests", () => {
+    test("...date object --> 2017-07-02 15:30:00", () => {
+      const toi = new TimeOfInterest({ time: new Date("2017-07-02 15:30:00") });
+      expect(toi.jd).toEqual(2457937.3125);
+      expect((toi as any)["time"]).toEqual(new Date("2017-07-02 15:30:00"));
+    });
+    test("...jd --> 2017-07-02 15:30:00", () => {
+      const toi = new TimeOfInterest({ jd: 2457937.3125 });
+      expect((toi as any)["time"]).toEqual(new Date("2017-07-02 15:30:00"));
+    });
+    test("...T --> 2017-07-02 15:30:00", () => {
+      const toi = new TimeOfInterest({ T: 0.1750119780971937 });
+      expect((toi as any)["time"]).toEqual(new Date("2017-07-02 15:30:00"));
     });
   });
 
@@ -16,13 +32,12 @@ describe("time of Interest", () => {
     });
     test("...julianDate", () => {
       const toi = new TimeOfInterest();
-      console.log(toi.T);
-      expect(toi.jd).toBeCloseTo(2451545.0, 5);
+      expect(toi.toJulianDay()).toBeCloseTo(2451545.0, 5);
       expect(toi.T).toEqual(0);
     });
     test("...julianDate async", async () => {
       const toi = new TimeOfInterest();
-      expect(toi.jd).toBeCloseTo(2451545.0, 5);
+      expect(await toi.toJulianDayAsync()).toBeCloseTo(2451545.0, 5);
       expect(toi.T).toEqual(0);
     });
     test("...isLeapYear", () => {

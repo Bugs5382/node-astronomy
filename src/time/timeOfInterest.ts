@@ -1,3 +1,4 @@
+import { toUTCDate } from "@/helper";
 import { TimeCalc } from "@/time/timeCalc";
 import { ITimeOfInterest } from "@/time/types";
 
@@ -14,6 +15,7 @@ import { ITimeOfInterest } from "@/time/types";
 export class TimeOfInterest extends TimeCalc {
   /**
    * The date/time of the point in which all other calculations are done.
+   * This will be in UTC format even if you pass your local date object in.
    * @since 0.1.0
    * @private
    */
@@ -47,19 +49,26 @@ export class TimeOfInterest extends TimeCalc {
    */
   constructor(props: ITimeOfInterest = {}) {
     super();
+
     if (props.T != null) {
       this.T = props.T;
       this.jd = this._getJulianDayFromCenturies(this.T);
       this.time = this._julianDateToDate(this.jd);
     } else {
-      this.time = props.jd
-        ? this._julianDateToDate(props.jd)
-        : props.time || new Date();
+      if (props.time) {
+        this.time = toUTCDate(props.time);
+      } else if (props.jd) {
+        this.time = this._julianDateToDate(props.jd);
+      } else {
+        this.time = toUTCDate(new Date());
+        this.time = toUTCDate(this.time);
+      }
 
       this.jd = props.jd || this.toJulianDay();
       this.T = this.getJulianCenturies(this.jd);
     }
   }
+
   /**
    * Number of Julian centuries (T) since J2000.0, calculated from the Julian Date (JD).
    * This value is used in astronomical calculations
@@ -75,14 +84,14 @@ export class TimeOfInterest extends TimeCalc {
    * @since 0..1.0
    */
   toJulianDay() {
-    return this._calculateJulianDay(this.time);
+    return this._timeToJulianDay(this.time);
   }
   /**
    * Calculates the Julian Day number from the current time.
    * @since 0.1.0
    */
   async toJulianDayAsync() {
-    return this._calculateJulianDay(this.time);
+    return this._timeToJulianDay(this.time);
   }
   /**
    * Calculates the Julian Day number from the current time.
@@ -116,14 +125,14 @@ export class TimeOfInterest extends TimeCalc {
    * @since 0.1.0
    */
   getDayOfWeek() {
-    return this._getDayOfWeek(this.time);
+    return this._getDayOfWeek(this.jd!);
   }
 
   /**
    * @since 0.1.0
    */
   async getDayOfWeekAsync() {
-    return this._getDayOfWeek(this.time);
+    return this._getDayOfWeek(this.jd!);
   }
 }
 

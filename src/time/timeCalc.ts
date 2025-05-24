@@ -13,9 +13,13 @@ export class TimeCalc {
    * @since 0.1.0
    * @private
    */
-  protected _getDayOfWeek(time: Date): number {
-    return Math.floor((this._timeToJulianDay(time) + 1.5) % 7);
+  protected _getDayOfWeek(jd: number): number {
+    return (Math.floor(jd + 0.5) + 4) % 7;
   }
+
+
+
+
   /**
    * @param T
    * @private
@@ -59,6 +63,7 @@ export class TimeCalc {
       Date.UTC(year, month - 1, Math.floor(day), hours, minutes, seconds),
     );
   }
+
   /**
    * Returns the most appropriate epoch (J1900, J1950, J2000, J2100) for the stored JD.
    * @since 0.1.0
@@ -75,47 +80,55 @@ export class TimeCalc {
       return EPOCH_J2100;
     }
   }
+
   /**
    * @since 0.1.0
    * @private
    */
   protected _isLeapYear(time: Date): boolean {
-    const year = time.getFullYear();
-    if (year / 4 !== Math.floor(year / 4)) {
+    const year = time.getUTCFullYear();
+    if (year % 4 !== 0) {
       return false;
-    } else if (year / 100 !== Math.floor(year / 100)) {
+    } else if (year % 100 !== 0) {
       return true;
-    } else return year / 400 === Math.floor(year / 400);
+    } else return year % 400 === 0;
   }
+
   /**
-   * Calculates the Julian Day number from the current time.
+   * Calculates the Julian Day number from the given UTC time.
    * @since 0.1.0
    * @private
    */
-  protected _calculateJulianDay(time: Date): number {
+  protected _timeToJulianDay(time: Date): number {
     const Y = time.getUTCFullYear();
     const M = time.getUTCMonth() + 1;
     const D = time.getUTCDate();
     const H = time.getUTCHours();
     const Min = time.getUTCMinutes();
     const S = time.getUTCSeconds();
+    const MS = time.getUTCMilliseconds();
 
     let year = Y;
     let month = M;
 
-    if (M <= 2) {
+    if (month <= 2) {
       year -= 1;
       month += 12;
     }
 
-    const dayFraction = D + (H + Min / 60 + S / 3600) / 24;
-    const jdTimestamp = Date.UTC(Y, M - 1, D);
+    const dayFraction = D + (H + Min / 60 + (S + MS / 1000) / 3600) / 24;
 
+    // Gregorian calendar switch (October 15, 1582)
+    const gregorianStart = Date.UTC(1582, 9, 15); // October is month 9 (0-based)
+    const julianEnd = Date.UTC(1582, 9, 4); // Julian calendar last day
+
+    const jdDate = Date.UTC(Y, M - 1, D);
     let B: number;
-    if (jdTimestamp >= Date.UTC(1582, 9, 15)) {
+
+    if (jdDate >= gregorianStart) {
       const A = Math.floor(year / 100);
       B = 2 - A + Math.floor(A / 4);
-    } else if (jdTimestamp <= Date.UTC(1582, 9, 4)) {
+    } else if (jdDate <= julianEnd) {
       B = 0;
     } else {
       throw new Error(
@@ -133,61 +146,13 @@ export class TimeCalc {
   }
 
   /**
-   *
-   */
-  _timeToJulianDay(time: Date): number {
-    const tmpYear = parseFloat(
-      time.getUTCFullYear() + "." + this._getDayOfYear(time),
-    );
-
-    let Y;
-    let M;
-    if (time.getUTCMonth() > 2) {
-      Y = time.getUTCFullYear();
-      M = time.getUTCMonth();
-    } else {
-      Y = time.getUTCFullYear() - 1;
-      M = time.getUTCMonth() + 12;
-    }
-
-    const D = time.getUTCDate();
-    const H =
-      time.getUTCHours() / 24 +
-      time.getUTCMinutes() / 1440 +
-      time.getUTCSeconds() / 86400;
-
-    let A;
-    let B;
-    if (tmpYear >= 1582.288) {
-      // YYYY-MM-DD >= 1582-10-15
-      A = Math.floor(Y / 100);
-      B = 2 - A + Math.floor(A / 4);
-    } else if (tmpYear <= 1582.277) {
-      // YY-MM-DD <= 1582-10-04
-      B = 0;
-    } else {
-      throw new Error("Date between 1582-10-04 and 1582-10-15 is not defined.");
-    }
-
-    // Meeus 7.1
-    return (
-      Math.floor(365.25 * (Y + 4716)) +
-      Math.floor(30.6001 * (M + 1)) +
-      D +
-      H +
-      B -
-      1524.5
-    );
-  }
-
-  /**
    * @since 0.1.0
    * @private
    */
   _getDayOfYear(time: Date): number {
     const K = this._isLeapYear(time) ? 1 : 2;
-    const M = time.getMonth();
-    const D = time.getDate();
+    const M = time.getUTCMonth();
+    const D = time.getUTCDate();
 
     return Math.floor((275 * M) / 9) - K * Math.floor((M + 9) / 12) + D - 30;
   }

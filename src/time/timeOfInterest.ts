@@ -54,17 +54,20 @@ export class TimeOfInterest extends TimeCalc {
       this.T = props.T;
       this.jd = this._getJulianDayFromCenturies(this.T);
       this.time = this._julianDateToDate(this.jd);
+    } else if (props.time) {
+      this.time = props.time;
+      const time = toUTCDate(this.time);
+      this.jd = this.toJulianDay(time);
+      this.T = this.getJulianCenturies(this.jd);
+    } else if (props.jd) {
+      this.jd = props.jd;
+      this.time = this._julianDateToDate(props.jd);
+      this.T = this.getJulianCenturies(this.jd);
     } else {
-      if (props.time) {
-        this.time = props.time;
-        const time = toUTCDate(this.time);
-        this.jd = this.toJulianDay(time);
-        this.T = this.getJulianCenturies(this.jd);
-      } else if (props.jd) {
-        this.jd = props.jd;
-        this.time = this._julianDateToDate(props.jd);
-        this.T = this.getJulianCenturies(this.jd);
-      }
+      this.time = new Date();
+      const time = toUTCDate(this.time);
+      this.jd = this.toJulianDay(time);
+      this.T = this.getJulianCenturies(this.jd);
     }
   }
 

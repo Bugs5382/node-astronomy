@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import { DayOfWeek } from "../src/constants";
 import { TimeOfInterest } from "../src/time";
 
@@ -12,7 +12,9 @@ describe("time of Interest", () => {
 
   describe("base tests", () => {
     test("...date object --> 2017-07-02 15:30:00", () => {
-      const toi = new TimeOfInterest({ time: new Date("2017-07-02 15:30:00") });
+      const toi = new TimeOfInterest({
+        time: new Date("2017-07-02T15:30:00Z"),
+      });
       expect(toi.jd).toEqual(2457937.1458333335);
       expect((toi as any)["time"]).toEqual(
         new Date(Date.UTC(2017, 6, 2, 15, 30, 0)),
@@ -33,57 +35,43 @@ describe("time of Interest", () => {
   });
 
   describe("unit testing - group 1", () => {
-    beforeAll(async () => {
-      const mockDate = new Date(Date.UTC(2000, 0, 1, 12, 0, 0));
-      vi.setSystemTime(mockDate);
+    let toi: TimeOfInterest;
+    beforeEach(async () => {
+      toi = new TimeOfInterest({ time: new Date("2000-01-01T12:00:00Z") });
+      expect(toi.jd).toBeCloseTo(2451545, 5);
+      expect(toi.T).toBe(0);
     });
-    test("...julianDate", () => {
-      const toi = new TimeOfInterest();
-      expect(toi.toJulianDay()).toBeCloseTo(2451544.5833333335, 5);
-      expect(toi.T).toBe(0.4999885922883912);
-    });
-    test("...julianDate async", async () => {
-      const toi = new TimeOfInterest();
-      expect(await toi.toJulianDayAsync()).toBeCloseTo(2451544.5833333335, 5);
-      expect(toi.T).toBe(0.4999885922883912);
-    });
-    test("...isLeapYear", () => {
-      const toi = new TimeOfInterest();
+    test("...isLeapYear - true", () => {
       expect(toi.isLeapYear()).toBe(true);
     });
-    test("...isLeapYear async", async () => {
-      const toi = new TimeOfInterest();
+    test("...isLeapYear async - true", async () => {
       expect(await toi.isLeapYearAsync()).toBe(true);
     });
   });
 
   describe("unit testing - group 2", () => {
-    beforeAll(async () => {
-      const mockDate = new Date(Date.UTC(2017, 7, 2, 13, 37, 0));
-      vi.setSystemTime(mockDate);
+    let toi: TimeOfInterest;
+    beforeEach(async () => {
+      toi = new TimeOfInterest({ time: new Date("2017-07-02T13:37:00Z") });
+      expect(toi.jd).toBeCloseTo(2457937.0673611113, 5);
+      expect(toi.T).toBe(0.17500526656019952);
     });
-    test("...isLeapYear", () => {
-      const toi = new TimeOfInterest();
+    test("...isLeapYear - false", () => {
       expect(toi.isLeapYear()).toBe(false);
     });
-    test("...isLeapYear async", async () => {
-      const toi = new TimeOfInterest();
+    test("...isLeapYear async - false", async () => {
       expect(await toi.isLeapYearAsync()).toBe(false);
     });
     test("...getDayOfYear", () => {
-      const toi = new TimeOfInterest();
       expect(toi.getDayOfYear()).toBe(183);
     });
     test("...getDayOfYear async", async () => {
-      const toi = new TimeOfInterest();
       expect(await toi.getDayOfYearAsync()).toBe(183);
     });
     test("...getDayOfWeek", () => {
-      const toi = new TimeOfInterest();
       expect(toi.getDayOfWeek()).toBe(DayOfWeek.SUNDAY);
     });
     test("...getDayOfWeek async", async () => {
-      const toi = new TimeOfInterest();
       expect(await toi.getDayOfWeekAsync()).toBe(DayOfWeek.SUNDAY);
     });
   });

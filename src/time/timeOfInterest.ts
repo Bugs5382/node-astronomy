@@ -19,7 +19,7 @@ export class TimeOfInterest extends TimeCalc {
    * @since 0.1.0
    * @private
    */
-  private time: Date;
+  private time!: Date;
   /**
    * Julian Date
    * @since 0.1.0
@@ -31,7 +31,7 @@ export class TimeOfInterest extends TimeCalc {
    * to express time in centuries relative to the standard epoch J2000.0.
    * @since 0.1.0
    */
-  public readonly T: number;
+  public readonly T!: number;
 
   /**
    * Creates a new JulianTime instance based on one of the provided inputs: `T`, `jd`, or `time`.
@@ -56,16 +56,15 @@ export class TimeOfInterest extends TimeCalc {
       this.time = this._julianDateToDate(this.jd);
     } else {
       if (props.time) {
-        this.time = toUTCDate(props.time);
+        this.time = props.time;
+        const time = toUTCDate(this.time);
+        this.jd = this.toJulianDay(time);
+        this.T = this.getJulianCenturies(this.jd);
       } else if (props.jd) {
+        this.jd = props.jd;
         this.time = this._julianDateToDate(props.jd);
-      } else {
-        this.time = toUTCDate(new Date());
-        this.time = toUTCDate(this.time);
+        this.T = this.getJulianCenturies(this.jd);
       }
-
-      this.jd = props.jd || this.toJulianDay();
-      this.T = this.getJulianCenturies(this.jd);
     }
   }
 
@@ -83,15 +82,15 @@ export class TimeOfInterest extends TimeCalc {
    * Calculates the Julian Day number from the current time.
    * @since 0..1.0
    */
-  toJulianDay() {
-    return this._timeToJulianDay(this.time);
+  toJulianDay(time: Date) {
+    return this._timeToJulianDay(time);
   }
   /**
    * Calculates the Julian Day number from the current time.
    * @since 0.1.0
    */
-  async toJulianDayAsync() {
-    return this._timeToJulianDay(this.time);
+  async toJulianDayAsync(time: Date) {
+    return this._timeToJulianDay(time);
   }
   /**
    * Calculates the Julian Day number from the current time.

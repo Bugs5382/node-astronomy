@@ -19,7 +19,7 @@ export class TimeCalc {
    * @param jd - Julian Day number
    * @returns Day of the week (0–6)
    * @since 0.1.0
-   * @private
+   * @protected
    */
   protected _getDayOfWeek(jd: number): number {
     return Math.floor(jd + 1.5) % 7;
@@ -31,20 +31,35 @@ export class TimeCalc {
    * @param T - Julian centuries since J2000.0
    * @returns Julian Day number
    * @since 0.1.0
-   * @private
+   * @protected
    */
   protected _getJulianDayFromCenturies(T: number): number {
     return T * 36525 + 2451545.0;
   }
 
+  /**
+   *
+   * @param jd  Julian Date
+   * @protected
+   */
   protected _julianDay2julianDay0(jd: number): number {
     return Math.floor(jd + 0.5) - 0.5;
   }
 
+  /**
+   *
+   * @param jd  Julian Date
+   * @private
+   */
   private _julianDay2julianCenturiesJ2000(jd: number): number {
     return (jd - 2451545.0) / 36525.0;
   }
 
+  /**
+   *
+   * @param jd  Julian Date
+   * @protected
+   */
   protected _getJulianMillenniaJ2000(jd: number): number {
     const T = this._julianDay2julianCenturiesJ2000(jd);
     return T / 10;
@@ -227,6 +242,12 @@ export class TimeCalc {
     return Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
   }
 
+  /**
+   *
+   * @param year
+   * @param month
+   * @protected
+   */
   protected _getDeltaT(year: number, month: number = 0): number {
     // https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html
     const y = year + (month - 0.5) / 12;

@@ -43,53 +43,56 @@ export class TimeOfInterest extends TimeCalc {
     if (props.T != null) {
       this.T = props.T;
       this.jd = this._getJulianDayFromCenturies(this.T);
-      this.time = this._julianDateToDate(this.jd);
+      this.time = this.julianDateToDate();
     } else if (props.time) {
-      this.time = props.time;
-      const time = toUTCDate(this.time);
-      this.jd = this.toJulianDay(time);
-      this.T = this.getJulianCenturies(this.jd);
+      this.time = toUTCDate(props.time);
+      this.jd = this.toJulianDay();
+      this.T = this.getJulianCenturies();
     } else if (props.jd) {
       this.jd = props.jd;
-      this.time = this._julianDateToDate(props.jd);
-      this.T = this.getJulianCenturies(this.jd);
+      this.time = this.julianDateToDate();
+      this.T = this.getJulianCenturies();
     } else {
-      this.time = new Date();
-      const time = toUTCDate(this.time);
-      this.jd = this.toJulianDay(time);
-      this.T = this.getJulianCenturies(this.jd);
+      this.time = toUTCDate(new Date());
+      this.jd = this.toJulianDay();
+      this.T = this.getJulianCenturies();
     }
+  }
+
+  julianDateToDate() {
+    return this._julianDateToDate(this.jd!);
+  }
+
+  async julianDateToDateAsync() {
+    return this._julianDateToDate(this.jd!);
   }
 
   /**
    * Calculates Julian centuries since J2000.0 for a given Julian Date.
-   * @param jd - The Julian Date.
    * @returns The number of Julian centuries since J2000.0.
    * @since 0.1.0
    */
-  getJulianCenturies(jd: number): number {
-    const epoch = this._getEpoch(jd);
-    return (jd - epoch) / 36525.0;
+  getJulianCenturies(): number {
+    const epoch = this._getEpoch(this.jd!);
+    return (this.jd! - epoch) / 36525.0;
   }
 
   /**
    * Converts a Date object to its Julian Day equivalent.
-   * @param time - Date to convert.
    * @returns Julian Day number.
    * @since 0.1.0
    */
-  toJulianDay(time: Date): number {
-    return this._timeToJulianDay(time);
+  toJulianDay(): number {
+    return this._timeToJulianDay(this.time!);
   }
 
   /**
    * Asynchronously converts a Date object to its Julian Day equivalent.
-   * @param time - Date to convert.
    * @returns Promise resolving to Julian Day number.
    * @since 0.1.0
    */
-  async toJulianDayAsync(time: Date): Promise<number> {
-    return this._timeToJulianDay(time);
+  async toJulianDayAsync(): Promise<number> {
+    return this._timeToJulianDay(this.time!);
   }
 
   /**

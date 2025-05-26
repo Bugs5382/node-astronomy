@@ -4,6 +4,7 @@ import {
   EPOCH_J2000,
   EPOCH_J2100,
 } from "@/constants";
+// import { normalizeAngle } from "@/helper";
 
 /**
  * Utility class for astronomical time calculations, including Julian date conversions and epoch determination.
@@ -35,6 +36,42 @@ export class TimeCalc {
   protected _getJulianDayFromCenturies(T: number): number {
     return T * 36525 + 2451545.0;
   }
+
+  protected _julianDay2julianDay0(jd: number): number {
+    return Math.floor(jd + 0.5) - 0.5;
+  }
+
+  private _julianDay2julianCenturiesJ2000(jd: number): number {
+    return (jd - 2451545.0) / 36525.0;
+  }
+
+  protected _getJulianMillenniaJ2000(jd: number): number {
+    const T = this._julianDay2julianCenturiesJ2000(jd);
+    return T / 10;
+  }
+
+  // protected _getGreenwichMeanSiderealTime(T: number): number {
+  //   const jd = this._getJulianDayFromCenturies(T);
+  //
+  //   // Meeus 12.4
+  //   const GMST =
+  //     280.46061837 +
+  //     360.98564736629 * (jd - 2451545) +
+  //     0.000387933 * Math.pow(T, 2) +
+  //     Math.pow(T, 3) / 38710000;
+  //
+  //   return normalizeAngle(GMST);
+  // }
+
+  // protected _getGreenwichApparentSiderealTime(T: number): string {
+  //   const GMST = this._getGreenwichMeanSiderealTime(T);
+  //   const p = earthCalc.getNutationInLongitude(T);
+  //   const e = earthCalc.getTrueObliquityOfEcliptic(T);
+  //   const eRad = deg2rad(e);
+  //
+  //   // Meeus 12
+  //   return GMST + p * Math.cos(eRad);
+  // }
 
   /**
    * Converts a Julian Day number to a JavaScript Date object in UTC.

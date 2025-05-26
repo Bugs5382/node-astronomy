@@ -74,5 +74,44 @@ describe("time of Interest", () => {
     test("...getDayOfWeek async", async () => {
       expect(await toi.getDayOfWeekAsync()).toBe(DayOfWeek.SUNDAY);
     });
+    test("...getJulianDay0", () => {
+      expect(toi.getJulianDay0()).toBe(2457936.5);
+    });
+    test("...getJulianDay0 async", async () => {
+      expect(await toi.getJulianDay0Async()).toBe(2457936.5);
+    });
+    test("...getJulianCenturiesJ2000", () => {
+      expect(toi.getJulianCenturiesJ2000()).toBe(0.17500526656019952);
+    });
+    test("...getJulianCenturiesJ2000 async", async () => {
+      expect(await toi.getJulianCenturiesJ2000Async()).toBe(
+        0.17500526656019952,
+      );
+    });
+    test("...getJulianMillenniaJ2000", () => {
+      expect(toi.getJulianMillenniaJ2000()).toBe(0.017500526656019953);
+    });
+    test("...getJulianMillenniaJ2000 async", async () => {
+      expect(await toi.getJulianMillenniaJ2000Async()).toBe(
+        0.017500526656019953,
+      );
+    });
+    // test("...getGreenwichMeanSiderealTime", () => {
+    //   expect(toi.getGreenwichMeanSiderealTime()).toBe("5h 44m 46.48s");
+    // });
+    // test("...getGreenwichMeanSiderealTime async", async () => {
+    //   expect(await toi.getGreenwichMeanSiderealTimeAsync()).toBe(
+    //     "5h 44m 46.48s",
+    //   );
+    // });
+
+    // test("...getGreenwichApparentSiderealTime", () => {
+    //   expect(toi.getGreenwichApparentSiderealTime()).toBe("5h 44m 45.47s");
+    // });
+    // test("...getGreenwichApparentSiderealTime async", async () => {
+    //   expect(await toi.getGreenwichApparentSiderealTimeAsync()).toBe(
+    //     "5h 44m 45.47s",
+    //   );
+    // });
   });
 });

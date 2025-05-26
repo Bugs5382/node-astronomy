@@ -136,6 +136,58 @@ export class TimeOfInterest extends TimeCalc {
   async getDayOfWeekAsync() {
     return this._getDayOfWeek(this.jd!);
   }
+
+  /**
+   * @since 0.1.0
+   */
+  getJulianDay0() {
+    return this._julianDay2julianDay0(this.jd!);
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  async getJulianDay0Async() {
+    return this._julianDay2julianDay0(this.jd!);
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  getJulianCenturiesJ2000() {
+    return this.T!;
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  async getJulianCenturiesJ2000Async() {
+    return this.T!;
+  }
+
+  getJulianMillenniaJ2000() {
+    return this._getJulianMillenniaJ2000(this.jd!);
+  }
+
+  async getJulianMillenniaJ2000Async() {
+    return this._getJulianMillenniaJ2000(this.jd!);
+  }
+
+  // getGreenwichMeanSiderealTime() {
+  //   return this._getGreenwichMeanSiderealTime(this.T!);
+  // }
+  //
+  // getGreenwichMeanSiderealTimeAsync() {
+  //   return this._getGreenwichMeanSiderealTime(this.T!);
+  // }
+
+  // getGreenwichApparentSiderealTime() {
+  //   return this._getGreenwichApparentSiderealTime(this.T!)
+  // }
+  //
+  // getGreenwichApparentSiderealTimeAsync() {
+  //   return this._getGreenwichApparentSiderealTime(this.T!)
+  // }
 }
 
 export default TimeOfInterest;

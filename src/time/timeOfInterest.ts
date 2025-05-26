@@ -61,6 +61,7 @@ export class TimeOfInterest extends TimeCalc {
 
   /**
    * Take a Julian Day to a real Date
+   * @returns As a Date object.
    * @since 0.1.0
    */
   julianDateToDate() {
@@ -69,6 +70,7 @@ export class TimeOfInterest extends TimeCalc {
 
   /**
    * Take a Julian Day to a real Date
+   * @returns As a Date object.
    * @since 0.1.0
    */
   async julianDateToDateAsync() {

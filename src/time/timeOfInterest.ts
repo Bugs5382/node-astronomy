@@ -59,10 +59,18 @@ export class TimeOfInterest extends TimeCalc {
     }
   }
 
+  /**
+   * Take a Julian Day to a real Date
+   * @since 0.1.0
+   */
   julianDateToDate() {
     return this._julianDateToDate(this.jd!);
   }
 
+  /**
+   * Take a Julian Day to a real Date
+   * @since 0.1.0
+   */
   async julianDateToDateAsync() {
     return this._julianDateToDate(this.jd!);
   }

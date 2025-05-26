@@ -96,6 +96,7 @@ describe("time of Interest", () => {
         0.017500526656019953,
       );
     });
+
     // test("...getGreenwichMeanSiderealTime", () => {
     //   expect(toi.getGreenwichMeanSiderealTime()).toBe("5h 44m 46.48s");
     // });
@@ -113,5 +114,18 @@ describe("time of Interest", () => {
     //     "5h 44m 45.47s",
     //   );
     // });
+  });
+
+  describe("unit testing - group 3", () => {
+    let toi: TimeOfInterest;
+    beforeEach(async () => {
+      toi = new TimeOfInterest({ time: new Date("2000-06-02T13:37:00Z") });
+    });
+    test("...getDeltaT", () => {
+      expect(toi.getDeltaT()).toBe(64.00082533831302);
+    });
+    test("...getDeltaT async", async () => {
+      expect(await toi.getDeltaTASync()).toBe(64.00082533831302);
+    });
   });
 });

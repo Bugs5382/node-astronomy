@@ -6,45 +6,35 @@ import { ITimeOfInterest } from "@/time/types";
  * Time of Interest
  * @summary Generate the object in which subductions do most of the work.
  * @example
- *
  * const toi = new TimeOfInterest(new Date())
- * @remarks This class create the most import 'toi' which all other functions and calculations are done.
- * For instance, if we wanted to see where the moon was for a certain time period, we need to get that time into a math format for us to understand.
+ * @remarks This class creates the most important 'toi' (Time of Interest), which all other functions and calculations depend on.
+ * For instance, to determine where the Moon is at a certain time, the time must be converted into a mathematical format.
  * @since 0.1.0
  */
 export class TimeOfInterest extends TimeCalc {
-  /**
-   * The date/time of the point in which all other calculations are done.
-   * This will be in UTC format even if you pass your local date object in.
-   * @since 0.1.0
-   * @private
-   */
   private time!: Date;
+
   /**
    * Julian Date
    * @since 0.1.0
    */
   public readonly jd: number | undefined;
+
   /**
    * Number of Julian centuries (T) since J2000.0, calculated from the Julian Date (JD).
-   * This value is used in astronomical calculations
-   * to express time in centuries relative to the standard epoch J2000.0.
    * @since 0.1.0
    */
   public readonly T!: number;
 
   /**
-   * Creates a new JulianTime instance based on one of the provided inputs: `T`, `jd`, or `time`.
+   * Constructs a new TimeOfInterest instance.
+   * @param props - Optional time input object.
    * @remarks
-   * Priority of input properties:
-   * - If `T` (Julian centuries since J2000.0) is provided, it takes precedence over `jd` and `time`.
-   *   - `jd` is calculated from `T`, and `time` is derived from the computed `jd`.
-   * - If `T` is not provided but `jd` (Julian Day Number) is, it takes precedence over `time`.
-   *   - `time` is derived from the provided `jd`, and `T` is calculated from it.
-   * - If neither `T` nor `jd` is provided, the current system time or `props.time` is used.
-   *   - Both `jd` and `T` are computed based on that time.
-   *
-   * @param props - An object containing optional time information (`T`, `jd`, or `time`)
+   * Priority:
+   * - If `T` is provided, it takes precedence and JD and time are derived.
+   * - Else if `time` is provided, JD and T are derived.
+   * - Else if `jd` is provided, T and time are derived.
+   * - Else the current system time is used.
    * @since 0.1.0
    */
   constructor(props: ITimeOfInterest = {}) {
@@ -72,122 +62,186 @@ export class TimeOfInterest extends TimeCalc {
   }
 
   /**
-   * Number of Julian centuries (T) since J2000.0, calculated from the Julian Date (JD).
-   * This value is used in astronomical calculations
-   * to express time in centuries relative to the standard epoch J2000.0.
+   * Calculates Julian centuries since J2000.0 for a given Julian Date.
+   * @param jd - The Julian Date.
+   * @returns The number of Julian centuries since J2000.0.
    * @since 0.1.0
    */
   getJulianCenturies(jd: number): number {
     const epoch = this._getEpoch(jd);
     return (jd - epoch) / 36525.0;
   }
+
   /**
-   * Calculates the Julian Day number from the current time.
-   * @since 0..1.0
+   * Converts a Date object to its Julian Day equivalent.
+   * @param time - Date to convert.
+   * @returns Julian Day number.
+   * @since 0.1.0
    */
-  toJulianDay(time: Date) {
+  toJulianDay(time: Date): number {
     return this._timeToJulianDay(time);
   }
+
   /**
-   * Calculates the Julian Day number from the current time.
+   * Asynchronously converts a Date object to its Julian Day equivalent.
+   * @param time - Date to convert.
+   * @returns Promise resolving to Julian Day number.
    * @since 0.1.0
    */
-  async toJulianDayAsync(time: Date) {
+  async toJulianDayAsync(time: Date): Promise<number> {
     return this._timeToJulianDay(time);
   }
+
   /**
-   * Calculates the Julian Day number from the current time.
-   * @since 0..1.0
-   */
-  isLeapYear() {
-    return this._isLeapYear(this.time);
-  }
-  /**
-   * Calculates the Julian Day number from the current time.
+   * Determines if the current year is a leap year.
+   * @returns True if leap year, otherwise false.
    * @since 0.1.0
    */
-  async isLeapYearAsync() {
+  isLeapYear(): boolean {
     return this._isLeapYear(this.time);
   }
+
   /**
+   * Asynchronously determines if the current year is a leap year.
+   * @returns Promise resolving to true if leap year.
    * @since 0.1.0
    */
-  getDayOfYear() {
+  async isLeapYearAsync(): Promise<boolean> {
+    return this._isLeapYear(this.time);
+  }
+
+  /**
+   * Gets the day of the year (1–366) from the internal date.
+   * @returns Day of the year.
+   * @since 0.1.0
+   */
+  getDayOfYear(): number {
     return this._getDayOfYear(this.time);
   }
 
   /**
+   * Asynchronously gets the day of the year.
+   * @returns Promise resolving to day of the year.
    * @since 0.1.0
    */
-  async getDayOfYearAsync() {
+  async getDayOfYearAsync(): Promise<number> {
     return this._getDayOfYear(this.time);
   }
 
   /**
+   * Gets the day of the week for the current Julian Date.
+   * @returns Day of the week (0=Sunday, 6=Saturday).
    * @since 0.1.0
    */
-  getDayOfWeek() {
+  getDayOfWeek(): number {
     return this._getDayOfWeek(this.jd!);
   }
 
   /**
+   * Asynchronously gets the day of the week.
+   * @returns Promise resolving to day of the week.
    * @since 0.1.0
    */
-  async getDayOfWeekAsync() {
+  async getDayOfWeekAsync(): Promise<number> {
     return this._getDayOfWeek(this.jd!);
   }
 
   /**
+   * Gets the Julian Day Number at 0h UTC (start of day).
+   * @returns Julian Day number at 0h UTC.
    * @since 0.1.0
    */
-  getJulianDay0() {
+  getJulianDay0(): number {
     return this._julianDay2julianDay0(this.jd!);
   }
 
   /**
+   * Asynchronously gets the Julian Day at 0h UTC.
+   * @returns Promise resolving to Julian Day number at 0h UTC.
    * @since 0.1.0
    */
-  async getJulianDay0Async() {
+  async getJulianDay0Async(): Promise<number> {
     return this._julianDay2julianDay0(this.jd!);
   }
 
   /**
+   * Gets the Julian centuries (T) since J2000.0.
+   * @returns Julian centuries since J2000.0.
    * @since 0.1.0
    */
-  getJulianCenturiesJ2000() {
+  getJulianCenturiesJ2000(): number {
     return this.T!;
   }
 
   /**
+   * Asynchronously gets the Julian centuries since J2000.0.
+   * @returns Promise resolving to Julian centuries since J2000.0.
    * @since 0.1.0
    */
-  async getJulianCenturiesJ2000Async() {
+  async getJulianCenturiesJ2000Async(): Promise<number> {
     return this.T!;
   }
 
-  getJulianMillenniaJ2000() {
+  /**
+   * Gets the Julian millennia (thousands of years) since J2000.0.
+   * @returns Julian millennia since J2000.0.
+   * @since 0.1.0
+   */
+  getJulianMillenniaJ2000(): number {
     return this._getJulianMillenniaJ2000(this.jd!);
   }
 
-  async getJulianMillenniaJ2000Async() {
+  /**
+   * Asynchronously gets the Julian millennia since J2000.0.
+   * @returns Promise resolving to Julian millennia since J2000.0.
+   * @since 0.1.0
+   */
+  async getJulianMillenniaJ2000Async(): Promise<number> {
     return this._getJulianMillenniaJ2000(this.jd!);
   }
 
-  // getGreenwichMeanSiderealTime() {
-  //   return this._getGreenwichMeanSiderealTime(this.T!);
-  // }
-  //
-  // getGreenwichMeanSiderealTimeAsync() {
-  //   return this._getGreenwichMeanSiderealTime(this.T!);
-  // }
+  /**
+   * Computes ΔT (Delta T), the difference between Terrestrial Time (TT) and Universal Time (UT1).
+   * @returns ΔT value in seconds.
+   * @since 0.1.0
+   */
+  getDeltaT(): number {
+    return this._getDeltaT(
+      this.time.getUTCFullYear(),
+      this.time.getUTCMonth() + 1,
+    );
+  }
 
-  // getGreenwichApparentSiderealTime() {
-  //   return this._getGreenwichApparentSiderealTime(this.T!)
-  // }
-  //
-  // getGreenwichApparentSiderealTimeAsync() {
-  //   return this._getGreenwichApparentSiderealTime(this.T!)
-  // }
+  /**
+   * Asynchronously computes ΔT (Delta T).
+   * @returns Promise resolving to ΔT value in seconds.
+   * @since 0.1.0
+   */
+  async getDeltaTASync(): Promise<number> {
+    return this._getDeltaT(
+      this.time.getUTCFullYear(),
+      this.time.getUTCMonth() + 1,
+    );
+  }
+
+  // Uncomment if needed later
+  /*
+  getGreenwichMeanSiderealTime() {
+    return this._getGreenwichMeanSiderealTime(this.T!);
+  }
+
+  getGreenwichMeanSiderealTimeAsync() {
+    return this._getGreenwichMeanSiderealTime(this.T!);
+  }
+
+  getGreenwichApparentSiderealTime() {
+    return this._getGreenwichApparentSiderealTime(this.T!)
+  }
+
+  getGreenwichApparentSiderealTimeAsync() {
+    return this._getGreenwichApparentSiderealTime(this.T!)
+  }
+  */
 }
 
 export default TimeOfInterest;

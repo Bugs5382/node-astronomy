@@ -1,7 +1,6 @@
 import { beforeAll, describe, expect, test } from "vitest";
 
-import { Sun } from "../src/astronomicalObject/sun";
-import { SunTimes } from "../src/astronomicalObject/sun/sunTimes";
+import { Sun, SunTimes } from "../src/astronomicalObject/sun";
 import { TimeOfInterest } from "../src/time";
 
 describe("sun", () => {
@@ -38,70 +37,52 @@ describe("sun", () => {
     });
 
     describe("sun angle constants", () => {
-      let sunTimesObject: SunTimes;
-      beforeAll(async () => {
-        sunTimesObject = new SunTimes({ toi });
-      });
       test("... astronomicalTwilight value", () => {
-        expect(sunTimesObject.angles.astronomicalTwilight).toBeCloseTo(
+        expect(sunTimes.angles.astronomicalTwilight).toBeCloseTo(
           -0.3141592653589793,
         );
       });
 
       test("... nauticalTwilight value", () => {
-        expect(sunTimesObject.angles.nauticalTwilight).toBeCloseTo(
+        expect(sunTimes.angles.nauticalTwilight).toBeCloseTo(
           -0.20943951023931953,
         );
       });
 
       test("... civilTwilight value", () => {
-        expect(sunTimesObject.angles.civilTwilight).toBeCloseTo(
-          -0.10471975511965977,
-        );
+        expect(sunTimes.angles.civilTwilight).toBeCloseTo(-0.10471975511965977);
       });
 
       test("... sunriseStart value", () => {
-        expect(sunTimesObject.angles.sunriseStart).toBeCloseTo(
-          -0.01454441043328608,
-        );
+        expect(sunTimes.angles.sunriseStart).toBeCloseTo(-0.01454441043328608);
       });
 
       test("... sunriseEnd value", () => {
-        expect(sunTimesObject.angles.sunriseEnd).toBeCloseTo(
-          -0.005235987755982988,
-        );
+        expect(sunTimes.angles.sunriseEnd).toBeCloseTo(-0.005235987755982988);
       });
 
       test("... sunNoon value", () => {
-        expect(sunTimesObject.angles.sunNoon).toBeCloseTo(1.5707963267948966);
+        expect(sunTimes.angles.sunNoon).toBeCloseTo(1.5707963267948966);
       });
 
       test("... sunsetStart value", () => {
-        expect(sunTimesObject.angles.sunsetStart).toBeCloseTo(
-          -0.005235987755982988,
-        );
+        expect(sunTimes.angles.sunsetStart).toBeCloseTo(-0.005235987755982988);
       });
 
       test("... sunsetEnd value", () => {
-        expect(sunTimesObject.angles.sunsetEnd).toBeCloseTo(
-          -0.01454441043328608,
-        );
+        expect(sunTimes.angles.sunsetEnd).toBeCloseTo(-0.01454441043328608);
       });
 
       test("... civilDusk value", () => {
-        expect(sunTimesObject.angles.civilDusk).toBeCloseTo(
-          -0.10471975511965977,
-        );
+        expect(sunTimes.angles.civilDusk).toBeCloseTo(-0.10471975511965977);
       });
 
       test("... nauticalDusk value", () => {
-        expect(sunTimesObject.angles.nauticalDusk).toBeCloseTo(
-          -0.20943951023931953,
-        );
+        expect(sunTimes.angles.nauticalDusk).toBeCloseTo(-0.20943951023931953);
       });
 
       test("... astronomicalDusk value", () => {
-        expect(sunTimesObject.angles.astronomicalDusk).toBeCloseTo(
+        expect(sunTimes.angles.astronomicalDusk).toBeCloseTo(
           -0.3141592653589793,
         );
       });

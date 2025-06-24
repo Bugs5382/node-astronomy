@@ -1,1 +1,1 @@
-export { Earth } from './earth';
+export { Earth } from "./earth";

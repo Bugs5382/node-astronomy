@@ -1,1 +1,1 @@
-export { AstronomicalObject } from './astronomicalObject'
+export { AstronomicalObject } from "./astronomicalObject";

@@ -1,5 +1,1 @@
-
-
-export class AstronomicalObject {
-
-}
+export class AstronomicalObject {}

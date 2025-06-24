@@ -1,6 +1,6 @@
 import { AstronomicalObject } from "@/astronomicalObject";
 
-export class Sun extends AstronomicalObject {
+export class Moon extends AstronomicalObject {
   constructor() {
     super();
   }

@@ -1,4 +1,4 @@
-import AstronomicalObject from "@/astronomicalObject/astronomicalObject";
+import { AstronomicalObject } from "@/astronomicalObject/astronomicalObject";
 
 export class Celestial extends AstronomicalObject {
   constructor() {

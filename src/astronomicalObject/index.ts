@@ -1,0 +1,1 @@
+export { AstronomicalObject } from './astronomicalObject'

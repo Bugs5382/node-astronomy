@@ -4,6 +4,7 @@ import {
   EPOCH_J2000,
   EPOCH_J2100,
 } from "@/constants";
+const { floor, pow, round } = Math;
 // import { normalizeAngle } from "@/helper";
 
 /**
@@ -22,7 +23,7 @@ export class TimeCalc {
    * @protected
    */
   protected _getDayOfWeek(jd: number): number {
-    return Math.floor(jd + 1.5) % 7;
+    return floor(jd + 1.5) % 7;
   }
 
   /**
@@ -43,7 +44,7 @@ export class TimeCalc {
    * @protected
    */
   protected _julianDay2julianDay0(jd: number): number {
-    return Math.floor(jd + 0.5) - 0.5;
+    return floor(jd + 0.5) - 0.5;
   }
 
   /**
@@ -72,8 +73,8 @@ export class TimeCalc {
   //   const GMST =
   //     280.46061837 +
   //     360.98564736629 * (jd - 2451545) +
-  //     0.000387933 * Math.pow(T, 2) +
-  //     Math.pow(T, 3) / 38710000;
+  //     0.000387933 * pow(T, 2) +
+  //     pow(T, 3) / 38710000;
   //
   //   return normalizeAngle(GMST);
   // }
@@ -99,31 +100,31 @@ export class TimeCalc {
   protected _julianDateToDate(jd: number): Date {
     const jdAdjusted = jd + 0.5;
 
-    const Z = Math.floor(jdAdjusted);
+    const Z = floor(jdAdjusted);
     const F = jdAdjusted - Z;
     let A = Z;
 
     if (Z >= 2299161) {
-      const alpha = Math.floor((Z - 1867216.25) / 36524.25);
-      A = Z + 1 + alpha - Math.floor(alpha / 4);
+      const alpha = floor((Z - 1867216.25) / 36524.25);
+      A = Z + 1 + alpha - floor(alpha / 4);
     }
 
     const B = A + 1524;
-    const C = Math.floor((B - 122.1) / 365.25);
-    const D = Math.floor(365.25 * C);
-    const E = Math.floor((B - D) / 30.6001);
+    const C = floor((B - 122.1) / 365.25);
+    const D = floor(365.25 * C);
+    const E = floor((B - D) / 30.6001);
 
-    const day = B - D - Math.floor(30.6001 * E) + F;
+    const day = B - D - floor(30.6001 * E) + F;
     const month = E < 14 ? E - 1 : E - 13;
     const year = month > 2 ? C - 4716 : C - 4715;
 
-    const dayInt = Math.floor(day);
+    const dayInt = floor(day);
     const dayFraction = day - dayInt;
 
-    const totalMilliseconds = Math.round(dayFraction * 86400000);
-    const hours = Math.floor(totalMilliseconds / 3600000);
-    const minutes = Math.floor((totalMilliseconds % 3600000) / 60000);
-    const seconds = Math.floor((totalMilliseconds % 60000) / 1000);
+    const totalMilliseconds = round(dayFraction * 86400000);
+    const hours = floor(totalMilliseconds / 3600000);
+    const minutes = floor((totalMilliseconds % 3600000) / 60000);
+    const seconds = floor((totalMilliseconds % 60000) / 1000);
     const ms = totalMilliseconds % 1000;
 
     return new Date(
@@ -206,8 +207,8 @@ export class TimeCalc {
 
     let B = 0;
     if (dateUTC >= gregorianStart) {
-      const A = Math.floor(Y / 100);
-      B = 2 - A + Math.floor(A / 4);
+      const A = floor(Y / 100);
+      B = 2 - A + floor(A / 4);
     } else if (dateUTC <= julianEnd) {
       B = 0;
     } else {
@@ -215,8 +216,8 @@ export class TimeCalc {
     }
 
     return (
-      Math.floor(365.25 * (Y + 4716)) +
-      Math.floor(30.6001 * (M + 1)) +
+      floor(365.25 * (Y + 4716)) +
+      floor(30.6001 * (M + 1)) +
       dayFraction +
       B -
       1524.5
@@ -239,7 +240,7 @@ export class TimeCalc {
       time.getUTCDate(),
     );
     const diffMs = current - start;
-    return Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+    return floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
   }
 
   /**
@@ -257,7 +258,7 @@ export class TimeCalc {
 
     if (year < -500) {
       t = (y - 1820) / 100;
-      deltaT = -20 + 32 * Math.pow(t, 2);
+      deltaT = -20 + 32 * pow(t, 2);
     }
 
     if (year >= -500 && year < 500) {
@@ -265,11 +266,11 @@ export class TimeCalc {
       deltaT =
         10583.6 -
         1014.41 * t +
-        33.78311 * Math.pow(t, 2) -
-        5.952053 * Math.pow(t, 3) -
-        0.1798452 * Math.pow(t, 4) +
-        0.022174192 * Math.pow(t, 5) +
-        0.0090316521 * Math.pow(t, 6);
+        33.78311 * pow(t, 2) -
+        5.952053 * pow(t, 3) -
+        0.1798452 * pow(t, 4) +
+        0.022174192 * pow(t, 5) +
+        0.0090316521 * pow(t, 6);
     }
 
     if (year >= 500 && year < 1600) {
@@ -277,17 +278,16 @@ export class TimeCalc {
       deltaT =
         1574.2 -
         556.01 * t +
-        71.23472 * Math.pow(t, 2) +
-        0.319781 * Math.pow(t, 3) -
-        0.8503463 * Math.pow(t, 4) -
-        0.005050998 * Math.pow(t, 5) +
-        0.0083572073 * Math.pow(t, 6);
+        71.23472 * pow(t, 2) +
+        0.319781 * pow(t, 3) -
+        0.8503463 * pow(t, 4) -
+        0.005050998 * pow(t, 5) +
+        0.0083572073 * pow(t, 6);
     }
 
     if (year >= 1600 && year < 1700) {
       t = y - 1600;
-      deltaT =
-        120 - 0.9808 * t - 0.01532 * Math.pow(t, 2) + Math.pow(t, 3) / 7129;
+      deltaT = 120 - 0.9808 * t - 0.01532 * pow(t, 2) + pow(t, 3) / 7129;
     }
 
     if (year >= 1700 && year < 1800) {
@@ -295,9 +295,9 @@ export class TimeCalc {
       deltaT =
         8.83 +
         0.1603 * t -
-        0.0059285 * Math.pow(t, 2) +
-        0.00013336 * Math.pow(t, 3) -
-        Math.pow(t, 4) / 1174000;
+        0.0059285 * pow(t, 2) +
+        0.00013336 * pow(t, 3) -
+        pow(t, 4) / 1174000;
     }
 
     if (year >= 1800 && year < 1860) {
@@ -305,12 +305,12 @@ export class TimeCalc {
       deltaT =
         13.72 -
         0.332447 * t +
-        0.0068612 * Math.pow(t, 2) +
-        0.0041116 * Math.pow(t, 3) -
-        0.00037436 * Math.pow(t, 4) +
-        0.0000121272 * Math.pow(t, 5) -
-        0.0000001699 * Math.pow(t, 6) +
-        0.000000000875 * Math.pow(t, 7);
+        0.0068612 * pow(t, 2) +
+        0.0041116 * pow(t, 3) -
+        0.00037436 * pow(t, 4) +
+        0.0000121272 * pow(t, 5) -
+        0.0000001699 * pow(t, 6) +
+        0.000000000875 * pow(t, 7);
     }
 
     if (year >= 1860 && year < 1900) {
@@ -319,10 +319,10 @@ export class TimeCalc {
       deltaT =
         7.62 +
         0.5737 * t -
-        0.251754 * Math.pow(t, 2) +
-        0.01680668 * Math.pow(t, 3) -
-        0.0004473624 * Math.pow(t, 4) +
-        Math.pow(t, 5) / 233174;
+        0.251754 * pow(t, 2) +
+        0.01680668 * pow(t, 3) -
+        0.0004473624 * pow(t, 4) +
+        pow(t, 5) / 233174;
     }
 
     if (year >= 1900 && year < 1920) {
@@ -330,28 +330,24 @@ export class TimeCalc {
       deltaT =
         -2.79 +
         1.494119 * t -
-        0.0598939 * Math.pow(t, 2) +
-        0.0061966 * Math.pow(t, 3) -
-        0.000197 * Math.pow(t, 4);
+        0.0598939 * pow(t, 2) +
+        0.0061966 * pow(t, 3) -
+        0.000197 * pow(t, 4);
     }
 
     if (year >= 1920 && year < 1941) {
       t = y - 1920;
-      deltaT =
-        21.2 +
-        0.84493 * t -
-        0.0761 * Math.pow(t, 2) +
-        0.0020936 * Math.pow(t, 3);
+      deltaT = 21.2 + 0.84493 * t - 0.0761 * pow(t, 2) + 0.0020936 * pow(t, 3);
     }
 
     if (year >= 1941 && year < 1961) {
       t = y - 1950;
-      deltaT = 29.07 + 0.407 * t - Math.pow(t, 2) / 233 + Math.pow(t, 3) / 2547;
+      deltaT = 29.07 + 0.407 * t - pow(t, 2) / 233 + pow(t, 3) / 2547;
     }
 
     if (year >= 1961 && year < 1986) {
       t = y - 1975;
-      deltaT = 45.45 + 1.067 * t - Math.pow(t, 2) / 260 - Math.pow(t, 3) / 718;
+      deltaT = 45.45 + 1.067 * t - pow(t, 2) / 260 - pow(t, 3) / 718;
     }
 
     if (year >= 1986 && year < 2005) {
@@ -359,20 +355,20 @@ export class TimeCalc {
       deltaT =
         63.86 +
         0.3345 * t -
-        0.060374 * Math.pow(t, 2) +
-        0.0017275 * Math.pow(t, 3) +
-        0.000651814 * Math.pow(t, 4) +
-        0.00002373599 * Math.pow(t, 5);
+        0.060374 * pow(t, 2) +
+        0.0017275 * pow(t, 3) +
+        0.000651814 * pow(t, 4) +
+        0.00002373599 * pow(t, 5);
     }
 
     if (year >= 2005 && year < 2050) {
       t = y - 2000;
-      deltaT = 62.92 + 0.32217 * t + 0.005589 * Math.pow(t, 2);
+      deltaT = 62.92 + 0.32217 * t + 0.005589 * pow(t, 2);
     }
 
     if (year >= 2050) {
       t = (y - 1820) / 100;
-      deltaT = -20 + 32 * Math.pow(t, 2);
+      deltaT = -20 + 32 * pow(t, 2);
     }
 
     return deltaT;

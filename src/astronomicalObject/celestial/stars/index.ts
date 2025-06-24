@@ -1,0 +1,1 @@
+export { Stars } from "./stars";

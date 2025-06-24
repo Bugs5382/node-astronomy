@@ -55,7 +55,7 @@ export const STANDARD_ALTITUDE_SUN_ASTRONOMICAL_TWILIGHT = -18;
 export const STANDARD_ALTITUDE_MOON_CENTER_REFRACTION = 0.125;
 
 /**
- * Apparent altitude of planets (and stars), corrected for average atmospheric refraction.
+ * Apparent altitude of planet (and stars), corrected for average atmospheric refraction.
  * Typically used when calculating rise/set times for celestial objects.
  * @since 0.1.0
  */

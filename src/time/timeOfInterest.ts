@@ -12,7 +12,7 @@ import { ITimeOfInterest } from "@/time/types";
  * @since 0.1.0
  */
 export class TimeOfInterest extends TimeCalc {
-  private time!: Date;
+  private readonly time!: Date;
 
   /**
    * Julian Date

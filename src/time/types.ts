@@ -1,7 +1,9 @@
 export interface ITimeOfInterest {
   T?: number;
   /**
-   * Create from JD vs. Date object. If JD is used, props.time will be ingored and overridden.
+   * Create from JD vs. Date object.
+   * If JD is used, pass via the props.
+   * Time will be ignored and overridden.
    * @since 0.1.0
    */
   jd?: number;

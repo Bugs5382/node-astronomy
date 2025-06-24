@@ -11,8 +11,8 @@ import { ITimeOfInterest } from "@/time/types";
  * For instance, to determine where the Moon is at a certain time, the time must be converted into a mathematical format.
  * @since 0.1.0
  */
-export class TimeOfInterest extends TimeCalc {
-  private readonly time!: Date;
+export class TimeOfInterest extends TimeCalc implements ITimeOfInterest {
+  public readonly time!: Date;
 
   /**
    * Julian Date

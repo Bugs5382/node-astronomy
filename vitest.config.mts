@@ -1,4 +1,4 @@
-import path from "node:path";
+import * as path from 'node:path';
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -11,6 +11,8 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       exclude: [
+        "tsup.config.ts",
+        "src/index.ts",
         "*.mts",
         "*.mjs",
         "**/__tests__/**/**",

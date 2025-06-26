@@ -14,7 +14,6 @@ export class SunTimes extends Sun implements ISunTimes {
   private readonly latitude: number;
 
   constructor(props: ISunTimesProps) {
-
     const timeAtMidnight = props.time ? new Date(props.time) : new Date();
 
     // force the date to be the midnight of that day.
@@ -39,7 +38,6 @@ export class SunTimes extends Sun implements ISunTimes {
     this.longitude = angleFromDeg(props.longitude);
 
     this.latitude = angleFromDeg(props.latitude);
-
   }
 
   protected allTimes() {
@@ -101,5 +99,4 @@ export class SunTimes extends Sun implements ISunTimes {
   astronomicalDusk() {
     return new Date();
   }
-
 }

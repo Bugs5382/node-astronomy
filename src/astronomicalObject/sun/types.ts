@@ -31,25 +31,25 @@ export interface ISunTimesProps extends ISunProps {
 export interface ISunTimes extends ISun {
   angles: ISunBaseAngles;
   /** Get Astronomical Dawn **/
-  astronomicalDawn: () => Date
+  astronomicalDawn: () => Date;
   /** Get Nautical Dawn **/
-  nauticalDawn: () => Date
+  nauticalDawn: () => Date;
   /** Get Civil Dawn **/
-  civilDawn: () => Date
+  civilDawn: () => Date;
   /** Get Sunrise Start **/
-  sunriseStart: () => Date
+  sunriseStart: () => Date;
   /** Get Sunrise End **/
-  sunriseEnd: () => Date
+  sunriseEnd: () => Date;
   /** Get Solar Noon **/
-  solarNoon: () => Date
+  solarNoon: () => Date;
   /** Get Sunset Start **/
-  sunsetStart: () => Date
+  sunsetStart: () => Date;
   /** Get Sunset End **/
-  sunsetEnd: () => Date
+  sunsetEnd: () => Date;
   /** Get Civil Dusk **/
-  civilDusk: () => Date
+  civilDusk: () => Date;
   /** Get Nautical Dusk **/
-  nauticalDusk: () => Date
+  nauticalDusk: () => Date;
   /** Get Astronomical Dusk **/
-  astronomicalDusk: () => Date
+  astronomicalDusk: () => Date;
 }

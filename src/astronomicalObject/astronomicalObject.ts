@@ -1,15 +1,17 @@
-import { TimeOfInterest } from "@/time";
+import { ITimeOfInterest, TimeOfInterest } from "@/time";
 
-export interface IAstronomicalObject {
-  toi?: TimeOfInterest;
+export interface IAstronomicalObject extends ITimeOfInterest {
+  name: string;
 }
 
-export class AstronomicalObject implements IAstronomicalObject {
+export class AstronomicalObject
+  extends TimeOfInterest
+  implements IAstronomicalObject
+{
   public readonly name: string;
-  public readonly toi: TimeOfInterest;
 
   constructor(name: string, props?: IAstronomicalObject) {
+    super(props);
     this.name = name;
-    this.toi = props?.toi || new TimeOfInterest({ time: new Date() });
   }
 }

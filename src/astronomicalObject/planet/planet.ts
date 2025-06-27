@@ -1,7 +1,11 @@
-import AstronomicalObject from "@/astronomicalObject/astronomicalObject";
+import { AstronomicalObject } from "@/astronomicalObject";
 
 export class Planet extends AstronomicalObject {
-  constructor() {
-    super();
+  planetName: string;
+
+  constructor(name: string) {
+    super('planet');
+
+    this.planetName = name;
   }
 }

@@ -1,4 +1,4 @@
-import { Radian } from "@/astronomicalObject/sun/types";
+import { Degrees, Radian } from "@/astronomicalObject/sun/types";
 import { modf } from "@/astronomicalObject/sun/utils/modf";
 import { round } from "@/astronomicalObject/sun/utils/round";
 
@@ -26,7 +26,7 @@ export class Angle {
   /**
    *
    */
-  public deg(): number {
+  public deg(): Degrees {
     return (this.angle * 180) / Math.PI;
   }
 

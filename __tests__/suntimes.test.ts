@@ -2,7 +2,7 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 import { SunTimes } from "../src/astronomicalObject/sun";
 
-describe("sun tests", () => {
+describe("sunTimes tests", () => {
   let sunTimes: SunTimes;
   beforeAll(async () => {
     // create the times of the sun
@@ -71,6 +71,12 @@ describe("sun tests", () => {
   });
 
   describe("time checks", () => {
-    test.skip("... astronomical dawn", () => {});
+    test.skip("... all times", () => {
+      sunTimes.allTimes()
+    })
+
+    test("... astronomical dawn", () => {
+      console.log(sunTimes.astronomicalDawn())
+    });
   });
 });

@@ -52,7 +52,7 @@ export class TimeCalc {
    * @param jd  Julian Date
    * @private
    */
-  private _julianDay2julianCenturiesJ2000(jd: number): number {
+  protected _julianDay2julianCenturiesJ2000(jd: number): number {
     return (jd - 2451545.0) / 36525.0;
   }
 

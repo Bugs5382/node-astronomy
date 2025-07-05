@@ -6,19 +6,48 @@ export type ISunProps = IAstronomicalObject;
 export type ISun = ITimeOfInterest;
 
 export type Radian = number;
+export type Degrees = number;
 
 export interface ISunBaseAngles {
-  astronomicalDawn?: Radian;
-  nauticalDawn?: Radian;
-  civilDawn?: Radian;
-  sunriseStart?: Radian;
-  sunriseEnd?: Radian;
-  solarNoon?: Radian;
-  sunsetStart?: Radian;
-  sunsetEnd?: Radian;
-  civilDusk?: Radian;
-  nauticalDusk?: Radian;
-  astronomicalDusk?: Radian;
+  astronomicalDawn: Radian;
+  nauticalDawn: Radian;
+  civilDawn: Radian;
+  sunriseStart: Radian;
+  sunriseEnd: Radian;
+  solarNoon: Radian;
+  sunsetStart: Radian;
+  sunsetEnd: Radian;
+  civilDusk: Radian;
+  nauticalDusk: Radian;
+  astronomicalDusk: Radian;
+}
+
+export interface ISunBaseDegrees {
+  astronomicalDawn: Degrees;
+  nauticalDawn: Degrees;
+  civilDawn: Degrees;
+  sunriseStart: Degrees;
+  sunriseEnd: Degrees;
+  solarNoon: Degrees;
+  sunsetStart: Degrees;
+  sunsetEnd: Degrees;
+  civilDusk: Degrees;
+  nauticalDusk: Degrees;
+  astronomicalDusk: Degrees;
+}
+
+export interface ISunTimesResult {
+  astronomicalDawn:  { rise: Date | null; set: Date | null; };
+  nauticalDawn: Date;
+  civilDawn: Date;
+  sunriseStart: Date;
+  sunriseEnd: Date;
+  solarNoon: Date;
+  sunsetStart: Date;
+  sunsetEnd: Date;
+  civilDusk: Date;
+  nauticalDusk: Date;
+  astronomicalDusk?: Date;
 }
 
 export interface ISunTimesProps extends ISunProps {
@@ -30,8 +59,11 @@ export interface ISunTimesProps extends ISunProps {
 
 export interface ISunTimes extends ISun {
   angles: ISunBaseAngles;
+  degrees: ISunBaseDegrees;
+  /** */
+  allTimes: () => ISunTimesResult;
   /** Get Astronomical Dawn **/
-  astronomicalDawn: () => Date;
+  astronomicalDawn: () => { rise: Date | null, set: Date | null };
   /** Get Nautical Dawn **/
   nauticalDawn: () => Date;
   /** Get Civil Dawn **/

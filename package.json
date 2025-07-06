@@ -81,5 +81,8 @@
   },
   "engines": {
     "node": ">=20.19.1"
+  },
+  "dependencies": {
+    "date-fns-tz": "^3.2.0"
   }
 }

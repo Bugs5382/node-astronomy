@@ -11,6 +11,7 @@ describe("sunTimes tests", () => {
       latitude: 40.6676,
       longitude: -73.9851,
       refraction: 0,
+      timezone: "America/New_York",
     });
   });
 
@@ -71,12 +72,12 @@ describe("sunTimes tests", () => {
   });
 
   describe("time checks", () => {
-    test.skip("... all times", () => {
-      sunTimes.allTimes()
-    })
+    test("... all times", () => {
+      console.log(sunTimes.allTimes());
+    });
 
     test("... astronomical dawn", () => {
-      console.log(sunTimes.astronomicalDawn())
+      console.log(sunTimes.astronomicalDawn());
     });
   });
 });

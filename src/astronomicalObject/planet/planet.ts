@@ -4,7 +4,7 @@ export class Planet extends AstronomicalObject {
   planetName: string;
 
   constructor(name: string = "") {
-    super('planet');
+    super("planet");
 
     this.planetName = name;
   }

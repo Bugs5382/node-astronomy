@@ -36,52 +36,59 @@ export interface ISunBaseDegrees {
   astronomicalDusk: Degrees;
 }
 
+export type ISunTimeResultProp = {
+  start: Date | null;
+  end: Date | null;
+  startClean: string;
+  endClean: string;
+};
+
 export interface ISunTimesResult {
-  astronomicalDawn:  { rise: Date | null; set: Date | null; };
-  nauticalDawn: Date;
-  civilDawn: Date;
-  sunriseStart: Date;
-  sunriseEnd: Date;
-  solarNoon: Date;
-  sunsetStart: Date;
-  sunsetEnd: Date;
-  civilDusk: Date;
-  nauticalDusk: Date;
-  astronomicalDusk?: Date;
+  astronomicalDawn: ISunTimeResultProp;
+  nauticalDawn: ISunTimeResultProp;
+  civilDawn: ISunTimeResultProp;
+  sunriseStart: ISunTimeResultProp;
+  sunriseEnd: ISunTimeResultProp;
+  solarNoon: ISunTimeResultProp;
+  sunsetStart: ISunTimeResultProp;
+  sunsetEnd: ISunTimeResultProp;
+  civilDusk: ISunTimeResultProp;
+  nauticalDusk: ISunTimeResultProp;
+  astronomicalDusk?: ISunTimeResultProp;
 }
 
 export interface ISunTimesProps extends ISunProps {
   angles?: ISunBaseAngles;
   latitude: number;
   longitude: number;
+  timezone?: string;
   refraction?: number;
 }
 
 export interface ISunTimes extends ISun {
-  angles: ISunBaseAngles;
   degrees: ISunBaseDegrees;
   /** */
   allTimes: () => ISunTimesResult;
   /** Get Astronomical Dawn **/
-  astronomicalDawn: () => { rise: Date | null, set: Date | null };
+  astronomicalDawn: () => ISunTimeResultProp;
   /** Get Nautical Dawn **/
-  nauticalDawn: () => Date;
+  nauticalDawn: () => ISunTimeResultProp;
   /** Get Civil Dawn **/
-  civilDawn: () => Date;
+  civilDawn: () => ISunTimeResultProp;
   /** Get Sunrise Start **/
-  sunriseStart: () => Date;
+  sunriseStart: () => ISunTimeResultProp;
   /** Get Sunrise End **/
-  sunriseEnd: () => Date;
+  sunriseEnd: () => ISunTimeResultProp;
   /** Get Solar Noon **/
-  solarNoon: () => Date;
+  solarNoon: () => ISunTimeResultProp;
   /** Get Sunset Start **/
-  sunsetStart: () => Date;
+  sunsetStart: () => ISunTimeResultProp;
   /** Get Sunset End **/
-  sunsetEnd: () => Date;
+  sunsetEnd: () => ISunTimeResultProp;
   /** Get Civil Dusk **/
-  civilDusk: () => Date;
+  civilDusk: () => ISunTimeResultProp;
   /** Get Nautical Dusk **/
-  nauticalDusk: () => Date;
+  nauticalDusk: () => ISunTimeResultProp;
   /** Get Astronomical Dusk **/
-  astronomicalDusk: () => Date;
+  astronomicalDusk: () => ISunTimeResultProp;
 }

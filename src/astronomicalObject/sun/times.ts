@@ -4,8 +4,8 @@ import { Sun } from "@/astronomicalObject/sun/sun";
 import {
   ISunTimeResultProp,
   ISunTimes,
-  TwilightBandExtended,
-  TwilightBlock,
+  TTwilightBandExtended,
+  TTwilightBlock,
 } from "@/astronomicalObject/sun/types";
 import { formatLocal } from "@/helpers/timeFormat";
 import {
@@ -22,11 +22,12 @@ export class SunTimes extends Sun implements ISunTimes {
   private readonly longitude: number;
   private readonly latitude: number;
   private readonly timezone: string;
-  private bands: TwilightBandExtended[];
+  private readonly bands: TTwilightBandExtended[];
   private readonly converted: {
     name: Twilight | TwilightExtended;
     interval: { from: Date; to: Date };
   }[];
+  timeBlocks: TTwilightBlock[];
 
   constructor(props: ISunTimesProps) {
     const timeAtMidnight = props.time ? new Date(props.time) : new Date();
@@ -51,27 +52,15 @@ export class SunTimes extends Sun implements ISunTimes {
         to: toZonedTime(p.interval.to, this.timezone),
       },
     }));
-  }
 
-  private formatLocalInterval(blockName: string): ISunTimeResultProp {
-    const { interval, seconds } =
-      this.getTimes().find((b) => b.name === blockName) ?? {};
-
-    if (!interval) return null;
-    if (!seconds) return null;
-
-    return {
-      from: formatLocal(interval.from),
-      to: formatLocal(interval.to),
-      seconds,
-    };
+    this.timeBlocks = this.getTimes();
   }
 
   /**
    * @since 0.1.0
    */
-  nauticalDawn(): ISunTimeResultProp {
-    return this.formatLocalInterval("nautical_morning");
+  midnightToAstronomicalDawn(): ISunTimeResultProp {
+    return this.formatLocalInterval("from_midnight_morning");
   }
 
   /**
@@ -84,7 +73,78 @@ export class SunTimes extends Sun implements ISunTimes {
   /**
    * @since 0.1.0
    */
-  solarNoon() {
+  nauticalDawn(): ISunTimeResultProp {
+    return this.formatLocalInterval("nautical_morning");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  civilDawn(): ISunTimeResultProp {
+    return this.formatLocalInterval("civil_morning");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  sunriseStart(): ISunTimeResultProp {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  sunriseEnd(): ISunTimeResultProp {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  sunsetStart(): ISunTimeResultProp {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  sunsetEnd(): ISunTimeResultProp {
+    throw new Error("Not implemented");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  civilDusk(): ISunTimeResultProp {
+    return this.formatLocalInterval("civil_evening");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  nauticalDusk(): ISunTimeResultProp {
+    return this.formatLocalInterval("nautical_evening");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  astronomicalDusk(): ISunTimeResultProp {
+    return this.formatLocalInterval("astronomical_evening");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  astronomicalDuskToMidnight(): ISunTimeResultProp {
+    return this.formatLocalInterval("to_midnight_evening");
+  }
+
+  /**
+   * Solar Noon
+   * @since 0.1.0
+   */
+  solarNoon(): string | null {
     const { noon } = getSolarTransit(
       this.time,
       {
@@ -99,8 +159,23 @@ export class SunTimes extends Sun implements ISunTimes {
     return formatLocal(noon);
   }
 
+  private formatLocalInterval(blockName: string): ISunTimeResultProp {
+    const { interval, seconds } =
+      this.timeBlocks.find((b) => b.name === blockName) ?? {};
+
+    if (!interval) return null;
+    if (!seconds) return null;
+
+    return {
+      from: formatLocal(interval.from),
+      to: formatLocal(interval.to),
+      seconds,
+    };
+  }
+
   /**
-   *
+   * Get Time Blocks
+   * @description This is a customized function of @observerly/astrometry to work with this package.
    * @since 0.1.0
    * @param datetime
    * @param observer
@@ -112,7 +187,7 @@ export class SunTimes extends Sun implements ISunTimes {
     params: { stepSeconds?: number } = {
       stepSeconds: 10,
     },
-  ): TwilightBandExtended[] {
+  ): TTwilightBandExtended[] {
     const { stepSeconds = 10 } = params;
 
     // Set the time to midnight:
@@ -128,7 +203,7 @@ export class SunTimes extends Sun implements ISunTimes {
     // Copy of midnight to avoid modifying the original date:
     let from = new Date(midnight.getTime());
 
-    const bands: TwilightBandExtended[] = [];
+    const bands: TTwilightBandExtended[] = [];
 
     // Get the solar equatorial coordinates for the target date:
     const sun = getSolarEquatorialCoordinate(from);
@@ -209,8 +284,8 @@ export class SunTimes extends Sun implements ISunTimes {
    * All times returned.
    * @since 0.1.0
    */
-  getTimes(): TwilightBlock[] {
-    const result: TwilightBlock[] = [];
+  private getTimes(): TTwilightBlock[] {
+    const result: TTwilightBlock[] = [];
     const noonHour = 12;
 
     for (let i = 0; i < this.converted.length; i++) {

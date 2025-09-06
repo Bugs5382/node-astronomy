@@ -14,36 +14,40 @@ export type ISunTimeResultProp = {
 } | null;
 
 export interface ISunTimes extends ISun {
-  // /** Get Astronomical Dawn **/
+  /** Get Midnight Astronomical Dawn **/
+  midnightToAstronomicalDawn: () => ISunTimeResultProp;
+  /** Get Astronomical Dawn **/
   astronomicalDawn: () => ISunTimeResultProp;
-  // /** Get Nautical Dawn **/
+  /** Get Nautical Dawn **/
   nauticalDawn: () => ISunTimeResultProp;
-  // /** Get Civil Dawn **/
-  // civilDawn: () => ISunTimeResultProp;
-  // /** Get Sunrise Start **/
-  // sunriseStart: () => ISunTimeResultProp;
-  // /** Get Sunrise End **/
-  // sunriseEnd: () => ISunTimeResultProp;
-  // /** Get Solar Noon **/
-  // solarNoon: () => ISunTimeResultProp;
-  // /** Get Sunset Start **/
-  // sunsetStart: () => ISunTimeResultProp;
-  // /** Get Sunset End **/
-  // sunsetEnd: () => ISunTimeResultProp;
-  // /** Get Civil Dusk **/
-  // civilDusk: () => ISunTimeResultProp;
-  // /** Get Nautical Dusk **/
-  // nauticalDusk: () => ISunTimeResultProp;
-  // /** Get Astronomical Dusk **/
-  // astronomicalDusk: () => ISunTimeResultProp;
+  /** Get Civil Dawn **/
+  civilDawn: () => ISunTimeResultProp;
+  /** Get Sunrise Start **/
+  sunriseStart: () => ISunTimeResultProp;
+  /** Get Sunrise End **/
+  sunriseEnd: () => ISunTimeResultProp;
+  /** Get Solar Noon **/
+  solarNoon: () => string | null;
+  /** Get Sunset Start **/
+  sunsetStart: () => ISunTimeResultProp;
+  /** Get Sunset End **/
+  sunsetEnd: () => ISunTimeResultProp;
+  /** Get Civil Dusk **/
+  civilDusk: () => ISunTimeResultProp;
+  /** Get Nautical Dusk **/
+  nauticalDusk: () => ISunTimeResultProp;
+  /** Get Astronomical Dusk **/
+  astronomicalDusk: () => ISunTimeResultProp;
+  /** Get Astronomical Dusk to Midnight **/
+  astronomicalDuskToMidnight: () => ISunTimeResultProp;
 }
 
-export type TwilightBandExtended = {
+export type TTwilightBandExtended = {
   name: Twilight | TwilightExtended;
   interval: Interval;
 };
 
-export type TwilightBlock = {
+export type TTwilightBlock = {
   name: string;
   interval: Interval;
   seconds: number;

@@ -11,7 +11,7 @@ Documentation is in two flavors:
 
 ## 🙏 Acknowledgements
 
-- [@observerly/astrometry](https://github.com/observerly/astrometry) - for the base foundation for this project.
+- [@observerly/astrometry](https://github.com/observerly/astrometry) - for the base foundation for this project and a wrapper.
 - My Wife, baby Girl, and baby Boy – for their love, patience, and inspiration.
 
 ## 📄 License

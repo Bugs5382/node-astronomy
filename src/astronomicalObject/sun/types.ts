@@ -7,7 +7,11 @@ export type ISunProps = IAstronomicalObject;
 
 export type ISun = ITimeOfInterest;
 
-export type ISunTimeResultProp = { from: string; to: string, seconds: number } | null;
+export type ISunTimeResultProp = {
+  from: string;
+  to: string;
+  seconds: number;
+} | null;
 
 export interface ISunTimes extends ISun {
   // /** Get Astronomical Dawn **/

@@ -7,14 +7,16 @@ import {
   TwilightBandExtended,
   TwilightBlock,
 } from "@/astronomicalObject/sun/types";
+import { formatLocal } from "@/helpers/timeFormat";
 import {
   convertEquatorialToHorizontal,
   GeographicCoordinate,
   getSolarEquatorialCoordinate,
+  getSolarTransit,
   Twilight,
 } from "@observerly/astrometry";
 import { differenceInSeconds } from "date-fns";
-import { format as timeFormat, toZonedTime } from "date-fns-tz";
+import { toZonedTime } from "date-fns-tz";
 
 export class SunTimes extends Sun implements ISunTimes {
   private readonly longitude: number;
@@ -58,23 +60,43 @@ export class SunTimes extends Sun implements ISunTimes {
     if (!interval) return null;
     if (!seconds) return null;
 
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const formatLocal = (date: Date) =>
-      timeFormat(date, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
-
     return {
       from: formatLocal(interval.from),
       to: formatLocal(interval.to),
-      seconds
+      seconds,
     };
   }
 
+  /**
+   * @since 0.1.0
+   */
   nauticalDawn(): ISunTimeResultProp {
     return this.formatLocalInterval("nautical_morning");
   }
 
+  /**
+   * @since 0.1.0
+   */
   astronomicalDawn(): ISunTimeResultProp {
     return this.formatLocalInterval("astronomical_morning");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  solarNoon() {
+    const { noon } = getSolarTransit(
+      this.time,
+      {
+        latitude: this.latitude,
+        longitude: this.longitude,
+      },
+      0,
+    );
+
+    if (!noon) return null;
+
+    return formatLocal(noon);
   }
 
   /**

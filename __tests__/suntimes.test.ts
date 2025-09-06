@@ -25,6 +25,10 @@ describe("sunTimes tests", () => {
         .reduce((sum, block) => sum + block.seconds, 0);
       expect(totalSeconds).toBe(86400);
     });
+
+    test("... solor noon", async () => {
+      expect(sunTimes.solarNoon()).toBe("1982-05-02T12:52:48-04:00");
+    });
   });
 
   describe("time blocks", () => {
@@ -33,7 +37,7 @@ describe("sunTimes tests", () => {
         "1982-05-02T04:08:28-04:00",
       );
       expect(sunTimes.astronomicalDawn()!.to).toBe("1982-05-02T04:47:44-04:00");
-      expect(sunTimes.astronomicalDawn()!.seconds).toEqual(2356)
+      expect(sunTimes.astronomicalDawn()!.seconds).toEqual(2356);
     });
   });
 });

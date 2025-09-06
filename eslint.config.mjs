@@ -11,16 +11,22 @@ export default [
   {
     files: ["**/*.{js,mjs,cjs,ts}"],
     plugins: {
-      'prettier': pluginPrettier
-    }
+      prettier: pluginPrettier,
+    },
   },
   {
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'off'
-    }
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+    },
   },
   {
-    ignores: [".node_modules/*", "docs/*", "lib/*", "__tests__/*"]
-  }
+    ignores: [
+      ".node_modules/*",
+      "docs/*",
+      "lib/*",
+      "__tests__/*",
+      "./commitlint.config.cjs",
+    ],
+  },
 ];

@@ -11,7 +11,7 @@ Documentation is in two flavors:
 
 ## 🙏 Acknowledgements
 
-- [`astronomy-bundle-js`](https://github.com/andrmoel/astronomy-bundle-js/tree/master) – This work is where I have refactored and modernize the code to work in newer syntax.
+- [@observerly/astrometry](https://github.com/observerly/astrometry) - for the base foundation for this project.
 - My Wife, baby Girl, and baby Boy – for their love, patience, and inspiration.
 
 ## 📄 License

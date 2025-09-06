@@ -19,16 +19,43 @@ import { differenceInSeconds } from "date-fns";
 import { toZonedTime } from "date-fns-tz";
 
 export class SunTimes extends Sun implements ISunTimes {
+  /**
+   * @since 0.1.0
+   * @private
+   */
   private readonly longitude: number;
+  /**
+   * @since 0.1.0
+   * @private
+   */
   private readonly latitude: number;
+  /**
+   * @since 0.1.0
+   * @private
+   */
   private readonly timezone: string;
+  /**
+   * @since 0.1.0
+   * @private
+   */
   private readonly bands: TTwilightBandExtended[];
+  /**
+   * @since 0.1.0
+   * @private
+   */
   private readonly converted: {
     name: Twilight | TwilightExtended;
     interval: { from: Date; to: Date };
   }[];
+  /**
+   *
+   */
   timeBlocks: TTwilightBlock[];
 
+  /**
+   * @since 0.1.0
+   * @param props
+   */
   constructor(props: ISunTimesProps) {
     const timeAtMidnight = props.time ? new Date(props.time) : new Date();
     timeAtMidnight.setHours(0, 0, 0, 0);
@@ -87,29 +114,15 @@ export class SunTimes extends Sun implements ISunTimes {
   /**
    * @since 0.1.0
    */
-  sunriseStart(): ISunTimeResultProp {
-    throw new Error("Not implemented");
+  sunrise(): ISunTimeResultProp {
+    return this.formatLocalInterval("sun_morning");
   }
 
   /**
    * @since 0.1.0
    */
-  sunriseEnd(): ISunTimeResultProp {
-    throw new Error("Not implemented");
-  }
-
-  /**
-   * @since 0.1.0
-   */
-  sunsetStart(): ISunTimeResultProp {
-    throw new Error("Not implemented");
-  }
-
-  /**
-   * @since 0.1.0
-   */
-  sunsetEnd(): ISunTimeResultProp {
-    throw new Error("Not implemented");
+  sunset(): ISunTimeResultProp {
+    return this.formatLocalInterval("sun_evening");
   }
 
   /**
@@ -271,6 +284,8 @@ export class SunTimes extends Sun implements ISunTimes {
         return Twilight.Nautical;
       case altitude < -4:
         return Twilight.Civil;
+      case altitude < 0.1:
+        return TwilightExtended.Sun;
       case altitude < 0:
         return TwilightExtended.BlueHour;
       case altitude < 6:

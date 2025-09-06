@@ -22,16 +22,12 @@ export interface ISunTimes extends ISun {
   nauticalDawn: () => ISunTimeResultProp;
   /** Get Civil Dawn **/
   civilDawn: () => ISunTimeResultProp;
-  /** Get Sunrise Start **/
-  sunriseStart: () => ISunTimeResultProp;
-  /** Get Sunrise End **/
-  sunriseEnd: () => ISunTimeResultProp;
+  /** Get Sunrise **/
+  sunrise: () => ISunTimeResultProp;
   /** Get Solar Noon **/
   solarNoon: () => string | null;
-  /** Get Sunset Start **/
-  sunsetStart: () => ISunTimeResultProp;
-  /** Get Sunset End **/
-  sunsetEnd: () => ISunTimeResultProp;
+  /** Get Sunset **/
+  sunset: () => ISunTimeResultProp;
   /** Get Civil Dusk **/
   civilDusk: () => ISunTimeResultProp;
   /** Get Nautical Dusk **/

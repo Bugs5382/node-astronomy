@@ -1,4 +1,5 @@
 export enum TwilightExtended {
+  Sun = "Sun",
   /**
    *
    * BlueHour - The time just before sunrise or just after sunset, when the sun is

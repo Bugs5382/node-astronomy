@@ -59,6 +59,16 @@ describe("sunTimes tests", () => {
       expect(sunTimes.civilDawn()!.to).toBe("1982-05-02T05:35:39-04:00");
       expect(sunTimes.civilDawn()!.seconds).toEqual(699);
     });
+    test("... sunrise", async () => {
+      expect(sunTimes.sunrise()!.from).toBe("1982-05-02T05:35:39-04:00");
+      expect(sunTimes.sunrise()!.to).toBe("1982-05-02T05:59:00-04:00");
+      expect(sunTimes.sunrise()!.seconds).toEqual(1401);
+    });
+    test("... sunset", async () => {
+      expect(sunTimes.sunset()!.from).toBe("1982-05-02T19:47:31-04:00");
+      expect(sunTimes.sunset()!.to).toBe("1982-05-02T20:10:56-04:00");
+      expect(sunTimes.sunset()!.seconds).toEqual(1405);
+    });
     test("... civilDusk", async () => {
       expect(sunTimes.civilDusk()!.from).toBe("1982-05-02T20:10:56-04:00");
       expect(sunTimes.civilDusk()!.to).toBe("1982-05-02T20:22:38-04:00");

@@ -45,6 +45,7 @@
     "lint:fix": "npm run lint:npm && eslint --fix | snazzy && npm run format:write",
     "lint:npm": "npmPkgJsonLint .",
     "lint:package": "npx sort-package-json",
+    "pack": "npm pack",
     "prepare": "husky",
     "test": "vitest run",
     "test:coverage": "vitest --coverage",

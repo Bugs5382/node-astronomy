@@ -55,7 +55,8 @@
     "update": "npx npm-check-updates -u && npm install"
   },
   "dependencies": {
-    "@observerly/astrometry": "^0.60.0"
+    "@observerly/astrometry": "^0.60.0",
+    "date-fns-tz": "^3.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

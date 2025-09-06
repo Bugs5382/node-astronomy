@@ -1,3 +1,2 @@
-export { TimeCalc } from "./timeCalc";
+export type { ITimeOfInterest } from "./props";
 export { TimeOfInterest } from "./timeOfInterest";
-export type { ITimeOfInterest } from "./types";

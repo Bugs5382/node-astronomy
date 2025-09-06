@@ -1,2 +1,2 @@
 export { Sun } from "./sun";
-export { SunTimes } from "./sunTimes";
+export { SunTimes } from "./times";

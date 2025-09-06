@@ -1,7 +1,7 @@
 import { ITimeOfInterest, TimeOfInterest } from "@/time";
 
 export interface IAstronomicalObject extends ITimeOfInterest {
-  name: string;
+  name?: string;
 }
 
 export class AstronomicalObject

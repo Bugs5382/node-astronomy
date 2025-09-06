@@ -1,31 +1,19 @@
 import { IAstronomicalObject } from "@/astronomicalObject/astronomicalObject";
+import { TwilightExtended } from "@/astronomicalObject/sun/enum";
 import { ITimeOfInterest } from "@/time";
+import { Interval, Twilight } from "@observerly/astrometry";
 
 export type ISunProps = IAstronomicalObject;
 
 export type ISun = ITimeOfInterest;
 
-export type ISunTimeResultProp = Date | null;
-
-export interface ISunTimesResult {
-  astronomicalDawn: ISunTimeResultProp;
-  nauticalDawn: ISunTimeResultProp;
-  civilDawn: ISunTimeResultProp;
-  sunriseStart: ISunTimeResultProp;
-  sunriseEnd: ISunTimeResultProp;
-  solarNoon: ISunTimeResultProp;
-  sunsetStart: ISunTimeResultProp;
-  sunsetEnd: ISunTimeResultProp;
-  civilDusk: ISunTimeResultProp;
-  nauticalDusk: ISunTimeResultProp;
-  astronomicalDusk?: ISunTimeResultProp;
-}
+export type ISunTimeResultProp = { from: string; to: string, seconds: number } | null;
 
 export interface ISunTimes extends ISun {
   // /** Get Astronomical Dawn **/
-  // astronomicalDawn: () => ISunTimeResultProp;
+  astronomicalDawn: () => ISunTimeResultProp;
   // /** Get Nautical Dawn **/
-  // nauticalDawn: () => ISunTimeResultProp;
+  nauticalDawn: () => ISunTimeResultProp;
   // /** Get Civil Dawn **/
   // civilDawn: () => ISunTimeResultProp;
   // /** Get Sunrise Start **/
@@ -45,3 +33,14 @@ export interface ISunTimes extends ISun {
   // /** Get Astronomical Dusk **/
   // astronomicalDusk: () => ISunTimeResultProp;
 }
+
+export type TwilightBandExtended = {
+  name: Twilight | TwilightExtended;
+  interval: Interval;
+};
+
+export type TwilightBlock = {
+  name: string;
+  interval: Interval;
+  seconds: number;
+};

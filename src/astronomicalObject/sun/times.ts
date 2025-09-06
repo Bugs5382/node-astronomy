@@ -1,42 +1,26 @@
+import { TwilightExtended } from "@/astronomicalObject/sun/enum";
 import { ISunTimesProps } from "@/astronomicalObject/sun/props";
 import { Sun } from "@/astronomicalObject/sun/sun";
-import { ISunTimes } from "@/astronomicalObject/sun/types";
+import {
+  ISunTimeResultProp,
+  ISunTimes,
+  TwilightBandExtended,
+  TwilightBlock,
+} from "@/astronomicalObject/sun/types";
 import {
   convertEquatorialToHorizontal,
   GeographicCoordinate,
   getSolarEquatorialCoordinate,
-  Interval,
   Twilight,
 } from "@observerly/astrometry";
-import { toZonedTime } from "date-fns-tz";
-
-export enum TwilightExtended {
-  /**
-   *
-   * BlueHour - The time just before sunrise or just after sunset, when the sun is
-   * approximately between -4 and 0 degrees below the horizon.
-   *
-   */
-  BlueHour = "BlueHour",
-  /**
-   *
-   * GoldenHour - The time shortly after sunrise or shortly before sunset, when the sun
-   * is just above the horizon (0 to ~6 degrees).
-   *
-   */
-  GoldenHour = "GoldenHour",
-}
-
-type TwilightBandExtended = {
-  name: Twilight | TwilightExtended;
-  interval: Interval;
-};
+import { differenceInSeconds } from "date-fns";
+import { format as timeFormat, toZonedTime } from "date-fns-tz";
 
 export class SunTimes extends Sun implements ISunTimes {
   private readonly longitude: number;
   private readonly latitude: number;
   private readonly timezone: string;
-  private readonly bands: TwilightBandExtended[];
+  private bands: TwilightBandExtended[];
   private readonly converted: {
     name: Twilight | TwilightExtended;
     interval: { from: Date; to: Date };
@@ -65,16 +49,42 @@ export class SunTimes extends Sun implements ISunTimes {
         to: toZonedTime(p.interval.to, this.timezone),
       },
     }));
+  }
 
+  private formatLocalInterval(blockName: string): ISunTimeResultProp {
+    const { interval, seconds } =
+      this.getTimes().find((b) => b.name === blockName) ?? {};
+
+    if (!interval) return null;
+    if (!seconds) return null;
+
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const formatLocal = (date: Date) =>
+      timeFormat(date, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
+
+    return {
+      from: formatLocal(interval.from),
+      to: formatLocal(interval.to),
+      seconds
+    };
+  }
+
+  nauticalDawn(): ISunTimeResultProp {
+    return this.formatLocalInterval("nautical_morning");
+  }
+
+  astronomicalDawn(): ISunTimeResultProp {
+    return this.formatLocalInterval("astronomical_morning");
   }
 
   /**
    *
+   * @since 0.1.0
    * @param datetime
    * @param observer
    * @param params
    */
-  getBands(
+  private getBands(
     datetime: Date,
     observer: GeographicCoordinate,
     params: { stepSeconds?: number } = {
@@ -151,9 +161,10 @@ export class SunTimes extends Sun implements ISunTimes {
 
   /**
    *
+   * @since 0.1.0
    * @param altitude
    */
-  getAltitude(altitude: number) {
+  private getAltitude(altitude: number) {
     switch (true) {
       case altitude < -18:
         return Twilight.Night;
@@ -170,5 +181,63 @@ export class SunTimes extends Sun implements ISunTimes {
       default:
         return Twilight.Day;
     }
+  }
+
+  /**
+   * All times returned.
+   * @since 0.1.0
+   */
+  getTimes(): TwilightBlock[] {
+    const result: TwilightBlock[] = [];
+    const noonHour = 12;
+
+    for (let i = 0; i < this.converted.length; i++) {
+      const block = this.converted[i];
+      const from = block.interval.from;
+      const to = block.interval.to;
+
+      const name = block.name;
+
+      // First Night: midnight to Astronomical Dawn
+      if (i === 0 && name.toLowerCase() === "night") {
+        result.push({
+          name: "from_midnight_morning",
+          interval: { from, to },
+          seconds: differenceInSeconds(to, from),
+        });
+        continue;
+      }
+
+      if (name.toLowerCase() === "day") {
+        result.push({
+          name: "day",
+          interval: { from, to },
+          seconds: differenceInSeconds(to, from),
+        });
+        continue;
+      }
+
+      // Last Night: to midnight
+      if (i === this.converted.length - 1 && name.toLowerCase() === "night") {
+        result.push({
+          name: "to_midnight_evening",
+          interval: { from, to },
+          seconds: differenceInSeconds(to, from),
+        });
+        continue;
+      }
+
+      // Add morning/evening suffix
+      const hour = from.getHours();
+      const suffix = hour < noonHour ? "_morning" : "_evening";
+
+      result.push({
+        name: (name + suffix).toLowerCase(),
+        interval: { from, to },
+        seconds: differenceInSeconds(to, from),
+      });
+    }
+
+    return result;
   }
 }

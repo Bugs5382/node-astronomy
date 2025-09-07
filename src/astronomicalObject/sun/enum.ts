@@ -1,12 +1,10 @@
 export enum TwilightExtended {
-  Sun = "Sun",
   /**
    *
-   * BlueHour - The time just before sunrise or just after sunset, when the sun is
-   * approximately between -4 and 0 degrees below the horizon.
+   * Sun - The time when the sun just rises or sets.
    *
    */
-  BlueHour = "BlueHour",
+  Sun = "Sun",
   /**
    *
    * GoldenHour - The time shortly after sunrise or shortly before sunset, when the sun

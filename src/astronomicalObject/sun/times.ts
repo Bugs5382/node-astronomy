@@ -307,8 +307,6 @@ export class SunTimes extends Sun implements ISunTimes {
         return Twilight.Civil;
       case altitude < 0.1:
         return TwilightExtended.Sun;
-      case altitude < 0:
-        return TwilightExtended.BlueHour;
       case altitude < 6:
         return TwilightExtended.GoldenHour;
       default:

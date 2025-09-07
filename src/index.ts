@@ -1,3 +1,11 @@
-export * as astronomical from "./astronomicalObject";
-export * as sun from "./astronomicalObject/sun";
-export * as time from "./time";
+export type {
+  ISun,
+  ISunProps,
+  ISunTimeResultProp,
+  ISunTimes,
+  TTwilightBlock,
+} from "./astronomicalObject/sun/types";
+
+export { AstronomicalObject } from "./astronomicalObject";
+export { Sun } from "./astronomicalObject/sun";
+export { SunTimes } from "./astronomicalObject/sun/times";

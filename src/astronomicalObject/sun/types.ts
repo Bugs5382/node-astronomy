@@ -1,6 +1,6 @@
-import { IAstronomicalObject } from "@/astronomicalObject/astronomicalObject";
+import { IAstronomicalObject } from "@/astronomicalObject";
 import { TwilightExtended } from "@/astronomicalObject/sun/enum";
-import { ITimeOfInterest } from "@/time";
+import { ITimeOfInterest } from "@/time/props";
 import { Interval, Twilight } from "@observerly/astrometry";
 
 export type ISunProps = IAstronomicalObject;
@@ -13,7 +13,8 @@ export type ISunTimeResultProp = {
   seconds: number;
 } | null;
 
-export interface ISunTimes extends ISun {
+export interface ISunTimes {
+  time?: Date;
   /** Get Midnight Astronomical Dawn **/
   midnightToAstronomicalDawn: () => ISunTimeResultProp;
   /** Get Astronomical Dawn **/

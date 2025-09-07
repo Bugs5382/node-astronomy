@@ -1,1 +1,3 @@
-export { Location } from "./location";
+export class Location {}
+
+export default Location;

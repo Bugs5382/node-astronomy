@@ -20,10 +20,10 @@
   },
   "license": "MIT",
   "author": "Shane Froebel",
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./lib/types/index.d.ts",
+      "types": "./lib/esm/index.d.ts",
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js",
       "default": "./lib/cjs/index.js"
@@ -31,7 +31,7 @@
   },
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
-  "types": "./lib/types/index.d.ts",
+  "types": "./lib/esm/index.d.ts",
   "files": [
     "lib/",
     "README.md",

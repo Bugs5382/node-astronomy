@@ -1,6 +1,6 @@
+import Sun from "@/astronomicalObject/sun";
 import { TwilightExtended } from "@/astronomicalObject/sun/enum";
 import { ISunTimesProps } from "@/astronomicalObject/sun/props";
-import { Sun } from "@/astronomicalObject/sun/sun";
 import {
   ISunTimeResultProp,
   ISunTimes,

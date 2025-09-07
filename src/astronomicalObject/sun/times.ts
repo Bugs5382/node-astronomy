@@ -121,6 +121,13 @@ export class SunTimes extends Sun implements ISunTimes {
   /**
    * @since 0.1.0
    */
+  day(): ISunTimeResultProp {
+    return this.formatLocalInterval("day");
+  }
+
+  /**
+   * @since 0.1.0
+   */
   sunset(): ISunTimeResultProp {
     return this.formatLocalInterval("sun_evening");
   }

@@ -1,6 +1,5 @@
 import { beforeAll, describe, expect, test } from "vitest";
-
-import { SunTimes } from "../src/astronomicalObject/sun";
+import { SunTimes } from "../src";
 
 let sunTimes: SunTimes;
 beforeAll(async () => {
@@ -27,9 +26,7 @@ describe("sunTimes tests", () => {
       expect(totalSeconds).toBe(86400);
     });
 
-    test("... solar noon", async () => {
-      expect(sunTimes.solarNoon()).toBe("1982-05-02T12:52:48-04:00");
-    });
+
   });
 
   describe("time blocks", () => {
@@ -63,6 +60,9 @@ describe("sunTimes tests", () => {
       expect(sunTimes.sunrise()!.from).toBe("1982-05-02T05:35:39-04:00");
       expect(sunTimes.sunrise()!.to).toBe("1982-05-02T05:59:00-04:00");
       expect(sunTimes.sunrise()!.seconds).toEqual(1401);
+    });
+    test("... solar noon", async () => {
+      expect(sunTimes.solarNoon()).toBe("1982-05-02T12:52:48-04:00");
     });
     test("... sunset", async () => {
       expect(sunTimes.sunset()!.from).toBe("1982-05-02T19:47:31-04:00");

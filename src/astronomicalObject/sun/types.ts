@@ -25,6 +25,8 @@ export interface ISunTimes {
   civilDawn: () => ISunTimeResultProp;
   /** Get Sunrise **/
   sunrise: () => ISunTimeResultProp;
+  /** Get Day **/
+  day: () => ISunTimeResultProp;
   /** Get Solar Noon **/
   solarNoon: () => string | null;
   /** Get Sunset **/

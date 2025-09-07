@@ -39,6 +39,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "build:local": "tsup && npm run pack",
     "format:check": "prettier --check '**/*.{md,ts,json,mts}'",
     "format:write": "prettier --write '**/*.{md,ts,json,mts}'",
     "lint": "npm run lint:npm && eslint | snazzy && npm run format:check",

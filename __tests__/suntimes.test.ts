@@ -25,8 +25,6 @@ describe("sunTimes tests", () => {
       );
       expect(totalSeconds).toBe(86400);
     });
-
-
   });
 
   describe("time blocks", () => {
@@ -63,6 +61,11 @@ describe("sunTimes tests", () => {
     });
     test("... solar noon", async () => {
       expect(sunTimes.solarNoon()).toBe("1982-05-02T12:52:48-04:00");
+    });
+    test("... day time", async () => {
+      expect(sunTimes.day()!.from).toBe("1982-05-02T06:31:38-04:00");
+      expect(sunTimes.day()!.to).toBe("1982-05-02T19:14:47-04:00");
+      expect(sunTimes.day()!.seconds).toEqual(45789);
     });
     test("... sunset", async () => {
       expect(sunTimes.sunset()!.from).toBe("1982-05-02T19:47:31-04:00");

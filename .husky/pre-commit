@@ -1,4 +1,2 @@
-#!/usr/bin/env sh
-
 npm run lint:fix
 npm run lint:package

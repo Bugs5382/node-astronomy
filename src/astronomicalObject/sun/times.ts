@@ -121,8 +121,22 @@ export class SunTimes extends Sun implements ISunTimes {
   /**
    * @since 0.1.0
    */
+  goldenHourAM(): ISunTimeResultProp {
+    return this.formatLocalInterval("goldenhour_morning");
+  }
+
+  /**
+   * @since 0.1.0
+   */
   day(): ISunTimeResultProp {
     return this.formatLocalInterval("day");
+  }
+
+  /**
+   * @since 0.1.0
+   */
+  goldenHourPM(): ISunTimeResultProp {
+    return this.formatLocalInterval("goldenhour_evening");
   }
 
   /**

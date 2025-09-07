@@ -25,8 +25,12 @@ export interface ISunTimes {
   civilDawn: () => ISunTimeResultProp;
   /** Get Sunrise **/
   sunrise: () => ISunTimeResultProp;
+  /** Get Golden Hour (AM) **/
+  goldenHourAM: () => ISunTimeResultProp;
   /** Get Day **/
   day: () => ISunTimeResultProp;
+  /** Get Golden Hour (PM) **/
+  goldenHourPM: () => ISunTimeResultProp;
   /** Get Solar Noon **/
   solarNoon: () => string | null;
   /** Get Sunset **/

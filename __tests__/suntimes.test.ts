@@ -25,6 +25,10 @@ describe("sunTimes tests", () => {
       );
       expect(totalSeconds).toBe(86400);
     });
+
+    test("... solar noon", async () => {
+      expect(sunTimes.solarNoon()).toBe("1982-05-02T12:52:48-04:00");
+    });
   });
 
   describe("time blocks", () => {
@@ -59,14 +63,25 @@ describe("sunTimes tests", () => {
       expect(sunTimes.sunrise()!.to).toBe("1982-05-02T05:59:00-04:00");
       expect(sunTimes.sunrise()!.seconds).toEqual(1401);
     });
-    test("... solar noon", async () => {
-      expect(sunTimes.solarNoon()).toBe("1982-05-02T12:52:48-04:00");
+
+    test("... morning golden hour", async () => {
+      expect(sunTimes.goldenHourAM()!.from).toBe("1982-05-02T05:59:00-04:00");
+      expect(sunTimes.goldenHourAM()!.to).toBe("1982-05-02T06:31:38-04:00");
+      expect(sunTimes.goldenHourAM()!.seconds).toEqual(1958);
     });
+
     test("... day time", async () => {
       expect(sunTimes.day()!.from).toBe("1982-05-02T06:31:38-04:00");
       expect(sunTimes.day()!.to).toBe("1982-05-02T19:14:47-04:00");
       expect(sunTimes.day()!.seconds).toEqual(45789);
     });
+
+    test("... evening golden hour", async () => {
+      expect(sunTimes.goldenHourPM()!.from).toBe("1982-05-02T19:14:47-04:00");
+      expect(sunTimes.goldenHourPM()!.to).toBe("1982-05-02T19:47:31-04:00");
+      expect(sunTimes.goldenHourPM()!.seconds).toEqual(1964);
+    });
+
     test("... sunset", async () => {
       expect(sunTimes.sunset()!.from).toBe("1982-05-02T19:47:31-04:00");
       expect(sunTimes.sunset()!.to).toBe("1982-05-02T20:10:56-04:00");

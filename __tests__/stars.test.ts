@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, test } from "vitest";
+
 import { Stars } from "../src/astronomicalObject/celestial/stars";
 
 describe("stars tests", () => {

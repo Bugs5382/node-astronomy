@@ -1,3 +1,7 @@
+export { AstronomicalObject } from "./astronomicalObject";
+
+export { Sun } from "./astronomicalObject/sun";
+export { SunTimes } from "./astronomicalObject/sun/times";
 export type {
   ISun,
   ISunProps,
@@ -5,7 +9,3 @@ export type {
   ISunTimes,
   TTwilightBlock,
 } from "./astronomicalObject/sun/types";
-
-export { AstronomicalObject } from "./astronomicalObject";
-export { Sun } from "./astronomicalObject/sun";
-export { SunTimes } from "./astronomicalObject/sun/times";

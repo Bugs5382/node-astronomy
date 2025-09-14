@@ -1,13 +1,14 @@
 import { beforeAll, describe, expect, test } from "vitest";
+
 import { SunTimes } from "../src";
 
 let sunTimes: SunTimes;
 beforeAll(async () => {
   // create the times of the sun
   sunTimes = new SunTimes({
-    time: new Date("1982-05-03T00:00:00-00:00"),
     latitude: 40.6676,
     longitude: -73.9851,
+    time: new Date("1982-05-03T00:00:00-00:00"),
     timezone: "America/New_York",
   });
 });

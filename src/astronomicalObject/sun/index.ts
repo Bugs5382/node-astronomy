@@ -1,11 +1,11 @@
 import AstronomicalObject from "@/astronomicalObject";
-import { ISun, ISunProps } from "@/astronomicalObject/sun/types";
+import { ISun, ISunProperties } from "@/astronomicalObject/sun/types";
 
 export class Sun extends AstronomicalObject implements ISun {
   private sunTime: Date;
 
-  constructor(props?: ISunProps) {
-    super("sun", props);
+  constructor(properties?: ISunProperties) {
+    super("sun", properties);
 
     this.sunTime = new Date(
       Date.UTC(

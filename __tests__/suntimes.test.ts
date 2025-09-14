@@ -40,7 +40,7 @@ describe("sunTimes tests", () => {
         (sum, block) => sum + block.seconds,
         0,
       );
-      expect(totalSeconds).toBe(86400);
+      expect(totalSeconds).toBe(86_400);
     });
 
     test("... solar noon", async () => {
@@ -56,7 +56,7 @@ describe("sunTimes tests", () => {
       expect(sunTimes.midnightToAstronomicalDawn()!.toTz).toBe(
         "1982-05-02T04:08:28-04:00",
       );
-      expect(sunTimes.midnightToAstronomicalDawn()!.seconds).toEqual(14908);
+      expect(sunTimes.midnightToAstronomicalDawn()!.seconds).toEqual(14_908);
     });
     test("... astronomicalDawn", async () => {
       expect(sunTimes.astronomicalDawn()!.fromTz).toBe(
@@ -92,7 +92,7 @@ describe("sunTimes tests", () => {
     test("... day time", async () => {
       expect(sunTimes.day()!.fromTz).toBe("1982-05-02T06:31:38-04:00");
       expect(sunTimes.day()!.toTz).toBe("1982-05-02T19:14:47-04:00");
-      expect(sunTimes.day()!.seconds).toEqual(45789);
+      expect(sunTimes.day()!.seconds).toEqual(45_789);
     });
 
     test("... evening golden hour", async () => {

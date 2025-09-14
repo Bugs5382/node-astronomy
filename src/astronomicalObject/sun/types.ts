@@ -2,49 +2,51 @@ import { Interval, Twilight } from "@observerly/astrometry";
 
 import { IAstronomicalObject } from "@/astronomicalObject";
 import { TwilightExtended } from "@/astronomicalObject/sun/enum";
-import { ITimeOfInterest } from "@/time/props";
+import { ITimeOfInterest } from "@/time/properties";
 
 export type ISun = ITimeOfInterest;
 
-export type ISunProps = IAstronomicalObject;
+export type ISunProperties = IAstronomicalObject;
 
-export type ISunTimeResultProp = {
-  from: Date;
-  fromTz: string;
-  seconds: number;
-  to: Date;
-  toTz: string;
-} | null;
+export type ISunTimeResultProperties =
+  | {
+      from: Date;
+      fromTz: string;
+      seconds: number;
+      to: Date;
+      toTz: string;
+    }
+  | undefined;
 
 export interface ISunTimes {
   /** Get Astronomical Dawn **/
-  astronomicalDawn: () => ISunTimeResultProp;
+  astronomicalDawn: () => ISunTimeResultProperties;
   /** Get Astronomical Dusk **/
-  astronomicalDusk: () => ISunTimeResultProp;
+  astronomicalDusk: () => ISunTimeResultProperties;
   /** Get Astronomical Dusk to Midnight **/
-  astronomicalDuskToMidnight: () => ISunTimeResultProp;
+  astronomicalDuskToMidnight: () => ISunTimeResultProperties;
   /** Get Civil Dawn **/
-  civilDawn: () => ISunTimeResultProp;
+  civilDawn: () => ISunTimeResultProperties;
   /** Get Civil Dusk **/
-  civilDusk: () => ISunTimeResultProp;
+  civilDusk: () => ISunTimeResultProperties;
   /** Get Day **/
-  day: () => ISunTimeResultProp;
+  day: () => ISunTimeResultProperties;
   /** Get Golden Hour (AM) **/
-  goldenHourAM: () => ISunTimeResultProp;
+  goldenHourAM: () => ISunTimeResultProperties;
   /** Get Golden Hour (PM) **/
-  goldenHourPM: () => ISunTimeResultProp;
+  goldenHourPM: () => ISunTimeResultProperties;
   /** Get Midnight Astronomical Dawn **/
-  midnightToAstronomicalDawn: () => ISunTimeResultProp;
+  midnightToAstronomicalDawn: () => ISunTimeResultProperties;
   /** Get Nautical Dawn **/
-  nauticalDawn: () => ISunTimeResultProp;
+  nauticalDawn: () => ISunTimeResultProperties;
   /** Get Nautical Dusk **/
-  nauticalDusk: () => ISunTimeResultProp;
+  nauticalDusk: () => ISunTimeResultProperties;
   /** Get Solar Noon **/
-  solarNoon: () => null | string;
+  solarNoon: () => string | undefined;
   /** Get Sunrise **/
-  sunrise: () => ISunTimeResultProp;
+  sunrise: () => ISunTimeResultProperties;
   /** Get Sunset **/
-  sunset: () => ISunTimeResultProp;
+  sunset: () => ISunTimeResultProperties;
   /** The time we want to do the calculations. */
   time?: Date;
 }

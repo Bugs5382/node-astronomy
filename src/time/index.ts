@@ -1,4 +1,4 @@
-import { ITimeOfInterest } from "@/time/props";
+import { ITimeOfInterest } from "@/time/properties";
 
 /**
  * Time of Interest
@@ -13,12 +13,12 @@ export class TimeOfInterest implements ITimeOfInterest {
 
   /**
    * Constructs a new TimeOfInterest instance.
-   * @param props - Optional time input object.
    * @remarks
    * @since 0.1.0
+   * @param properties
    */
-  constructor(props: ITimeOfInterest = {}) {
-    this.time = props.time ?? new Date();
+  constructor(properties: ITimeOfInterest = {}) {
+    this.time = properties.time ?? new Date();
   }
 }
 

@@ -2,14 +2,14 @@ export { AstronomicalObject } from "./astronomicalObject";
 
 export type { IAstronomicalObject } from "./astronomicalObject";
 export { Sun } from "./astronomicalObject/sun";
-export type { ISunTimesProps } from "./astronomicalObject/sun/props";
+export type { ISunTimesProps } from "./astronomicalObject/sun/properties";
 export { SunTimes } from "./astronomicalObject/sun/times";
 export type {
   ISun,
-  ISunProps,
+  ISunProperties,
   ISunTimeResultProp,
   ISunTimes,
   TTwilightBlock,
 } from "./astronomicalObject/sun/types";
 export { TimeOfInterest } from "./time";
-export type { ITimeOfInterest } from "./time/props";
+export type { ITimeOfInterest } from "./time/properties";

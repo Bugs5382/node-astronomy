@@ -11,6 +11,7 @@ permissions:
 jobs:
   History:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Get the gh-pages repo
         uses: actions/checkout@v4
@@ -42,9 +43,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: documentation
+        continue-on-error: true
 
       - name: Tar Docs
         run: tar -xf documentation.tar ./docs -C ./docs
+        continue-on-error: true
 
       - name: Build
         uses: actions/setup-node@v4

@@ -1,5 +1,7 @@
 name: Release and Publish
 on:
+  workflow_dispatch:
+  workflow_call:
   release:
     types:
       - released
@@ -64,6 +66,7 @@ jobs:
         uses: JS-DevTools/npm-publish@v3
         with:
           provenance: true
+          ignore-scripts: true
           token: ${{ secrets.NPM_TOKEN }}
           tag: ${{ steps.set-npm-tag.outputs.NPM_TAG }}
 
@@ -100,7 +103,7 @@ jobs:
           release-notes: ${{ github.event.release.body }}
 
       - name: Commit and Push Version Update
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(release): ${{ github.event.release.tag_name }} [skip ci]"
 

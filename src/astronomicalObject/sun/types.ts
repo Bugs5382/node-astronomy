@@ -9,9 +9,11 @@ export type ISun = ITimeOfInterest;
 export type ISunProps = IAstronomicalObject;
 
 export type ISunTimeResultProp = {
-  from: string;
+  from: Date;
+  fromTz: string;
   seconds: number;
-  to: string;
+  to: Date;
+  toTz: string;
 } | null;
 
 export interface ISunTimes {
@@ -43,8 +45,14 @@ export interface ISunTimes {
   sunrise: () => ISunTimeResultProp;
   /** Get Sunset **/
   sunset: () => ISunTimeResultProp;
+  /** The time we want to do the calculations. */
   time?: Date;
 }
+
+export type TConverted = {
+  interval: { from: Date; fromTz: Date; to: Date; toTz: Date };
+  name: Twilight | TwilightExtended;
+};
 
 export type TTwilightBandExtended = {
   interval: Interval;

@@ -12,6 +12,7 @@ export default defineConfig({
       provider: "v8",
       exclude: [
         "tsup.config.ts",
+        "commitlint.config.cjs",
         "src/index.ts",
         "*.mts",
         "*.mjs",

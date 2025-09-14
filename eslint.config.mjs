@@ -1,3 +1,5 @@
-import eslintConfig from "@the-rabbit-hole/eslint-config";
+import { createESLintConfig } from "@the-rabbit-hole/eslint-config";
 
-export default eslintConfig;
+export default createESLintConfig({
+  disableExtends: ["eslintReact", "eslintA11y", "eslintStorybook"],
+});

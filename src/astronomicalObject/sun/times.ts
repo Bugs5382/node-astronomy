@@ -14,6 +14,7 @@ import { ISunTimesProps } from "@/astronomicalObject/sun/props";
 import {
   ISunTimeResultProp,
   ISunTimes,
+  TConverted,
   TTwilightBandExtended,
   TTwilightBlock,
 } from "@/astronomicalObject/sun/types";
@@ -33,10 +34,7 @@ export class SunTimes extends Sun implements ISunTimes {
    * @since 0.1.0
    * @private
    */
-  private readonly converted: {
-    interval: { from: Date; to: Date };
-    name: Twilight | TwilightExtended;
-  }[];
+  private readonly converted: TConverted[];
   /**
    * @since 0.1.0
    * @private
@@ -75,8 +73,10 @@ export class SunTimes extends Sun implements ISunTimes {
 
     this.converted = this.bands.map((p) => ({
       interval: {
-        from: toZonedTime(p.interval.from, this.timezone),
-        to: toZonedTime(p.interval.to, this.timezone),
+        from: p.interval.from,
+        fromTz: toZonedTime(p.interval.from, this.timezone),
+        to: p.interval.to,
+        toTz: toZonedTime(p.interval.to, this.timezone),
       },
       name: p.name,
     }));
@@ -175,6 +175,7 @@ export class SunTimes extends Sun implements ISunTimes {
       0,
     );
 
+    /* v8 ignore next */
     if (!noon) return null;
 
     return formatLocal(noon);
@@ -198,13 +199,17 @@ export class SunTimes extends Sun implements ISunTimes {
     const { interval, seconds } =
       this.timeBlocks.find((b) => b.name === blockName) ?? {};
 
+    /* v8 ignore next */
     if (!interval) return null;
+    /* v8 ignore next */
     if (!seconds) return null;
 
     return {
-      from: formatLocal(interval.from),
+      from: interval.from,
+      fromTz: formatLocal(interval.from),
       seconds,
-      to: formatLocal(interval.to),
+      to: interval.to,
+      toTz: formatLocal(interval.to),
     };
   }
 
@@ -234,7 +239,7 @@ export class SunTimes extends Sun implements ISunTimes {
 
   /**
    * Get Time Blocks
-   * @description This is a customized function of @observerly/astrometry to work with this package.
+   * This is a customized function of @observerly/astrometry to work with this package.
    * @since 0.1.0
    * @param datetime
    * @param observer

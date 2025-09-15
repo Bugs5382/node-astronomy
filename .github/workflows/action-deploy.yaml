@@ -45,7 +45,7 @@ jobs:
           path: ./
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: lts/*
           registry-url: 'https://registry.npmjs.org/'
@@ -63,7 +63,7 @@ jobs:
           fi
 
       - name: Publish to npm
-        uses: JS-DevTools/npm-publish@v3
+        uses: JS-DevTools/npm-publish@v4
         with:
           provenance: true
           ignore-scripts: true

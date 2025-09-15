@@ -53,10 +53,10 @@ describe("sunTimes tests", () => {
   describe("time blocks", () => {
     test("... midnightToAstronomicalDawn", async () => {
       expect(sunTimes.midnightToAstronomicalDawn()!.from).toStrictEqual(
-        new Date("1982-05-02T00:00:00-04:00"),
+        new Date("1982-05-02T04:00:00.000Z"),
       );
       expect(sunTimes.midnightToAstronomicalDawn()!.to).toStrictEqual(
-        new Date("1982-05-02T04:08:28-04:00"),
+        new Date("1982-05-02T08:08:28.000Z"),
       );
       expect(sunTimes.midnightToAstronomicalDawn()!.seconds).toEqual(14_908);
     });

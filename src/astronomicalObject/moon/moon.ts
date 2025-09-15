@@ -1,7 +1,0 @@
-import { AstronomicalObject } from "@/astronomicalObject";
-
-export class Moon extends AstronomicalObject {
-  constructor() {
-    super();
-  }
-}

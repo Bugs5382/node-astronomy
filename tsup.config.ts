@@ -2,24 +2,24 @@ import { defineConfig } from "tsup";
 
 export default defineConfig([
   {
-    entry: ["src/index.ts"],
-    outDir: "lib/esm",
-    format: "esm",
+    clean: true,
     dts: {
       entry: "src/index.ts",
     },
-    sourcemap: true,
+    entry: ["src/index.ts"],
+    format: "esm",
     minify: true,
-    clean: true,
+    outDir: "lib/esm",
+    sourcemap: true,
     target: "esnext",
   },
   {
-    entry: ["src/index.ts"],
-    outDir: "lib/cjs",
-    format: "cjs",
-    sourcemap: true,
-    minify: true,
     clean: false,
+    entry: ["src/index.ts"],
+    format: "cjs",
+    minify: true,
+    outDir: "lib/cjs",
+    sourcemap: true,
     target: "esnext",
   },
 ]);

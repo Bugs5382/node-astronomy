@@ -8,9 +8,15 @@ export default defineConfig({
     },
   },
   test: {
+    // globalSetup: './__tests__/setup.ts',
+    //
+    // setupFiles: ['./__tests__/setup.ts'],
     coverage: {
       provider: "v8",
       exclude: [
+        "tsup.config.ts",
+        "commitlint.config.cjs",
+        "src/index.ts",
         "*.mts",
         "*.mjs",
         "**/__tests__/**/**",

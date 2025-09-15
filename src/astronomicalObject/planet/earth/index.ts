@@ -1,1 +1,9 @@
-export { Earth } from "./earth";
+import { Planet } from "@/astronomicalObject/planet";
+
+export class Earth extends Planet {
+  constructor() {
+    super("earth");
+  }
+}
+
+export default Earth;

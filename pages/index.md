@@ -1,3 +1,3 @@
 # Table of Contents
 
-- [Sun Times](suntimes.md)
+- [🌅  SunTimes API Guide](suntimes.md)

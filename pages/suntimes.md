@@ -1,6 +1,6 @@
-# SunTimes API Guide
+# 🌅 SunTimes API Guide
 
-The `SunTimes` utility lets you query solar events (e.g., sunrise, sunset, dawn, dusk) for a given latitude, longitude, and date.
+The `SunTimes` utility lets you query solar events (e.g., 🌄 sunrise, 🌇 sunset, 🌌 dawn, 🌃 dusk) for a given latitude, longitude, and date.
 
 Example usage:
 
@@ -15,18 +15,17 @@ const sunTimes = new SunTimes({
 const sunrise = sunTimes.sunrise();
 console.log(sunrise);
 ````
-
-## General Notes
+## 📝 General Notes
 
 * All functions return either:
 
   ```ts
     {
-        from: Date;        // Start of the period (Date object, always in UTC internally)
-        fromTz: string;    // Start of the period, formatted as a string in the requested timezone
-        seconds: number;   // Duration of the event or interval in seconds
-        to: Date;          // End of the period (Date object, always in UTC internally)
-        toTz: string;      // End of the period, formatted as a string in the requested timezone
+        from: Date;        // ⏰ Start of the period (Date object, always in UTC internally)
+        fromTz: string;    // 📍 Start of the period, formatted as a string in the requested timezone
+        seconds: number;   // ⏳ Duration of the event or interval in seconds
+        to: Date;          // ⏰ End of the period (Date object, always in UTC internally)
+        toTz: string;      // 📍 End of the period, formatted as a string in the requested timezone
     }
   ```
 
@@ -36,40 +35,40 @@ console.log(sunrise);
 
 * `solarNoon()` is an exception: it returns a single time as a string (`HH:mm:ss`) or `undefined`.
 
-## Available Queries
+## 🌍 Available Queries
 
-### Astronomical Events
+### 🌌 Astronomical Events
 
 * **`astronomicalDawn()`** → When the sun is 18° below the horizon in the morning (earliest detectable light).
 * **`astronomicalDusk()`** → When the sun is 18° below the horizon in the evening (true darkness).
 * **`astronomicalDuskToMidnight()`** → Interval from astronomical dusk until midnight.
 * **`midnightToAstronomicalDawn()`** → Interval from midnight until astronomical dawn.
 
-### Nautical Events
+### ⚓ Nautical Events
 
 * **`nauticalDawn()`** → When the sun is 12° below the horizon (sailors can navigate by the horizon line).
 * **`nauticalDusk()`** → Evening equivalent (sun 12° below horizon after sunset).
 
-### Civil Events
+### 🌆 Civil Events
 
 * **`civilDawn()`** → When the sun is 6° below the horizon (enough light for most outdoor activities).
 * **`civilDusk()`** → Evening equivalent (sun 6° below horizon after sunset).
 
-### Daylight
+### 🌞 Daylight
 
 * **`day()`** → Interval from sunrise to sunset.
 * **`sunrise()`** → Moment when the sun’s upper edge breaks the horizon in the morning.
 * **`sunset()`** → Moment when the sun’s upper edge disappears below the horizon in the evening.
 * **`solarNoon()`** → The exact time the sun reaches its highest point in the sky.
 
-### Golden Hours
+### ✨ Golden Hours
 
-* **`goldenHourAM()`** → Interval just after sunrise with soft, warm light (favored for photography).
+* **`goldenHourAM()`** → Interval just after sunrise with soft, warm light (favored for photography 📸).
 * **`goldenHourPM()`** → Interval just before sunset with similar golden light.
 
-## Example Output
+## 🧾 Example Output
 
-> Note:  The examples below might not indicate true data.
+> ⚠️ Note:  The examples below might not indicate true data.
 
 ```ts
 sunTimes.sunrise();
@@ -97,9 +96,9 @@ sunTimes.day();
 */
 ```
 
-## Timezone Support
+## 🕰️ Timezone Support
 
-> Note:  The examples below might not indicate true data.
+> ⚠️ Note:  The examples below might not indicate true data.
 
 You can specify a timezone to get results in local time instead of UTC.
 
@@ -124,4 +123,4 @@ console.log(sunTimesNY.sunrise());
 ```
 
 * If `timezone` is not provided, **UTC** will always be used.
-* Timezone names must follow the [IANA Time Zone Database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g., `America/New_York`, `Europe/London`, `Asia/Tokyo`).
+* Timezone names must follow the [🌐 IANA Time Zone Database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g., `America/New_York`, `Europe/London`, `Asia/Tokyo`).

@@ -21,13 +21,13 @@ console.log(sunrise);
 * All functions return either:
 
   ```ts
-  {
-    from: Date;   // Start of the period (in JS Date format)
-    fromTz: string; // Timezone used for 'from' (e.g., 'UTC', 'America/New_York')
-    seconds: number; // Duration of the event or interval in seconds
-    to: Date;     // End of the period
-    toTz: string; // Timezone used for 'to'
-  }
+    {
+        from: Date;        // Start of the period (Date object, always in UTC internally)
+        fromTz: string;    // Start of the period, formatted as a string in the requested timezone
+        seconds: number;   // Duration of the event or interval in seconds
+        to: Date;          // End of the period (Date object, always in UTC internally)
+        toTz: string;      // End of the period, formatted as a string in the requested timezone
+    }
   ```
 
   or `undefined` if the event does not occur on the given date at that location.
@@ -69,15 +69,17 @@ console.log(sunrise);
 
 ## Example Output
 
+> Note:  The examples below might not indicate true data.
+
 ```ts
 sunTimes.sunrise();
 /*
 {
   from: 1982-05-03T09:51:00.000Z,
-  fromTz: "UTC",
+  fromTz: "1982-05-03T09:51:00+00:00",
   seconds: 0,
   to: 1982-05-03T09:51:00.000Z,
-  toTz: "UTC"
+  toTz: "1982-05-03T09:51:00+00:00"
 }
 */
 ```
@@ -87,34 +89,36 @@ sunTimes.day();
 /*
 {
   from: 1982-05-03T09:51:00.000Z,
-  fromTz: "UTC",
+  fromTz: "1982-05-03T09:51:00+00:00",
   seconds: 48600,
   to: 1982-05-03T23:21:00.000Z,
-  toTz: "UTC"
+  toTz: "1982-05-03T23:21:00+00:00"
 }
 */
 ```
 
 ## Timezone Support
 
+> Note:  The examples below might not indicate true data.
+
 You can specify a timezone to get results in local time instead of UTC.
 
 ```ts
 const sunTimesNY = new SunTimes({
-  latitude: 40.6676,
-  longitude: -73.9851,
-  time: new Date("1982-05-03T00:00:00-00:00"),
-  timezone: "America/New_York",
+    latitude: 40.6676,
+    longitude: -73.9851,
+    time: new Date("1982-05-03T00:00:00-00:00"),
+    timezone: "America/New_York",
 });
 
 console.log(sunTimesNY.sunrise());
 /*
 {
-  from: 1982-05-03T05:51:00.000-04:00,
-  fromTz: "America/New_York",
-  seconds: 0,
-  to: 1982-05-03T05:51:00.000-04:00,
-  toTz: "America/New_York"
+  from: 1982-05-03T09:51:00.000Z,
+  fromTz: "1982-05-03T05:51:00-04:00",
+  seconds: 0,           
+  to: 1982-05-03T09:51:00.000Z,
+  toTz: "1982-05-03T05:51:00-04:00"
 }
 */
 ```

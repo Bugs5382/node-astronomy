@@ -42,7 +42,7 @@ export interface ISunTimes {
   /** Get Nautical Dusk **/
   nauticalDusk: () => ISunTimeResultProperties;
   /** Get Solar Noon **/
-  solarNoon: () => string | undefined;
+  solarNoon: () => TSolarNoon | undefined;
   /** Get Sunrise **/
   sunrise: () => ISunTimeResultProperties;
   /** Get Sunset **/
@@ -54,6 +54,11 @@ export interface ISunTimes {
 export type TConverted = {
   interval: { from: Date; fromTz: Date; to: Date; toTz: Date };
   name: Twilight | TwilightExtended;
+};
+
+export type TSolarNoon = {
+  date: Date;
+  dateTz: string;
 };
 
 export type TTwilightBandExtended = {

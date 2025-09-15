@@ -15,6 +15,7 @@ import {
   ISunTimeResultProperties,
   ISunTimes,
   TConverted,
+  TSolarNoon,
   TTwilightBandExtended,
   TTwilightBlock,
 } from "@/astronomicalObject/sun/types";
@@ -173,7 +174,7 @@ export class SunTimes extends Sun implements ISunTimes {
    * Solar Noon
    * @since 0.1.0
    */
-  solarNoon(): string | undefined {
+  solarNoon(): TSolarNoon | undefined {
     const { noon } = getSolarTransit(
       this.time,
       {
@@ -186,7 +187,10 @@ export class SunTimes extends Sun implements ISunTimes {
     /* v8 ignore next */
     if (!noon) return undefined;
 
-    return formatLocal(noon);
+    return {
+      date: noon,
+      dateTz: formatLocal(noon),
+    };
   }
 
   /**

@@ -33,7 +33,7 @@ jobs:
           npm ci
 
       - name: Set timezone
-        run: sudo timedatectl set-timezone 'UTC'
+        run: sudo timedatectl set-timezone 'America/New_York'
 
       - name: Run Tests and Lint
         run: |

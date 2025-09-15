@@ -9,6 +9,7 @@ export type {
   ISunProperties,
   ISunTimeResultProperties,
   ISunTimes,
+  TSolarNoon,
   TTwilightBlock,
 } from "./astronomicalObject/sun/types";
 export { TimeOfInterest } from "./time";

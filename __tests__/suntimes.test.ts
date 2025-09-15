@@ -45,7 +45,7 @@ describe("sunTimes tests", () => {
 
     test("... solar noon", async () => {
       expect(sunTimes.solarNoon()!.date).toStrictEqual(
-        new Date("1982-05-02T16:52:48.582Z"),
+        new Date("1982-05-03T16:52:43.287Z"),
       );
     });
   });

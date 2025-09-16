@@ -226,7 +226,6 @@ export class SunTimes extends Sun implements ISunTimes {
   }
 
   /**
-   *
    * @since 0.1.0
    * @param altitude
    */

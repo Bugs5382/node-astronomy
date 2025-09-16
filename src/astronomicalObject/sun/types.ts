@@ -57,6 +57,7 @@ export interface ISunTimes {
 }
 
 export type TConverted = {
+  /** Getting the raw times (from and to) of each sun time.  */
   interval: { from: Date; fromTz: Date; to: Date; toTz: Date };
   name: Twilight | TwilightExtended;
 };
@@ -69,7 +70,9 @@ export type TSolarNoon = {
 };
 
 export type TTwilightBandExtended = {
+  /** Getting the raw times (from and to) of each sun time.  */
   interval: Interval;
+  /** It's an internal name.  */
   name: Twilight | TwilightExtended;
 };
 

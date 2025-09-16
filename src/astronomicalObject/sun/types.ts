@@ -10,64 +10,77 @@ export type ISunProperties = IAstronomicalObject;
 
 export type ISunTimeResultProperties =
   | {
+      /** The date the result starts. */
       from: Date;
+      /** The date the result starts in local timezone format. */
       fromTz: string;
+      /** How many total seconds in the frame. */
       seconds: number;
+      /** The date the result ends. */
       to: Date;
+      /** The date the result ends in local timezone format. */
       toTz: string;
     }
   | undefined;
 
 export interface ISunTimes {
-  /** Get Astronomical Dawn **/
+  /** Get Astronomical Dawn */
   astronomicalDawn: () => ISunTimeResultProperties;
-  /** Get Astronomical Dusk **/
+  /** Get Astronomical Dusk */
   astronomicalDusk: () => ISunTimeResultProperties;
-  /** Get Astronomical Dusk to Midnight **/
+  /** Get Astronomical Dusk to Midnight */
   astronomicalDuskToMidnight: () => ISunTimeResultProperties;
-  /** Get Civil Dawn **/
+  /** Get Civil Dawn */
   civilDawn: () => ISunTimeResultProperties;
-  /** Get Civil Dusk **/
+  /** Get Civil Dusk */
   civilDusk: () => ISunTimeResultProperties;
-  /** Get Day **/
+  /** Get Day */
   day: () => ISunTimeResultProperties;
-  /** Get Golden Hour (AM) **/
+  /** Get Golden Hour (AM) */
   goldenHourAM: () => ISunTimeResultProperties;
-  /** Get Golden Hour (PM) **/
+  /** Get Golden Hour (PM) */
   goldenHourPM: () => ISunTimeResultProperties;
-  /** Get Midnight Astronomical Dawn **/
+  /** Get Midnight Astronomical Dawn */
   midnightToAstronomicalDawn: () => ISunTimeResultProperties;
-  /** Get Nautical Dawn **/
+  /** Get Nautical Dawn */
   nauticalDawn: () => ISunTimeResultProperties;
-  /** Get Nautical Dusk **/
+  /** Get Nautical Dusk */
   nauticalDusk: () => ISunTimeResultProperties;
-  /** Get Solar Noon **/
+  /** Get Solar Noon */
   solarNoon: () => TSolarNoon | undefined;
-  /** Get Sunrise **/
+  /** Get Sunrise */
   sunrise: () => ISunTimeResultProperties;
-  /** Get Sunset **/
+  /** Get Sunset */
   sunset: () => ISunTimeResultProperties;
   /** The time we want to do the calculations. */
   time?: Date;
 }
 
 export type TConverted = {
+  /** Getting the raw times (from and to) of each sun time.  */
   interval: { from: Date; fromTz: Date; to: Date; toTz: Date };
   name: Twilight | TwilightExtended;
 };
 
 export type TSolarNoon = {
+  /** The time of solar noon. */
   date: Date;
+  /** The time of solar noon in local timezone format. */
   dateTz: string;
 };
 
 export type TTwilightBandExtended = {
+  /** Getting the raw times (from and to) of each sun time.  */
   interval: Interval;
+  /** It's an internal name.  */
   name: Twilight | TwilightExtended;
 };
 
 export type TTwilightBlock = {
+  /** Getting the raw times (from and to) of each sun time.  */
   interval: Interval;
+  /** It's an internal name.  */
   name: string;
+  /** How many seconds for this block. */
   seconds: number;
 };

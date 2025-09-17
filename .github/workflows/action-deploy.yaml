@@ -96,8 +96,8 @@ jobs:
         id: set-git-branch
         run: npm version $CLEAN_TAG --no-git-tag-version
 
-      - name: Update Changelog
-        uses: stefanzweifel/changelog-updater-action@v1
+      - name: Changelog Updater
+        uses: stefanzweifel/changelog-updater-action@v1.12.0
         with:
           latest-version: ${{ github.event.release.name }}
           release-notes: ${{ github.event.release.body }}

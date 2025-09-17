@@ -1,6 +1,6 @@
 {
   "name": "node-astronomy",
-  "version": "0.0.0-development",
+  "version": "0.1.0",
   "description": "An NPM package that can give you astronomy information about various cosmic and natural objects in our solar system.",
   "keywords": [
     "astronomy",

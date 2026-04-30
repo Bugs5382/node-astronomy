@@ -7,6 +7,7 @@ export type { ISunTimesProperties } from "./astronomicalObject/sun/properties";
 export { SunTimes } from "./astronomicalObject/sun/times";
 export type {
   ISun,
+  ISunPosition,
   ISunProperties,
   ISunTimeResultProperties,
   ISunTimes,

@@ -5,7 +5,9 @@ export enum TwilightExtended {
    */
   GoldenHour = "GoldenHour",
   /**
-   * Sun - The time when the sun just rises or sets.
+   * Sun - The visible sun-disk transition: from "upper limb at horizon"
+   * (NOAA sunrise/sunset, true altitude -0.833°) to "lower limb at horizon"
+   * (true altitude -0.27°, sun's angular radius).
    */
   Sun = "Sun",
 }

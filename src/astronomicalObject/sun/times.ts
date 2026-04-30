@@ -1,17 +1,18 @@
 import {
   convertEquatorialToHorizontal,
   GeographicCoordinate,
+  getGeneralizedSolarTransit,
   getSolarEquatorialCoordinate,
-  getSolarTransit,
   Twilight,
 } from "@observerly/astrometry";
 import { differenceInSeconds } from "date-fns";
-import { toZonedTime } from "date-fns-tz";
+import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
 
 import Sun from "@/astronomicalObject/sun";
 import { TwilightExtended } from "@/astronomicalObject/sun/enum";
 import { ISunTimesProperties } from "@/astronomicalObject/sun/properties";
 import {
+  ISunPosition,
   ISunTimeResultProperties,
   ISunTimes,
   TConverted,
@@ -19,7 +20,8 @@ import {
   TTwilightBandExtended,
   TTwilightBlock,
 } from "@/astronomicalObject/sun/types";
-import { formatLocal } from "@/helpers/timeFormat";
+
+const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
 export class SunTimes extends Sun implements ISunTimes {
   /**
@@ -27,6 +29,18 @@ export class SunTimes extends Sun implements ISunTimes {
    * @since 1.0.0
    */
   defaultParameters = { stepSeconds: 10 };
+  /**
+   * UTC instant marking the end of the snapshot's civil day in the supplied
+   * timezone. Half-open: `coversDate` returns false at this exact instant.
+   * @since 0.2.0
+   */
+  readonly end: Date;
+  /**
+   * UTC instant marking the start of the snapshot's civil day (local midnight
+   * in the supplied timezone).
+   * @since 0.2.0
+   */
+  readonly start: Date;
   /**
    * @since 1.0.0
    */
@@ -51,6 +65,11 @@ export class SunTimes extends Sun implements ISunTimes {
    * @private
    */
   private readonly longitude: number;
+  /**
+   * @since 0.2.0
+   * @private
+   */
+  private readonly observer: GeographicCoordinate;
 
   /**
    * @since 0.1.0
@@ -63,22 +82,30 @@ export class SunTimes extends Sun implements ISunTimes {
    * @param properties
    */
   constructor(properties: ISunTimesProperties) {
-    const timeAtMidnight = properties.time
-      ? new Date(properties.time)
-      : new Date();
-    timeAtMidnight.setHours(0, 0, 0, 0);
+    const timezone = properties.timezone || "UTC";
+    const input = properties.time ? new Date(properties.time) : new Date();
+    const startDateString = formatInTimeZone(input, timezone, "yyyy-MM-dd");
+    const start = fromZonedTime(`${startDateString}T00:00:00`, timezone);
+    // Step ~25h forward (safely past any DST jump), then snap to the next
+    // civil midnight. This makes the snapshot exactly one local day, even
+    // when the day is 23 or 25 hours due to DST transitions.
+    const endDateString = formatInTimeZone(
+      new Date(start.getTime() + 25 * 3_600_000),
+      timezone,
+      "yyyy-MM-dd",
+    );
+    const end = fromZonedTime(`${endDateString}T00:00:00`, timezone);
 
-    super({ ...properties, time: timeAtMidnight });
+    super({ ...properties, time: start });
 
-    this.timezone = properties.timezone || "UTC";
+    this.timezone = timezone;
     this.latitude = properties.latitude;
     this.longitude = properties.longitude;
+    this.observer = { latitude: this.latitude, longitude: this.longitude };
+    this.start = start;
+    this.end = end;
 
-    this.bands = this.getBands(
-      timeAtMidnight,
-      { latitude: this.latitude, longitude: this.longitude },
-      { stepSeconds: 1 },
-    );
+    this.bands = this.getBands(start, end, this.observer, { stepSeconds: 1 });
 
     this.converted = this.bands.map((p) => ({
       interval: {
@@ -91,6 +118,18 @@ export class SunTimes extends Sun implements ISunTimes {
     }));
 
     this.timeBlocks = this.getTimes();
+  }
+
+  /**
+   * The sun's altitude (degrees above the horizon) at the supplied instant
+   * for this snapshot's observer location. Negative values mean the sun is
+   * below the horizon.
+   * @since 0.2.0
+   * @param date
+   */
+  altitudeAt(date: Date): number {
+    const eq = getSolarEquatorialCoordinate(date);
+    return convertEquatorialToHorizontal(date, this.observer, eq).alt;
   }
 
   /**
@@ -115,6 +154,17 @@ export class SunTimes extends Sun implements ISunTimes {
   }
 
   /**
+   * The sun's azimuth (degrees clockwise from north) at the supplied instant
+   * for this snapshot's observer location.
+   * @since 0.2.0
+   * @param date
+   */
+  azimuthAt(date: Date): number {
+    const eq = getSolarEquatorialCoordinate(date);
+    return convertEquatorialToHorizontal(date, this.observer, eq).az;
+  }
+
+  /**
    * @since 0.1.0
    */
   civilDawn(): ISunTimeResultProperties {
@@ -126,6 +176,17 @@ export class SunTimes extends Sun implements ISunTimes {
    */
   civilDusk(): ISunTimeResultProperties {
     return this.formatLocalInterval("civil_evening");
+  }
+
+  /**
+   * Returns true when the supplied instant falls within this snapshot's
+   * civil day (`[start, end)` — half-open).
+   * @since 0.2.0
+   * @param date
+   */
+  coversDate(date: Date): boolean {
+    const t = date.getTime();
+    return t >= this.start.getTime() && t < this.end.getTime();
   }
 
   /**
@@ -171,25 +232,32 @@ export class SunTimes extends Sun implements ISunTimes {
   }
 
   /**
+   * Both altitude and azimuth at the supplied instant.
+   * @since 0.2.0
+   * @param date
+   */
+  positionAt(date: Date): ISunPosition {
+    const eq = getSolarEquatorialCoordinate(date);
+    const { alt, az } = convertEquatorialToHorizontal(date, this.observer, eq);
+    return { altitude: alt, azimuth: az };
+  }
+
+  /**
    * Solar Noon
    * @since 0.1.0
    */
   solarNoon(): TSolarNoon | undefined {
-    const { noon } = getSolarTransit(
-      this.time,
-      {
-        latitude: this.latitude,
-        longitude: this.longitude,
-      },
-      0,
-    );
+    // `getGeneralizedSolarTransit` runs in system-tz-clean Julian-day math,
+    // unlike `getSolarTransit` which mutates the input date via setHours()
+    // (system-local) and would shift the result by 24h on non-UTC systems.
+    const { noon } = getGeneralizedSolarTransit(this.start, this.observer);
 
     /* v8 ignore next */
     if (!noon) return undefined;
 
     return {
       date: noon,
-      dateTz: formatLocal(noon),
+      dateTz: formatInTimeZone(noon, this.timezone, ISO_FORMAT),
     };
   }
 
@@ -218,14 +286,21 @@ export class SunTimes extends Sun implements ISunTimes {
 
     return {
       from: interval.from,
-      fromTz: formatLocal(interval.from),
+      fromTz: formatInTimeZone(interval.from, this.timezone, ISO_FORMAT),
       seconds,
       to: interval.to,
-      toTz: formatLocal(interval.to),
+      toTz: formatInTimeZone(interval.to, this.timezone, ISO_FORMAT),
     };
   }
 
   /**
+   * Twilight band classification by sun altitude.
+   *
+   * Thresholds use NOAA-style refraction-aware sunrise/sunset boundaries so
+   * the visible sun-disk transition lines up with what an observer sees:
+   * - `Civil → Sun` at -0.833°: NOAA sunrise — sun's upper limb at horizon.
+   * - `Sun → GoldenHour` at -0.27°: lower limb at horizon — disk fully clear.
+   *
    * @since 0.1.0
    * @param altitude
    */
@@ -240,10 +315,10 @@ export class SunTimes extends Sun implements ISunTimes {
       case altitude < -6: {
         return Twilight.Nautical;
       }
-      case altitude < -4: {
+      case altitude < -0.833: {
         return Twilight.Civil;
       }
-      case altitude < 0.1: {
+      case altitude < -0.27: {
         return TwilightExtended.Sun;
       }
       case altitude < 6: {
@@ -259,48 +334,37 @@ export class SunTimes extends Sun implements ISunTimes {
    * Get Time Blocks
    * This is a customized function of @observerly/astrometry to work with this package.
    * @since 0.1.0
-   * @param datetime
+   * @param dayStart UTC instant for the start of the snapshot's local day.
+   * @param dayEnd UTC instant for the end of the snapshot's local day.
    * @param observer
    * @param parameters
    */
   private getBands(
-    datetime: Date,
+    dayStart: Date,
+    dayEnd: Date,
     observer: GeographicCoordinate,
     parameters: { stepSeconds?: number } = this.defaultParameters,
   ): TTwilightBandExtended[] {
     const { stepSeconds = 10 } = parameters;
 
-    // Set the time to midnight:
-    const midnight = new Date(
-      datetime.getFullYear(),
-      datetime.getMonth(),
-      datetime.getDate(),
-    );
-
-    // Set the end time to midnight the next day:
-    const end = new Date(midnight.getTime() + 86_400_000);
-
-    // Copy of midnight to avoid modifying the original date:
-    let from = new Date(midnight);
+    let from = new Date(dayStart);
 
     const bands: TTwilightBandExtended[] = [];
 
-    // Get the solar equatorial coordinates for the target date:
+    // Get the altitude of the sun at the day's start instant:
     const sun = getSolarEquatorialCoordinate(from);
-
-    // Get the altitude of the sun at midnight UTC:
     const { alt } = convertEquatorialToHorizontal(from, observer, sun);
 
-    // Get the twilight band for the altitude of the sun at midnight UTC.
-    // N.B. As we are in UTC timezone, the twilight band at midnight is
-    // not necessarily Night.
+    // Get the twilight band for that altitude.
+    // N.B. The band at local midnight is not necessarily Night (e.g.
+    // high-latitude summer where civil/nautical twilight crosses midnight).
     let twilight = this.getAltitude(alt);
 
-    // Start the first band at midnight:
+    // Start the first band at dayStart:
     let start = new Date(from);
 
     // Loop through the day in steps of stepSeconds:
-    while (from < end) {
+    while (from < dayEnd) {
       const sun = getSolarEquatorialCoordinate(from);
 
       const { alt } = convertEquatorialToHorizontal(from, observer, sun);
@@ -328,7 +392,7 @@ export class SunTimes extends Sun implements ISunTimes {
     bands.push({
       interval: {
         from: start,
-        to: end,
+        to: dayEnd,
       },
       name: twilight,
     });
@@ -383,9 +447,10 @@ export class SunTimes extends Sun implements ISunTimes {
         continue;
       }
 
-      // Add morning/evening suffix
-      const hour = from.getHours();
-      const suffix = hour < noonHour ? "_morning" : "_evening";
+      // Add morning/evening suffix based on the wall-clock hour in the
+      // supplied timezone (not the system timezone).
+      const hourInZone = Number(formatInTimeZone(from, this.timezone, "H"));
+      const suffix = hourInZone < noonHour ? "_morning" : "_evening";
 
       result.push({
         interval: { from, to },

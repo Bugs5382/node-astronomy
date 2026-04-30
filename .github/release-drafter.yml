@@ -1,7 +1,7 @@
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 template: |
-  ## What Changed 👀
+  # What Changed 👀
   
   $CHANGES
   
@@ -38,7 +38,6 @@ categories:
       - deps
       - dependencies
     collapse-after: 5
-prerelease-identifier: 'beta'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:

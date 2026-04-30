@@ -6,6 +6,13 @@ import { ITimeOfInterest } from "@/time/properties";
 
 export type ISun = ITimeOfInterest;
 
+export interface ISunPosition {
+  /** Sun altitude in degrees above the horizon (negative when below). */
+  altitude: number;
+  /** Sun azimuth in degrees clockwise from north. */
+  azimuth: number;
+}
+
 export type ISunProperties = IAstronomicalObject;
 
 export type ISunTimeResultProperties =
@@ -24,16 +31,22 @@ export type ISunTimeResultProperties =
   | undefined;
 
 export interface ISunTimes {
+  /** Sun altitude (degrees above horizon) at the supplied instant. */
+  altitudeAt: (date: Date) => number;
   /** Get Astronomical Dawn */
   astronomicalDawn: () => ISunTimeResultProperties;
   /** Get Astronomical Dusk */
   astronomicalDusk: () => ISunTimeResultProperties;
   /** Get Astronomical Dusk to Midnight */
   astronomicalDuskToMidnight: () => ISunTimeResultProperties;
+  /** Sun azimuth (degrees clockwise from north) at the supplied instant. */
+  azimuthAt: (date: Date) => number;
   /** Get Civil Dawn */
   civilDawn: () => ISunTimeResultProperties;
   /** Get Civil Dusk */
   civilDusk: () => ISunTimeResultProperties;
+  /** True when the supplied instant falls within this snapshot's civil day. */
+  coversDate: (date: Date) => boolean;
   /** Get Day */
   day: () => ISunTimeResultProperties;
   /** Get Golden Hour (AM) */
@@ -46,6 +59,8 @@ export interface ISunTimes {
   nauticalDawn: () => ISunTimeResultProperties;
   /** Get Nautical Dusk */
   nauticalDusk: () => ISunTimeResultProperties;
+  /** Sun altitude and azimuth at the supplied instant. */
+  positionAt: (date: Date) => ISunPosition;
   /** Get Solar Noon */
   solarNoon: () => TSolarNoon | undefined;
   /** Get Sunrise */

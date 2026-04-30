@@ -44,9 +44,7 @@ describe("sunTimes tests", () => {
       expect(sunTimes.start).toStrictEqual(
         new Date("1982-05-02T04:00:00.000Z"),
       );
-      expect(sunTimes.end).toStrictEqual(
-        new Date("1982-05-03T04:00:00.000Z"),
-      );
+      expect(sunTimes.end).toStrictEqual(new Date("1982-05-03T04:00:00.000Z"));
     });
 
     test("... time blocks total the civil day length", () => {
@@ -194,9 +192,9 @@ describe("sunTimes tests", () => {
     });
 
     test("... bands are contiguous (each block's `to` is next block's `from`)", () => {
-      for (let i = 1; i < sunTimes.timeBlocks.length; i++) {
-        expect(sunTimes.timeBlocks[i].interval.from).toStrictEqual(
-          sunTimes.timeBlocks[i - 1].interval.to,
+      for (let index = 1; index < sunTimes.timeBlocks.length; index++) {
+        expect(sunTimes.timeBlocks[index].interval.from).toStrictEqual(
+          sunTimes.timeBlocks[index - 1].interval.to,
         );
       }
     });
@@ -211,12 +209,8 @@ describe("sunTimes tests", () => {
 
     test("... altitudeAt is highest at solar noon", () => {
       const peak = sunTimes.altitudeAt(sunTimes.solarNoon()!.date);
-      const morning = sunTimes.altitudeAt(
-        new Date("1982-05-02T13:00:00.000Z"),
-      );
-      const evening = sunTimes.altitudeAt(
-        new Date("1982-05-02T22:00:00.000Z"),
-      );
+      const morning = sunTimes.altitudeAt(new Date("1982-05-02T13:00:00.000Z"));
+      const evening = sunTimes.altitudeAt(new Date("1982-05-02T22:00:00.000Z"));
       expect(peak).toBeGreaterThan(morning);
       expect(peak).toBeGreaterThan(evening);
       // At ~40.7°N on May 2, the noon altitude should be in the 60s°.
@@ -252,9 +246,9 @@ describe("sunTimes tests", () => {
     test("... true for instants inside the snapshot window", () => {
       expect(sunTimes.coversDate(sunTimes.start)).toBe(true);
       expect(sunTimes.coversDate(sunTimes.solarNoon()!.date)).toBe(true);
-      expect(
-        sunTimes.coversDate(new Date(sunTimes.end.getTime() - 1)),
-      ).toBe(true);
+      expect(sunTimes.coversDate(new Date(sunTimes.end.getTime() - 1))).toBe(
+        true,
+      );
     });
 
     test("... false for the exact end instant (half-open)", () => {
@@ -262,9 +256,9 @@ describe("sunTimes tests", () => {
     });
 
     test("... false for instants on adjacent days", () => {
-      expect(
-        sunTimes.coversDate(new Date(sunTimes.start.getTime() - 1)),
-      ).toBe(false);
+      expect(sunTimes.coversDate(new Date(sunTimes.start.getTime() - 1))).toBe(
+        false,
+      );
       expect(
         sunTimes.coversDate(new Date(sunTimes.end.getTime() + 86_400_000)),
       ).toBe(false);

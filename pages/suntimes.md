@@ -47,7 +47,31 @@ If you need a different day, construct a new `SunTimes` for that date.
 
 * If no timezone is specified, **UTC** is used by default. The `timezone` parameter determines both the day window of the snapshot and how `fromTz`/`toTz`/`dateTz` strings are formatted.
 
-* `solarNoon()` is an exception: it returns `{ date: Date, dateTz: string }` or `undefined` (in polar regions where the sun does not transit).
+* `solarNoon()` returns `{ date: Date, dateTz: string }` and is defined astronomically even in polar regions — it returns the sun's meridian-crossing time regardless of whether the sun is above or below the horizon. It only returns `undefined` if the underlying ephemeris fails (rare; numerical edge case in extreme polar conditions).
+
+## ❄️ Polar regions
+
+The `polarRegion` field on a `SunTimes` instance flags the two cases where the sun does not cross the horizon during the snapshot's civil day:
+
+* **`"midnight-sun"`** — the sun stays above the horizon for the whole day. There is no `sunrise()`/`sunset()`/`day()`-versus-twilight transition; every band is `Day` or `GoldenHour`.
+* **`"polar-night"`** — the sun stays below the horizon. There is no `day()` block; the day is partitioned across the night/twilight bands only.
+* **`undefined`** — normal day with at least one true sunrise/sunset transition.
+
+The `from_midnight_morning` and `to_midnight_evening` blocks (returned via `midnightToAstronomicalDawn()` and `astronomicalDuskToMidnight()`) are still defined in polar regions — they just describe whichever band the local-midnight straddles rather than always being `Night`.
+
+## ⚙️ Construction options
+
+```ts
+new SunTimes({
+  latitude: number,
+  longitude: number,
+  time?: Date,            // default: now
+  timezone?: string,      // default: "UTC"
+  stepSeconds?: number,   // default: 1
+});
+```
+
+* **`stepSeconds`** controls the resolution of the internal twilight-band scan. The default of `1` second is the precision floor — band edges are accurate to ±`stepSeconds`. Raise to `60` for a faster constructor when minute-level precision is enough; lowering past `1` does not help.
 
 ## 🌍 Available Queries
 
@@ -82,9 +106,10 @@ If you need a different day, construct a new `SunTimes` for that date.
 
 ### 🧭 Sun position (any instant)
 
-* **`altitudeAt(date)`** → Sun altitude (degrees above horizon) at the given instant. Negative when the sun is below the horizon. Uses geometric (no atmospheric refraction) coordinates.
+* **`altitudeAt(date)`** → Sun's *geometric* altitude (degrees above horizon). Negative when the sun is below the horizon. No atmospheric refraction.
+* **`apparentAltitudeAt(date)`** → Sun's *apparent* altitude — geometric altitude plus Bennett-model refraction. At the horizon `apparent ≈ geometric + 0.5°`. Use this for "what does an observer actually see?". Note: the band thresholds (`-0.833°`, `-0.27°`) are calibrated to apparent altitude crossing zero, so `altitudeAt(sunrise)` is around `-0.833°` while `apparentAltitudeAt(sunrise)` is around `0°`.
 * **`azimuthAt(date)`** → Sun azimuth (degrees clockwise from north) at the given instant.
-* **`positionAt(date)`** → `{ altitude, azimuth }` in one call.
+* **`positionAt(date)`** → `{ altitude, azimuth }` in one call (altitude is geometric).
 
 ### 📏 Twilight thresholds
 

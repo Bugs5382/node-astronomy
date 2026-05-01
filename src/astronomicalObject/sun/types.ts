@@ -31,8 +31,14 @@ export type ISunTimeResultProperties =
   | undefined;
 
 export interface ISunTimes {
-  /** Sun altitude (degrees above horizon) at the supplied instant. */
+  /** Sun altitude (geometric, degrees above horizon) at the supplied instant. */
   altitudeAt: (date: Date) => number;
+  /**
+   * Sun apparent altitude (geometric altitude plus atmospheric-refraction
+   * correction, degrees above horizon) at the supplied instant.
+   * @since 0.2.0
+   */
+  apparentAltitudeAt: (date: Date) => number;
   /** Get Astronomical Dawn */
   astronomicalDawn: () => ISunTimeResultProperties;
   /** Get Astronomical Dusk */
@@ -59,6 +65,13 @@ export interface ISunTimes {
   nauticalDawn: () => ISunTimeResultProperties;
   /** Get Nautical Dusk */
   nauticalDusk: () => ISunTimeResultProperties;
+  /**
+   * Set when the snapshot's civil day falls in midnight-sun or polar-night.
+   * `undefined` for normal days that have at least one sunrise/sunset
+   * transition. See {@link TPolarRegion} for the contract.
+   * @since 0.2.0
+   */
+  polarRegion?: TPolarRegion;
   /** Sun altitude and azimuth at the supplied instant. */
   positionAt: (date: Date) => ISunPosition;
   /** Get Solar Noon */
@@ -76,6 +89,23 @@ export type TConverted = {
   interval: { from: Date; fromTz: Date; to: Date; toTz: Date };
   name: Twilight | TwilightExtended;
 };
+
+/**
+ * Indicates that the snapshot's civil day is in a polar regime where the
+ * sun never crosses the horizon.
+ *
+ * - `"midnight-sun"` — the sun stays above the horizon for the entire local
+ *   day. There is no sunrise, no sunset, and the time blocks have no
+ *   `Night`/twilight bands. `solarNoon()` is still meaningful (the
+ *   meridian-crossing time) and is still returned.
+ * - `"polar-night"` — the sun stays below the horizon for the entire local
+ *   day. There is no sunrise, no sunset, and no `Day` band. `solarNoon()`
+ *   still returns the meridian-crossing time (when the sun is *least*
+ *   below the horizon).
+ *
+ * @since 0.2.0
+ */
+export type TPolarRegion = "midnight-sun" | "polar-night";
 
 export type TSolarNoon = {
   /** The time of solar noon. */

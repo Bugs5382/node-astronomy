@@ -288,4 +288,99 @@ describe("sunTimes tests", () => {
       expect(sUTC.start).toStrictEqual(new Date("1982-05-02T00:00:00.000Z"));
     });
   });
+
+  describe("polarRegion + high-latitude regression", () => {
+    test("... NYC May day is not flagged polar", () => {
+      expect(sunTimes.polarRegion).toBeUndefined();
+    });
+
+    test("... Tromsø summer solstice is midnight-sun", () => {
+      // 2023-06-21 (June solstice) at Tromsø (69.65°N) — the sun stays
+      // above the horizon all day. This day used to break the old
+      // index-0 night detection in `getTimes()`.
+      const tromso = new SunTimes({
+        latitude: 69.6492,
+        longitude: 18.9553,
+        time: new Date("2023-06-21T12:00:00Z"),
+        timezone: "Europe/Oslo",
+      });
+      expect(tromso.polarRegion).toBe("midnight-sun");
+      // Sun never gets below 0° on the solstice at Tromsø.
+      const sampleHours = [0, 6, 12, 18];
+      for (const h of sampleHours) {
+        const t = new Date(tromso.start.getTime() + h * 3_600_000);
+        expect(tromso.altitudeAt(t)).toBeGreaterThan(0);
+      }
+      // The midnight bookend block is still indexable via the public API
+      // (regression for issue-17 #4) — it just covers a portion of the
+      // continuous-sun day rather than a Night band.
+      expect(tromso.midnightToAstronomicalDawn()).toBeDefined();
+      expect(tromso.astronomicalDuskToMidnight()).toBeDefined();
+    });
+
+    test("... Tromsø winter solstice is polar-night", () => {
+      const tromso = new SunTimes({
+        latitude: 69.6492,
+        longitude: 18.9553,
+        time: new Date("2023-12-21T12:00:00Z"),
+        timezone: "Europe/Oslo",
+      });
+      expect(tromso.polarRegion).toBe("polar-night");
+      // The sun never crosses the horizon — at every sample altitude < 0.
+      const sampleHours = [0, 6, 12, 18];
+      for (const h of sampleHours) {
+        const t = new Date(tromso.start.getTime() + h * 3_600_000);
+        expect(tromso.altitudeAt(t)).toBeLessThan(0);
+      }
+      // No `day()` block on a polar-night day.
+      expect(tromso.day()).toBeUndefined();
+    });
+  });
+
+  describe("apparentAltitudeAt (refraction-aware)", () => {
+    test("... is geometric altitude plus a positive correction near horizon", () => {
+      // At sunrise the geometric altitude is around -0.833° (NOAA-aware
+      // band threshold). Apparent altitude includes ~+34' refraction so
+      // it lands close to 0°.
+      const sunriseFrom = sunTimes.sunrise()!.from;
+      const geo = sunTimes.altitudeAt(sunriseFrom);
+      const apparent = sunTimes.apparentAltitudeAt(sunriseFrom);
+      expect(apparent).toBeGreaterThan(geo);
+      // Bennett refraction at geometric -0.83° lands around +0.78°
+      // (the formula increases as you dip below horizon, since `tan`
+      // approaches 0). Loose bounds to absorb ephemeris jitter.
+      expect(apparent - geo).toBeGreaterThan(0.4);
+      expect(apparent - geo).toBeLessThan(1);
+    });
+
+    test("... refraction is small at high altitude", () => {
+      const noon = sunTimes.solarNoon()!.date;
+      const geo = sunTimes.altitudeAt(noon);
+      const apparent = sunTimes.apparentAltitudeAt(noon);
+      // At noon altitude (~65° at NYC in May) refraction is well under 1'.
+      expect(apparent - geo).toBeLessThan(0.02);
+      expect(apparent - geo).toBeGreaterThan(0);
+    });
+  });
+
+  describe("stepSeconds constructor option", () => {
+    test("... defaults to 1 when not supplied", () => {
+      expect(sunTimes.stepSeconds).toBe(1);
+    });
+
+    test("... honors a custom value and produces broadly equivalent block boundaries", () => {
+      const coarse = new SunTimes({
+        latitude: 40.6676,
+        longitude: -73.9851,
+        stepSeconds: 60,
+        time: new Date("1982-05-03T00:00:00Z"),
+        timezone: "America/New_York",
+      });
+      expect(coarse.stepSeconds).toBe(60);
+      // Coarser step ⇒ band edges within ±60s of fine-step values.
+      const fineSunrise = sunTimes.sunrise()!.from.getTime();
+      const coarseSunrise = coarse.sunrise()!.from.getTime();
+      expect(Math.abs(fineSunrise - coarseSunrise)).toBeLessThanOrEqual(60_000);
+    });
+  });
 });

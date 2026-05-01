@@ -1,5 +1,4 @@
 name: Label Checker
-
 on:
   pull_request:
     types:
@@ -8,22 +7,26 @@ on:
       - reopened
       - labeled
       - unlabeled
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
-
 jobs:
+  Title_Checker:
+    name: Check PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   Check_SemVer_Labels:
     name: Check Semver labels
     runs-on: ubuntu-latest
-
     steps:
       - name: Check for Semver labels
-        if: github.ref == 'refs/heads/main'
         uses: danielchabr/pr-labels-checker@v3.3
         with:
-          hasSome: major,minor,patch
+          hasSome: breaking,enhancement,dependencies,refactor
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
   Check_CC_Labels:
@@ -32,5 +35,5 @@ jobs:
     steps:
       - uses: danielchabr/pr-labels-checker@v3.3
         with:
-          hasSome: feature,fix,changed,deprecated,removed,security,docs,dependencies,enhancement,bug,documentation
+          hasSome: breaking,changed,deprecated,removed,security,dependencies,enhancement,bug,documentation
           githubToken: ${{ secrets.GITHUB_TOKEN }}

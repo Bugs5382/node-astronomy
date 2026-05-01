@@ -1,17 +1,23 @@
-import { beforeAll, describe, expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
-import { Celestial } from "../src/astronomicalObject/celestial";
+import { Celestial } from "../src";
 
-describe("celestial tests", () => {
-  let celestial: Celestial;
-  beforeAll(async () => {
-    // create the celestial
-    celestial = new Celestial();
+describe("Celestial", () => {
+  test("default constructor sets name to 'celestial'", () => {
+    const c = new Celestial();
+    expect(c).toBeInstanceOf(Celestial);
+    expect(c.name).toBe("celestial");
+    expect(c.time).toBeInstanceOf(Date);
   });
 
-  describe("sanity checks", () => {
-    test("... the instance ... celestial", () => {
-      expect(celestial).toBeInstanceOf(Celestial);
-    });
+  test("supplied name is honored", () => {
+    const c = new Celestial({ name: "supernova" });
+    expect(c.name).toBe("supernova");
+  });
+
+  test("supplied time is captured at construction", () => {
+    const t = new Date("2000-01-01T00:00:00Z");
+    const c = new Celestial({ time: t });
+    expect(c.time.getTime()).toBe(t.getTime());
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "node-astronomy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An NPM package that can give you astronomy information about various cosmic and natural objects in our solar system.",
   "keywords": [
     "astronomy",
@@ -23,23 +23,23 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./lib/esm/index.d.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js",
-      "default": "./lib/cjs/index.js"
+      "types": "./lib/esm/index.d.mts",
+      "import": "./lib/esm/index.mjs",
+      "require": "./lib/cjs/index.cjs",
+      "default": "./lib/cjs/index.cjs"
     }
   },
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/esm/index.d.ts",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "types": "./lib/esm/index.d.mts",
   "files": [
     "lib/",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsup",
-    "build:local": "tsup && npm run pack",
+    "build": "tsdown && node scripts/injectIersSuppressor.mjs",
+    "build:local": "npm run build && npm run pack",
     "lint": "eslint | snazzy",
     "lint:fix": "eslint --fix | snazzy",
     "lint:npm": "npmPkgJsonLint .",
@@ -64,7 +64,8 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.35.0",
     "@shipgirl/typedoc-plugin-versions": "^0.3.2",
-    "@the-rabbit-hole/eslint-config": "^0.1.0",
+    "@the-rabbit-hole/eslint-config": "^0.2.0",
+    "@types/geojson": "^7946.0.16",
     "@types/node": "^24.3.1",
     "@types/sinon": "^17.0.4",
     "@vitest/coverage-v8": "^3.2.4",
@@ -77,7 +78,7 @@
     "sinon": "^21.0.0",
     "snazzy": "^9.0.0",
     "sort-package-json": "^3.4.0",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.21.10",
     "typedoc": "^0.28.12",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.42.0",

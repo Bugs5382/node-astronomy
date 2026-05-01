@@ -1,32 +1,47 @@
 ---
-name: Feature Request
-about: Suggest an idea for this project
-title: "feat: "
-labels: "enhancement"
-assignees: ""
+name: ✨ Feature request
+about: A new astronomical query, body, or convenience API you'd like
+title: "[FEATURE] "
+labels: enhancement
+assignees: ''
 ---
 
-# Feature Request
+## Problem / use case
 
-**Describe the Feature Request**
+What are you trying to do that the current API doesn't support? E.g.
+"I want to know when Mars is above the horizon at my location next
+Saturday night."
 
-<!-- A clear and concise description of what the feature request is. Please include if your feature request is related to a problem. -->
+## Proposed API
 
-**Describe Preferred Solution**
+A rough sketch of how you'd want to call it:
 
-<!-- A clear and concise description of what you want to happen. -->
+```ts
+const mars = new PlanetTimes({
+  planet: "mars",
+  latitude: 40.7,
+  longitude: -74.0,
+  time: new Date(),
+  timezone: "America/New_York",
+});
 
-**Describe Alternatives**
+mars.nextRise();    // { from, to, seconds, ... }
+mars.arc({ samples: 60 }); // [{ date, altitude, azimuth }, ...]
+```
 
-<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+## Alternatives considered
 
-**Related Code**
+What are you doing today instead? (Manual computations from another
+package, hard-coded values, …)
 
-<!-- If you are able to illustrate the bug or feature request with an example, please provide it here. -->
+## Reference / source
 
-**Additional Context**
+If you've seen this calculation elsewhere, link to the formula or the
+implementation. Bonus points for a citation (Meeus chapter, JPL Horizons,
+NOAA, etc.) so the implementation can be validated against a known
+source.
 
-<!-- List any other information that is relevant to your issue. Stack traces, related issues, suggestions on how to add, use case, Stack Overflow links, forum links, screenshots, OS if applicable, etc. -->
+## Additional context
 
-**If the feature request is approved, would you be willing to submit a PR?**
-_(Help can be provided if you need assistance submitting a PR)_
+Edge cases that should be supported (polar regions, southern hemisphere,
+high precision, fast bulk lookups, etc.).

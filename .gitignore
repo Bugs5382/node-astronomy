@@ -138,3 +138,11 @@ lib
 temp
 .npmrc
 package-lock.json
+
+# Local working scratch — not tracked.
+# `plan/` holds open-issue notes (one file per pending issue; delete the file
+# when the issue is resolved). `CLAUDE.md` and `.claude/` are local
+# Claude-Code scratch artifacts and must never be committed for this project.
+plan/
+CLAUDE.md
+.claude/

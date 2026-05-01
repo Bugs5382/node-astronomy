@@ -2,20 +2,18 @@ name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
 template: |
   # What Changed 👀
-  
+
   $CHANGES
-  
+
   # Extra
-  
+
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 categories:
   - title: 🚀 Features
     labels:
-      - feature
       - enhancement
   - title: 🐛 Bug Fixes
     labels:
-      - fix
       - bug
   - title: ⚠️ Changes
     labels:
@@ -31,25 +29,26 @@ categories:
       - security
   - title: 📄 Documentation
     labels:
-      - docs
       - documentation
   - title: 🧩 Dependency Updates
     labels:
-      - deps
       - dependencies
     collapse-after: 5
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
-change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+change-title-escapes: '\<*_&'
 version-resolver:
   major:
     labels:
-      - major
+      - 'breaking'
   minor:
     labels:
-      - minor
+      - 'enhancement'
   patch:
     labels:
-      - patch
+      - 'fix'
+      - 'refactor'
+      - 'dependencies'
+      - 'security'
   default: patch
 exclude-labels:
   - skip-changelog

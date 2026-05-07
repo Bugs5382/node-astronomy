@@ -34,6 +34,42 @@ describe("Constellation snapshot", () => {
         new Constellation({ constellation: "Atlantis" as any }),
     ).toThrow(/Unknown constellation/);
   });
+
+  test("string-positional constructor accepts canonical names (any case)", () => {
+    expect(new Constellation("Orion").constellationName).toBe("Orion");
+    expect(new Constellation("orion").constellationName).toBe("Orion");
+    expect(new Constellation("ORION").constellationName).toBe("Orion");
+  });
+
+  test("string-positional constructor accepts IAU abbreviations", () => {
+    expect(new Constellation("Ori").constellationName).toBe("Orion");
+    expect(new Constellation("UMa").constellationName).toBe("Ursa Major");
+    expect(new Constellation("uma").constellationName).toBe("Ursa Major");
+  });
+
+  test("string-positional constructor resolves common asterisms", () => {
+    expect(new Constellation("big dipper").constellationName).toBe(
+      "Ursa Major",
+    );
+    expect(new Constellation("Big Dipper").constellationName).toBe(
+      "Ursa Major",
+    );
+    expect(new Constellation("plough").constellationName).toBe("Ursa Major");
+    expect(new Constellation("little dipper").constellationName).toBe(
+      "Ursa Minor",
+    );
+    expect(new Constellation("northern cross").constellationName).toBe(
+      "Cygnus",
+    );
+    expect(new Constellation("teapot").constellationName).toBe("Sagittarius");
+  });
+
+  test("string-positional constructor throws with a 'did you mean' hint on unknown input", () => {
+    expect(() => new Constellation("Big Dippper")).toThrow(/Did you mean/);
+    expect(() => new Constellation("Atlantis")).toThrow(
+      /Unknown constellation/,
+    );
+  });
 });
 
 describe("findConstellationAt", () => {
@@ -52,35 +88,13 @@ describe("ConstellationVisibility (NYC fixtures)", () => {
   const NYC = { latitude: 40.7128, longitude: -74.006 };
   const TIME = new Date("2026-01-15T03:00:00Z"); // late evening winter, NYC
 
-  test("Orion is above the horizon and in the southern sky from NYC in winter", () => {
+  test("Orion is above the horizon from NYC in winter", () => {
     const v = new ConstellationVisibility({
       ...NYC,
       constellation: "Orion",
-      direction: "west-east",
       time: TIME,
     });
     expect(v.isAboveHorizon()).toBe(true);
-    expect(v.isVisible()).toBe(true);
-  });
-
-  test("Orion is NOT visible when filtered to the northern half-dome", () => {
-    const v = new ConstellationVisibility({
-      ...NYC,
-      constellation: "Orion",
-      direction: "east-west",
-      time: TIME,
-    });
-    expect(v.isAboveHorizon()).toBe(true); // still up, just on the wrong side
-    expect(v.isVisible()).toBe(false);
-  });
-
-  test("Ursa Minor (with Polaris) is in the northern half-dome", () => {
-    const v = new ConstellationVisibility({
-      ...NYC,
-      constellation: "Ursa Minor",
-      direction: "east-west",
-      time: TIME,
-    });
     expect(v.isVisible()).toBe(true);
   });
 
@@ -108,45 +122,9 @@ describe("visibleConstellations (top-level helper)", () => {
     expect(result.every((c) => c instanceof Constellation)).toBe(true);
   });
 
-  test("'west-east' filter excludes constellations only in the northern sky", () => {
-    const south = visibleConstellations({
-      ...NYC,
-      direction: "west-east",
-      time: TIME,
-    });
-    const names = new Set(south.map((c) => c.constellationName));
-    // Orion is winter, southern sky — should be present.
+  test("Orion is in the visible set from NYC at this time", () => {
+    const result = visibleConstellations({ ...NYC, time: TIME });
+    const names = new Set(result.map((c) => c.constellationName));
     expect(names.has("Orion")).toBe(true);
-    // Ursa Minor surrounds Polaris, near 0° azimuth (north) — must be excluded.
-    expect(names.has("Ursa Minor")).toBe(false);
-  });
-
-  test("'east-west' filter excludes constellations only in the southern sky", () => {
-    const north = visibleConstellations({
-      ...NYC,
-      direction: "east-west",
-      time: TIME,
-    });
-    const names = new Set(north.map((c) => c.constellationName));
-    expect(names.has("Ursa Minor")).toBe(true);
-    expect(names.has("Orion")).toBe(false);
-  });
-
-  test("no direction filter returns only the horizon set", () => {
-    const all = visibleConstellations({ ...NYC, time: TIME });
-    const south = visibleConstellations({
-      ...NYC,
-      direction: "west-east",
-      time: TIME,
-    });
-    const north = visibleConstellations({
-      ...NYC,
-      direction: "east-west",
-      time: TIME,
-    });
-    // All ≈ south + north (allow some boundary slack).
-    expect(all.length).toBeGreaterThanOrEqual(
-      Math.max(south.length, north.length),
-    );
   });
 });

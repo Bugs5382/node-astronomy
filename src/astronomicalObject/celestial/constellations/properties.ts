@@ -1,7 +1,6 @@
 import {
   IConstellation,
   IConstellationName,
-  TDirection,
 } from "@/astronomicalObject/celestial/constellations/types";
 
 /**
@@ -20,14 +19,6 @@ export interface IConstellationProperties extends IConstellation {
  * @since 0.2.0
  */
 export interface IConstellationVisibilityProperties extends IConstellationProperties {
-  /**
-   * Optional direction filter — single compass point, kebab-pair range,
-   * or explicit `{ azimuthMin, azimuthMax }` window.
-   *
-   * If omitted, only horizon visibility is checked (no azimuth filter).
-   * @since 0.2.0
-   */
-  direction?: TDirection;
   /** Observer latitude in decimal degrees. */
   latitude: number;
   /** Observer longitude in decimal degrees. */
@@ -40,8 +31,6 @@ export interface IConstellationVisibilityProperties extends IConstellationProper
  * @since 0.2.0
  */
 export interface IVisibleConstellationsQuery {
-  /** Optional direction filter — see {@link TDirection}. */
-  direction?: TDirection;
   /** Observer latitude in decimal degrees. */
   latitude: number;
   /** Observer longitude in decimal degrees. */

@@ -32,14 +32,4 @@ export function bennettRefractionDegrees(geometricAltitudeDeg: number): number {
   return Math.max(0, arcminutes / 60);
 }
 
-/**
- * Normalise a right-ascension or longitude value to `[0, 360)` degrees.
- *
- * @param degrees - Input angle in degrees, any sign or magnitude.
- * @returns Equivalent angle in `[0, 360)`.
- * @since 0.2.0
- */
-export function normalizeDegrees360(degrees: number): number {
-  const result = degrees % 360;
-  return result < 0 ? result + 360 : result;
-}
+export { normalizeDegrees360 } from "@/util/angles";

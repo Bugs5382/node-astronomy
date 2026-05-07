@@ -6,25 +6,17 @@ export {
   Constellation,
   findConstellationAt,
 } from "./astronomicalObject/celestial/constellations";
-export {
-  directionToAzimuthWindow,
-  isInWindow,
-} from "./astronomicalObject/celestial/constellations/direction";
 export type {
   IConstellationProperties,
   IConstellationVisibilityProperties,
   IVisibleConstellationsQuery,
 } from "./astronomicalObject/celestial/constellations/properties";
 export type {
-  AzimuthWindow,
-  CompassPoint,
-  CompassRange,
   IConstellation,
   IConstellationEquatorialCoordinate,
   IConstellationFeature,
   IConstellationHorizontalCoordinate,
   IConstellationName,
-  TDirection,
 } from "./astronomicalObject/celestial/constellations/types";
 export {
   ConstellationVisibility,

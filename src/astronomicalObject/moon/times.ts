@@ -1,17 +1,14 @@
-import {
-  convertEquatorialToHorizontal,
-  GeographicCoordinate,
-  getBodyNextRise,
-  getBodyNextSet,
-  getLunarAngularDiameter,
-  getLunarEquatorialCoordinate,
-  isBodyAboveHorizon,
-  isBodyCircumpolar,
-  TransitInstance,
-} from "@observerly/astrometry";
 import { differenceInSeconds } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
+import { getLunarAngularDiameter } from "@/astrometry/moon/distance";
+import { getLunarEquatorialCoordinate } from "@/astrometry/moon/equatorial";
+import {
+  isBodyAboveHorizon,
+  isBodyCircumpolar,
+} from "@/astrometry/transit/circumpolar";
+import { getBodyNextRise, getBodyNextSet } from "@/astrometry/transit/riseSet";
+import { type TransitInstance } from "@/astrometry/types";
 import Moon from "@/astronomicalObject/moon";
 import { IMoonTimesProperties } from "@/astronomicalObject/moon/properties";
 import {
@@ -21,6 +18,10 @@ import {
   IMoonPeak,
   IMoonTimeResultProperties,
 } from "@/astronomicalObject/moon/types";
+import {
+  convertEquatorialToHorizontal,
+  type GeographicCoordinate,
+} from "@/util/coordinates";
 import { bennettRefractionDegrees } from "@/util/refraction";
 
 const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";

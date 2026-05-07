@@ -1,8 +1,11 @@
 import {
   constellations as ASTROMETRY_CONSTELLATIONS,
   getConstellation,
-} from "@observerly/astrometry";
-
+} from "@/astrometry/constellations";
+import {
+  resolveConstellationName,
+  suggestConstellationNames,
+} from "@/astrometry/constellations/aliases";
 import AstronomicalObject from "@/astronomicalObject";
 import { CONSTELLATION_CENTROIDS } from "@/astronomicalObject/celestial/constellations/centroids";
 import { IConstellationProperties } from "@/astronomicalObject/celestial/constellations/properties";
@@ -44,21 +47,36 @@ export class Constellation
   /**
    * Build a Constellation snapshot.
    *
+   * Accepts either:
+   * - A string with a canonical IAU Latin name (any case, e.g.
+   *   `"Orion"`, `"orion"`, `"ORION"`), an IAU 3-letter abbreviation
+   *   (e.g. `"Ori"`, `"UMa"`), or an asterism / English alias (e.g.
+   *   `"big dipper"`, `"northern cross"`, `"plough"`).
+   * - The original `{ constellation, time? }` object form.
+   *
+   * Unknown input throws with a "did you mean…?" suggestion drawn from
+   * the canonical names + alias table.
+   *
    * @since 0.2.0
-   * @param properties - `constellation` (required) and optional `time`.
    */
-  constructor(properties: IConstellationProperties) {
-    super(properties.constellation, properties);
-    const data = ASTROMETRY_CONSTELLATIONS.get(properties.constellation);
+  constructor(input: string);
+  constructor(properties: IConstellationProperties);
+  constructor(input: IConstellationProperties | string) {
+    const normalised: IConstellationProperties =
+      typeof input === "string"
+        ? { constellation: resolveOrThrow(input) }
+        : { ...input, constellation: resolveOrThrow(input.constellation) };
+    super(normalised.constellation, normalised);
+    const data = ASTROMETRY_CONSTELLATIONS.get(normalised.constellation);
     if (!data) {
       throw new Error(
-        `Unknown constellation: ${String(properties.constellation)}`,
+        `Unknown constellation: ${String(normalised.constellation)}`,
       );
     }
     this.constellationName = data.name;
     this.abbreviation = data.abbreviation;
     this.meaning = data.meaning;
-    const centroid = CONSTELLATION_CENTROIDS.get(properties.constellation) ?? {
+    const centroid = CONSTELLATION_CENTROIDS.get(normalised.constellation) ?? {
       dec: 0,
       ra: 0,
     };
@@ -98,6 +116,15 @@ export function findConstellationAt(
   const result = getConstellation({ dec: target.dec, ra: target.ra });
   if (!result) return undefined;
   return new Constellation({ constellation: result.name });
+}
+
+function resolveOrThrow(input: string): IConstellationName {
+  const resolved = resolveConstellationName(input);
+  if (resolved) return resolved as IConstellationName;
+  const suggestions = suggestConstellationNames(input);
+  const hint =
+    suggestions.length > 0 ? ` Did you mean: ${suggestions.join(", ")}?` : "";
+  throw new Error(`Unknown constellation: ${input}.${hint}`);
 }
 
 export default Constellation;

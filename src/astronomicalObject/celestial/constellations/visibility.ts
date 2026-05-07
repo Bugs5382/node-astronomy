@@ -1,14 +1,5 @@
-import {
-  convertEquatorialToHorizontal,
-  GeographicCoordinate,
-} from "@observerly/astrometry";
-
 import Constellation from "@/astronomicalObject/celestial/constellations";
 import { CONSTELLATION_CENTROIDS } from "@/astronomicalObject/celestial/constellations/centroids";
-import {
-  directionToAzimuthWindow,
-  isInWindow,
-} from "@/astronomicalObject/celestial/constellations/direction";
 import {
   IConstellationVisibilityProperties,
   IVisibleConstellationsQuery,
@@ -16,13 +7,19 @@ import {
 import {
   IConstellationHorizontalCoordinate,
   IConstellationName,
-  TDirection,
 } from "@/astronomicalObject/celestial/constellations/types";
+import {
+  convertEquatorialToHorizontal,
+  type GeographicCoordinate,
+} from "@/util/coordinates";
 
 /**
  * Observer-aware view of one constellation. Tells you whether the
- * constellation's centroid is currently above the horizon and inside
- * the supplied direction window.
+ * constellation's centroid is currently above the horizon and where it
+ * sits in the sky as alt/az.
+ *
+ * Compass-direction filtering is intentionally not part of this API —
+ * the consuming app should compute that from the alt/az we return.
  *
  * @since 0.2.0
  * @example
@@ -31,16 +28,13 @@ import {
  *   constellation: "Orion",
  *   latitude: 40.7128,
  *   longitude: -74.0060,
- *   direction: "west-east",   // southern half-dome
  *   time: new Date("2026-01-15T03:00:00Z"),
  * });
- * v.isVisible();   // boolean — above horizon AND in direction window
+ * v.isVisible();   // boolean — above horizon
  * v.centerAltAz(); // { altitude, azimuth }
  * ```
  */
 export class ConstellationVisibility extends Constellation {
-  /** Optional direction filter. */
-  readonly direction?: TDirection;
   /** Observer latitude in decimal degrees. */
   readonly latitude: number;
   /** Observer longitude in decimal degrees. */
@@ -50,13 +44,38 @@ export class ConstellationVisibility extends Constellation {
   /**
    * Build a ConstellationVisibility snapshot.
    *
+   * Two call forms:
+   * - `new ConstellationVisibility(name, { latitude, longitude, time? })`
+   *   — friendly: pass the constellation name (canonical, abbreviation,
+   *   or alias like `"big dipper"`) as the first argument.
+   * - `new ConstellationVisibility({ constellation, latitude, longitude, time? })`
+   *   — original object form (still works).
+   *
    * @since 0.2.0
    */
-  constructor(properties: IConstellationVisibilityProperties) {
+  constructor(
+    name: string,
+    observer: Omit<IConstellationVisibilityProperties, "constellation">,
+  );
+  constructor(properties: IConstellationVisibilityProperties);
+  constructor(
+    input: IConstellationVisibilityProperties | string,
+    observer?: Omit<IConstellationVisibilityProperties, "constellation">,
+  ) {
+    const properties: IConstellationVisibilityProperties =
+      typeof input === "string"
+        ? {
+            constellation:
+              input as IConstellationVisibilityProperties["constellation"],
+            ...(observer as Omit<
+              IConstellationVisibilityProperties,
+              "constellation"
+            >),
+          }
+        : input;
     super(properties);
     this.latitude = properties.latitude;
     this.longitude = properties.longitude;
-    this.direction = properties.direction;
     this.observer = { latitude: this.latitude, longitude: this.longitude };
   }
 
@@ -88,34 +107,28 @@ export class ConstellationVisibility extends Constellation {
   }
 
   /**
-   * Whether the constellation is "visible to the user" — above the
-   * horizon AND inside the configured direction window.
-   *
-   * If `direction` is unset, this is equivalent to `isAboveHorizon`.
+   * Whether the constellation is visible to the observer — i.e. above
+   * the horizon at the supplied (or snapshot) instant. Equivalent to
+   * `isAboveHorizon` and kept as a separate method for API symmetry
+   * with other observer-aware classes.
    *
    * @since 0.2.0
    * @param date - Optional override; defaults to this snapshot's `time`.
    */
   isVisible(date?: Date): boolean {
-    const altAz = this.centerAltAz(date);
-    if (altAz.altitude <= 0) return false;
-    if (!this.direction) return true;
-    const window = directionToAzimuthWindow(this.direction);
-    if (!window) return true; // unparseable direction → no filter
-    return isInWindow(altAz.azimuth, window);
+    return this.isAboveHorizon(date);
   }
 }
 
 /**
  * Top-level helper: list every constellation whose centroid is above
- * the observer's horizon at the given time, optionally filtered by a
- * compass direction.
+ * the observer's horizon at the given time.
  *
  * The returned list contains plain `Constellation` snapshots (not
  * `ConstellationVisibility`) so callers can render their static data.
  *
  * @since 0.2.0
- * @param query - Observer / time / optional direction filter.
+ * @param query - Observer / time.
  * @returns `Constellation` snapshots, in arbitrary order.
  */
 export function visibleConstellations(
@@ -126,9 +139,6 @@ export function visibleConstellations(
     longitude: query.longitude,
   };
   const time = query.time ?? new Date();
-  const window = query.direction
-    ? directionToAzimuthWindow(query.direction)
-    : undefined;
 
   const result: Constellation[] = [];
   for (const [name, centroid] of CONSTELLATION_CENTROIDS) {
@@ -137,7 +147,6 @@ export function visibleConstellations(
       ra: centroid.ra,
     });
     if (horizontal.alt <= 0) continue;
-    if (window && !isInWindow(horizontal.az, window)) continue;
     result.push(
       new Constellation({ constellation: name as IConstellationName }),
     );

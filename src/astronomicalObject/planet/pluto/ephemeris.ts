@@ -3,9 +3,9 @@ import {
   astrometryPluto,
 } from "@/astronomicalObject/planet/data";
 import { IEclipticCoordinate } from "@/astronomicalObject/planet/types";
-import { normalizeDegrees360 } from "@/util/refraction";
+import { normalizeDegrees360 } from "@/util/angles";
+import { daysSinceJ2000 } from "@/util/time";
 
-const J2000_UNIX = Date.UTC(2000, 0, 1, 12, 0, 0);
 const RAD_PER_DEG = Math.PI / 180;
 const DEG_PER_RAD = 180 / Math.PI;
 
@@ -37,16 +37,6 @@ export function getPlutoGeocentricEclipticCoordinate(
   const longitudeDeg = normalizeDegrees360(Math.atan2(y, x) * DEG_PER_RAD);
   const latitudeDeg = Math.atan2(z, Math.hypot(x, y)) * DEG_PER_RAD;
   return { latitude: latitudeDeg, longitude: longitudeDeg };
-}
-
-/**
- * Days since the J2000.0 epoch (2000-01-01T12:00:00Z) for the supplied
- * date.
- *
- * @internal
- */
-function daysSinceJ2000(date: Date): number {
-  return (date.getTime() - J2000_UNIX) / 86_400_000;
 }
 
 /**

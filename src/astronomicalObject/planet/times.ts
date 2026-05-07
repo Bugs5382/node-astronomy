@@ -1,17 +1,12 @@
-import {
-  convertEclipticToEquatorial,
-  convertEquatorialToHorizontal,
-  EclipticCoordinate,
-  GeographicCoordinate,
-  getBodyNextRise,
-  getBodyNextSet,
-  isBodyAboveHorizon,
-  isBodyCircumpolar,
-  TransitInstance,
-} from "@observerly/astrometry";
 import { differenceInSeconds } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
+import {
+  isBodyAboveHorizon,
+  isBodyCircumpolar,
+} from "@/astrometry/transit/circumpolar";
+import { getBodyNextRise, getBodyNextSet } from "@/astrometry/transit/riseSet";
+import { type TransitInstance } from "@/astrometry/types";
 import AstronomicalObject from "@/astronomicalObject";
 import { planetGeocentricEcliptic } from "@/astronomicalObject/planet";
 import { ObservablePlanetName } from "@/astronomicalObject/planet/enum";
@@ -22,6 +17,12 @@ import {
   IPlanetPeak,
   IPlanetTimeResultProperties,
 } from "@/astronomicalObject/planet/types";
+import {
+  convertEclipticToEquatorial,
+  convertEquatorialToHorizontal,
+  type EclipticCoordinate,
+  type GeographicCoordinate,
+} from "@/util/coordinates";
 import {
   bennettRefractionDegrees,
   normalizeDegrees360,

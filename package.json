@@ -35,10 +35,11 @@
   "files": [
     "lib/",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "NOTICE"
   ],
   "scripts": {
-    "build": "tsdown && node scripts/injectIersSuppressor.mjs",
+    "build": "tsdown",
     "build:local": "npm run build && npm run pack",
     "lint": "eslint | snazzy",
     "lint:fix": "eslint --fix | snazzy",
@@ -55,7 +56,6 @@
     "update": "npx npm-check-updates -u && npm install"
   },
   "dependencies": {
-    "@observerly/astrometry": "^0.60.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0"
   },

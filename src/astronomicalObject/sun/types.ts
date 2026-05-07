@@ -1,5 +1,4 @@
-import { Interval, Twilight } from "@observerly/astrometry";
-
+import { Interval, Twilight } from "@/astrometry/types";
 import { IAstronomicalObject } from "@/astronomicalObject";
 import { TwilightExtended } from "@/astronomicalObject/sun/enum";
 import { ITimeOfInterest } from "@/time/properties";

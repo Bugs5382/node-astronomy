@@ -1,21 +1,22 @@
-import {
-  convertEquatorialToHorizontal,
-  GeographicCoordinate,
-  getBodyNextRise,
-  getBodyNextSet,
-  isBodyAboveHorizon,
-  isBodyCircumpolar,
-  TransitInstance,
-} from "@observerly/astrometry";
 import { differenceInSeconds } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
+import {
+  isBodyAboveHorizon,
+  isBodyCircumpolar,
+} from "@/astrometry/transit/circumpolar";
+import { getBodyNextRise, getBodyNextSet } from "@/astrometry/transit/riseSet";
+import { type TransitInstance } from "@/astrometry/types";
 import Star from "@/astronomicalObject/celestial/stars";
 import { IStarTimesProperties } from "@/astronomicalObject/celestial/stars/properties";
 import {
   IStarArcSample,
   IStarTimeResultProperties,
 } from "@/astronomicalObject/celestial/stars/types";
+import {
+  convertEquatorialToHorizontal,
+  type GeographicCoordinate,
+} from "@/util/coordinates";
 import { bennettRefractionDegrees } from "@/util/refraction";
 
 const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";

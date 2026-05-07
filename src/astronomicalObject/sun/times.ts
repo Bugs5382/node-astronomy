@@ -1,13 +1,9 @@
-import {
-  convertEquatorialToHorizontal,
-  GeographicCoordinate,
-  getGeneralizedSolarTransit,
-  getSolarEquatorialCoordinate,
-  Twilight,
-} from "@observerly/astrometry";
 import { differenceInSeconds } from "date-fns";
 import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
 
+import { getSolarEquatorialCoordinate } from "@/astrometry/sun/equatorial";
+import { getGeneralizedSolarTransit } from "@/astrometry/sun/transit";
+import { Twilight } from "@/astrometry/types";
 import Sun from "@/astronomicalObject/sun";
 import { TwilightExtended } from "@/astronomicalObject/sun/enum";
 import { ISunTimesProperties } from "@/astronomicalObject/sun/properties";
@@ -21,6 +17,10 @@ import {
   TTwilightBandExtended,
   TTwilightBlock,
 } from "@/astronomicalObject/sun/types";
+import {
+  convertEquatorialToHorizontal,
+  type GeographicCoordinate,
+} from "@/util/coordinates";
 import { bennettRefractionDegrees } from "@/util/refraction";
 
 const ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";

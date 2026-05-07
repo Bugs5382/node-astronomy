@@ -1,7 +1,6 @@
 import type { Geometry, Position } from "geojson";
 
-import { constellations as ASTROMETRY_CONSTELLATIONS } from "@observerly/astrometry";
-
+import { constellations as ASTROMETRY_CONSTELLATIONS } from "@/astrometry/constellations";
 import { IConstellationName } from "@/astronomicalObject/celestial/constellations/types";
 
 /**

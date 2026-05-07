@@ -1,8 +1,7 @@
 import {
   getEccentricityOfOrbit,
   getObliquityOfEcliptic,
-} from "@observerly/astrometry";
-
+} from "@/astrometry/earth/orbit";
 import Planet from "@/astronomicalObject/planet";
 import { IPlanetProperties } from "@/astronomicalObject/planet/properties";
 import { IHeliocentricPosition } from "@/astronomicalObject/planet/types";

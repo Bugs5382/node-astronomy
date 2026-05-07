@@ -1,12 +1,9 @@
+import { getPlanetaryGeocentricEclipticCoordinate } from "@/astrometry/planets/geocentric";
 import {
-  convertEclipticToEquatorial,
-  EclipticCoordinate,
-  getPlanetaryGeocentricEclipticCoordinate,
   getPlanetaryHeliocentricDistance,
   getPlanetaryHeliocentricEclipticLatitude,
   getPlanetaryHeliocentricEclipticLongitude,
-} from "@observerly/astrometry";
-
+} from "@/astrometry/planets/heliocentric";
 import AstronomicalObject from "@/astronomicalObject";
 import {
   ASTROMETRY_PLANETS,
@@ -22,6 +19,10 @@ import {
   IPlanet,
   IPlanetEquatorialCoordinate,
 } from "@/astronomicalObject/planet/types";
+import {
+  convertEclipticToEquatorial,
+  type EclipticCoordinate,
+} from "@/util/coordinates";
 import { normalizeDegrees360 } from "@/util/refraction";
 
 /**

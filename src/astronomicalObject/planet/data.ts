@@ -4,12 +4,11 @@ import {
   mars as astrometryMars,
   mercury as astrometryMercury,
   neptune as astrometryNeptune,
-  Planet as AstrometryPlanet,
+  type PlanetOrbital as AstrometryPlanet,
   saturn as astrometrySaturn,
   uranus as astrometryUranus,
   venus as astrometryVenus,
-} from "@observerly/astrometry";
-
+} from "@/astrometry/planets/data";
 import { PlanetName } from "@/astronomicalObject/planet/enum";
 
 /**
@@ -63,10 +62,11 @@ export const astrometryPluto: AstrometryPlanet = {
   a: 39.482,
   e: 0.2488,
   i: 17.16,
+  isInferior: false,
   m: 0.0022,
-  name: "Earth", // satisfies the type — we don't read this field
+  name: "Pluto",
   r: 0.18,
-  symbol: "♁", // unused; we use PLANET_SYMBOLS
+  symbol: "♇",
   T: 247.7,
   uid: "pluto",
   ε: 238.93,

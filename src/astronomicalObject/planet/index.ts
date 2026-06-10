@@ -63,7 +63,7 @@ import { normalizeDegrees360 } from "@/util/refraction";
  * const mars = new Mars({ time: new Date("2026-04-30T22:00:00Z") });
  * mars.equatorialCoordinate(); // { ra, dec } in degrees
  * mars.geocentricDistance();   // AU
- * mars.symbol();               // "♂"
+ * mars.symbol();               // "Mars"
  * ```
  */
 export class Planet extends AstronomicalObject implements IPlanet {

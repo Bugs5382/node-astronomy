@@ -34,21 +34,21 @@ import {
 import { PlanetName } from "@/astronomicalObject/planet/enum";
 
 /**
- * Symbol glyph used by each planet (Pluto's stylised `♇` is widely
- * recognised even though the IAU has not officially blessed it).
+ * Name for each planet's symbol. Kept as the planet name in words rather than
+ * the astronomical glyph so the source stays ASCII-only.
  *
  * @since 0.2.0
  */
 export const PLANET_SYMBOLS: Record<PlanetName, string> = {
-  earth: "♁",
-  jupiter: "♃",
-  mars: "♂",
-  mercury: "☿",
-  neptune: "♆",
-  pluto: "♇",
-  saturn: "♄",
-  uranus: "♅",
-  venus: "♀",
+  earth: "Earth",
+  jupiter: "Jupiter",
+  mars: "Mars",
+  mercury: "Mercury",
+  neptune: "Neptune",
+  pluto: "Pluto",
+  saturn: "Saturn",
+  uranus: "Uranus",
+  venus: "Venus",
 };
 
 /**
@@ -88,7 +88,7 @@ export const astrometryPluto: AstrometryPlanet = {
   m: 0.0022,
   name: "Pluto",
   r: 0.18,
-  symbol: "♇",
+  symbol: "Pluto",
   T: 247.7,
   uid: "pluto",
   ε: 238.93,

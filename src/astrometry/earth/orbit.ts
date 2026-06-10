@@ -75,7 +75,7 @@ export const earth: PlanetOrbital = {
   m: 1,
   name: "Earth",
   r: 6_378_140,
-  symbol: "♁",
+  symbol: "Earth",
   T: 1.000_017_4,
   uid: "01HD4AM60QS3SXKKJWY1A2Z3JF",
   ε: 100.464_572,

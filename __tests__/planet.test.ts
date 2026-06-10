@@ -46,14 +46,14 @@ describe("Planet snapshot classes", () => {
   });
 
   describe.each<{ Cls: typeof Planet; planet: PlanetName; symbol: string }>([
-    { Cls: Mercury, planet: "mercury", symbol: "☿" },
-    { Cls: Venus, planet: "venus", symbol: "♀" },
-    { Cls: Mars, planet: "mars", symbol: "♂" },
-    { Cls: Jupiter, planet: "jupiter", symbol: "♃" },
-    { Cls: Saturn, planet: "saturn", symbol: "♄" },
-    { Cls: Uranus, planet: "uranus", symbol: "♅" },
-    { Cls: Neptune, planet: "neptune", symbol: "♆" },
-    { Cls: Pluto, planet: "pluto", symbol: "♇" },
+    { Cls: Mercury, planet: "mercury", symbol: "Mercury" },
+    { Cls: Venus, planet: "venus", symbol: "Venus" },
+    { Cls: Mars, planet: "mars", symbol: "Mars" },
+    { Cls: Jupiter, planet: "jupiter", symbol: "Jupiter" },
+    { Cls: Saturn, planet: "saturn", symbol: "Saturn" },
+    { Cls: Uranus, planet: "uranus", symbol: "Uranus" },
+    { Cls: Neptune, planet: "neptune", symbol: "Neptune" },
+    { Cls: Pluto, planet: "pluto", symbol: "Pluto" },
   ])("$planet", ({ Cls, planet, symbol }) => {
     const instance = new Cls({ time: pinned });
 

@@ -51,6 +51,12 @@ jobs:
         run: |
           npm run build
 
+      # Gate on the docs build too: typedoc.json sets treatWarningsAsErrors,
+      # so a dangling/undocumented reference fails the PR instead of slipping in.
+      - name: Build Docs (warnings fail the build)
+        run: |
+          npm run typedoc
+
       - name: Upload build artifact
         if: matrix.node-version == 'lts/*'
         uses: actions/upload-artifact@v7

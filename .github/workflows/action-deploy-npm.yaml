@@ -57,14 +57,26 @@ jobs:
         env:
           GITHUB_EVENT_RELEASE_TAG_NAME: ${{ github.event.release.tag_name }}
 
+      # OIDC trusted publishing + provenance require npm >= 11.5.1 (the LTS
+      # image ships 10.x). No NPM_TOKEN -- npm verifies the OIDC token GitHub
+      # issues against the trusted publisher registered on npmjs.com for this
+      # workflow file (action-deploy-npm.yaml, case-sensitive).
+      - name: Upgrade npm
+        run: |
+          npm install -g npm@latest
+          npm --version
+
+      # Idempotent: skip if that exact version is already on the registry
+      # (partial-publish retry).
       - name: Publish to npm
-        uses: JS-DevTools/npm-publish@v4
-        with:
-          provenance: true
-          access: public
-          ignore-scripts: true
-          token: ${{ secrets.NPM_TOKEN }}
-          tag: ${{ steps.set-npm-tag.outputs.NPM_TAG }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          NAME=$(node -p "require('./package.json').name")
+          if npm view "${NAME}@${VERSION}" version >/dev/null 2>&1; then
+            echo "${NAME}@${VERSION} already published -- skipping."
+          else
+            npm publish --provenance --access public --ignore-scripts --tag "${{ steps.set-npm-tag.outputs.NPM_TAG }}"
+          fi
 
   Document:
     needs: ['Publish']

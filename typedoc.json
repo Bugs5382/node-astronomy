@@ -3,6 +3,8 @@
   "entryPoints": ["src/index.ts"],
   "excludeExternals": true,
   "excludeInternal": true,
+  "treatWarningsAsErrors": true,
+  "intentionallyNotExported": ["ConstellationName", "rawData", "Interval"],
   "includeVersion": true,
   "githubPages": false,
   "plugin": ["@shipgirl/typedoc-plugin-versions"],

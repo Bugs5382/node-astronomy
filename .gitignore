@@ -138,3 +138,17 @@ lib
 temp
 .npmrc
 package-lock.json
+
+# Local working scratch — not tracked.
+# `plan/` holds open-issue notes (one file per pending issue; delete the file
+# when the issue is resolved).
+plan/
+
+# Track the shared governance (CLAUDE.md, the hooks + settings); the rest of
+# .claude stays local. CI (job-pr-checks) sources .claude/hooks/lib.sh.
+.claude/
+!/.claude/
+/.claude/*
+!/.claude/hooks/
+!/.claude/settings.json
+!/CLAUDE.md

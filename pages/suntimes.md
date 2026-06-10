@@ -9,12 +9,26 @@ const sunTimes = new SunTimes({
   latitude: 40.6676,
   longitude: -73.9851,
   time: new Date("1982-05-03T00:00:00-00:00"),
+  timezone: "America/New_York",
 });
 
 // Example: Get sunrise
 const sunrise = sunTimes.sunrise();
 console.log(sunrise);
-````
+```
+
+## 📅 Single-day snapshot
+
+A `SunTimes` instance covers **exactly one civil day** in the supplied timezone — from local midnight to the next local midnight. On a DST-transition day the window is 23 or 25 hours long. The instance exposes the boundaries directly:
+
+```ts
+sunTimes.start;   // Date — UTC instant of local midnight
+sunTimes.end;     // Date — UTC instant of next local midnight (half-open)
+sunTimes.coversDate(d); // true if d falls in [start, end)
+```
+
+If you need a different day, construct a new `SunTimes` for that date.
+
 ## 📝 General Notes
 
 * All functions return either:
@@ -31,9 +45,33 @@ console.log(sunrise);
 
   or `undefined` if the event does not occur on the given date at that location.
 
-* If no timezone is specified, **UTC** is used by default.
+* If no timezone is specified, **UTC** is used by default. The `timezone` parameter determines both the day window of the snapshot and how `fromTz`/`toTz`/`dateTz` strings are formatted.
 
-* `solarNoon()` is an exception: it returns a single time as a string (`HH:mm:ss`) or `undefined`.
+* `solarNoon()` returns `{ date: Date, dateTz: string }` and is defined astronomically even in polar regions — it returns the sun's meridian-crossing time regardless of whether the sun is above or below the horizon. It only returns `undefined` if the underlying ephemeris fails (rare; numerical edge case in extreme polar conditions).
+
+## ❄️ Polar regions
+
+The `polarRegion` field on a `SunTimes` instance flags the two cases where the sun does not cross the horizon during the snapshot's civil day:
+
+* **`"midnight-sun"`** — the sun stays above the horizon for the whole day. There is no `sunrise()`/`sunset()`/`day()`-versus-twilight transition; every band is `Day` or `GoldenHour`.
+* **`"polar-night"`** — the sun stays below the horizon. There is no `day()` block; the day is partitioned across the night/twilight bands only.
+* **`undefined`** — normal day with at least one true sunrise/sunset transition.
+
+The `from_midnight_morning` and `to_midnight_evening` blocks (returned via `midnightToAstronomicalDawn()` and `astronomicalDuskToMidnight()`) are still defined in polar regions — they just describe whichever band the local-midnight straddles rather than always being `Night`.
+
+## ⚙️ Construction options
+
+```ts
+new SunTimes({
+  latitude: number,
+  longitude: number,
+  time?: Date,            // default: now
+  timezone?: string,      // default: "UTC"
+  stepSeconds?: number,   // default: 1
+});
+```
+
+* **`stepSeconds`** controls the resolution of the internal twilight-band scan. The default of `1` second is the precision floor — band edges are accurate to ±`stepSeconds`. Raise to `60` for a faster constructor when minute-level precision is enough; lowering past `1` does not help.
 
 ## 🌍 Available Queries
 
@@ -56,15 +94,34 @@ console.log(sunrise);
 
 ### 🌞 Daylight
 
-* **`day()`** → Interval from sunrise to sunset.
-* **`sunrise()`** → Moment when the sun’s upper edge breaks the horizon in the morning.
-* **`sunset()`** → Moment when the sun’s upper edge disappears below the horizon in the evening.
+* **`day()`** → Interval from the end of morning golden hour to the start of evening golden hour (sun's altitude > 6°).
+* **`sunrise()`** → The visible sun-disk transition in the morning. `from` is when the upper limb apparently reaches the horizon (NOAA sunrise, true altitude **-0.833°**); `to` is when the lower limb apparently reaches the horizon (true altitude **-0.27°**, the sun's angular radius). Typically ~3–4 minutes long.
+* **`sunset()`** → The visible sun-disk transition in the evening. Mirrors `sunrise()` in reverse.
 * **`solarNoon()`** → The exact time the sun reaches its highest point in the sky.
 
 ### ✨ Golden Hours
 
 * **`goldenHourAM()`** → Interval just after sunrise with soft, warm light (favored for photography 📸).
 * **`goldenHourPM()`** → Interval just before sunset with similar golden light.
+
+### 🧭 Sun position (any instant)
+
+* **`altitudeAt(date)`** → Sun's *geometric* altitude (degrees above horizon). Negative when the sun is below the horizon. No atmospheric refraction.
+* **`apparentAltitudeAt(date)`** → Sun's *apparent* altitude — geometric altitude plus Bennett-model refraction. At the horizon `apparent ≈ geometric + 0.5°`. Use this for "what does an observer actually see?". Note: the band thresholds (`-0.833°`, `-0.27°`) are calibrated to apparent altitude crossing zero, so `altitudeAt(sunrise)` is around `-0.833°` while `apparentAltitudeAt(sunrise)` is around `0°`.
+* **`azimuthAt(date)`** → Sun azimuth (degrees clockwise from north) at the given instant.
+* **`positionAt(date)`** → `{ altitude, azimuth }` in one call (altitude is geometric).
+
+### 📏 Twilight thresholds
+
+| Band | Sun altitude (true, geometric) | Notes |
+|---|---|---|
+| Night | < -18° | |
+| Astronomical | -18° to -12° | |
+| Nautical | -12° to -6° | |
+| Civil | -6° to -0.833° | Ends at NOAA sunrise/sunset. |
+| Sun | -0.833° to -0.27° | Visible disk transition (refraction-aware). |
+| GoldenHour | -0.27° to 6° | |
+| Day | > 6° | |
 
 ## 🧾 Example Output
 

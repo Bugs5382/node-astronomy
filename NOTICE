@@ -1,0 +1,75 @@
+node-astronomy
+==============
+
+This product includes software developed by:
+
+  observerly — https://github.com/observerly/astrometry
+  Copyright (c) 2021-2024 observerly
+  Licensed under the MIT License.
+
+Portions of this package are vendored verbatim or ported (with
+adaptation for TypeScript and this package's module layout) from
+@observerly/astrometry. The following modules are derivative works:
+
+  src/util/coordinates.ts
+  src/util/time.ts
+    — Coordinate transforms (ecliptic ↔ equatorial ↔ horizontal),
+      Julian Date, Greenwich/Local Sidereal Time, hour angle,
+      obliquity of the ecliptic, sidereal-to-UT conversion.
+
+  src/astrometry/earth/vsop87.ts
+  src/astrometry/earth/orbit.ts
+  src/astrometry/earth/heliocentric.ts
+    — Earth VSOP87 (truncated) periodic-term tables and the
+      heliocentric ecliptic position they evaluate to. Earth orbital
+      record (mean elements). Eccentricity, obliquity, and
+      eccentricity-coefficient polynomials.
+
+  src/astrometry/sun/anomaly.ts
+  src/astrometry/sun/ecliptic.ts
+  src/astrometry/sun/equatorial.ts
+  src/astrometry/sun/transit.ts
+    — Solar mean / true anomaly, equation of centre, mean / true
+      geometric longitude, ecliptic longitude, ecliptic and equatorial
+      coordinates (with FK5 + aberration corrections), and the NOAA-
+      style generalised solar transit.
+
+  src/astrometry/moon/{mean,true,ecliptic,equatorial,distance,orbit,phase,events}.ts
+    — Brown-style lunar mean and true elements, ecliptic/equatorial
+      coordinates, geocentric distance, geocentric and topocentric
+      angular diameter, phase angle / illumination / age, named-phase
+      classifier, blue-moon predicate, and next-new / next-full search.
+
+  src/astrometry/planets/{data,anomaly,heliocentric,geocentric,kepler}.ts
+    — Mean orbital elements for Mercury through Neptune, planet mean
+      and true anomaly, heliocentric L/B/R, and geocentric ecliptic
+      coordinate (inferior- and superior-planet branches).
+
+  src/astrometry/transit/{circumpolar,hourAngle,riseSet}.ts
+    — Body circumpolarity / visibility / above-horizon predicates,
+      rise/set hour-angle calculation, and recursive next-rise /
+      next-set search with day-walk fallthrough.
+
+  src/astrometry/constellations/data.ts
+  src/astrometry/constellations/precession.ts
+  src/astrometry/constellations/maths.ts
+    — All 88 IAU constellation polygon FeatureCollections (data.ts is
+      a verbatim copy of upstream constellations.js with imports
+      rewired to point at the in-tree precession + interpolation
+      helpers), Nancy Roman boundary table, and `getConstellation`
+      reverse lookup. Equatorial-precession correction. Geodesic
+      interpolation helpers used by the polygon builder.
+
+The MIT License text governing this attribution is reproduced in full
+inside the upstream LICENSE file:
+https://github.com/observerly/astrometry/blob/main/LICENSE
+
+Asterism alias table (`src/astrometry/constellations/aliases.ts`),
+ergonomic constructor overloads on `Constellation` /
+`ConstellationVisibility`, and the high-level public class structure
+(`Sun`, `SunTimes`, `Moon`, `MoonTimes`, `Planet`, `PlanetTimes`,
+`Earth`, `Star`, `StarTimes`, `Constellation`, `ConstellationVisibility`,
+`Celestial`, `AstronomicalObject`, `TimeOfInterest`, plus all observer-
+aware time-block / arc / track / peak helpers) are original to this
+package and copyright (c) Shane Froebel under the MIT License (see
+LICENSE).

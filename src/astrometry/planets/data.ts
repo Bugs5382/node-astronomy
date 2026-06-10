@@ -1,3 +1,25 @@
+/*
+MIT License
+
+Copyright (c) 2026 Shane Froebel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+*/
 /**
  * Planetary mean orbital-element records (Mercury through Neptune,
  * plus a re-export of Earth from `@/astrometry/earth/orbit`).
@@ -22,7 +44,7 @@ export const mercury: PlanetOrbital = {
   m: 0.055_274,
   name: "Mercury",
   r: 2_439_700,
-  symbol: "☿",
+  symbol: "Mercury",
   T: 0.240_846_7,
   uid: "01HD49QMD7GA502WXEMY1ZAG15",
   ε: 252.250_324,
@@ -38,7 +60,7 @@ export const venus: PlanetOrbital = {
   m: 0.814_998_4,
   name: "Venus",
   r: 6_051_800,
-  symbol: "♀",
+  symbol: "Venus",
   T: 0.615_197,
   uid: "01HD49R1NASDCYK3ZBYYCBJTBW",
   ε: 181.9791,
@@ -54,7 +76,7 @@ export const mars: PlanetOrbital = {
   m: 0.107_447,
   name: "Mars",
   r: 3_389_500,
-  symbol: "♂",
+  symbol: "Mars",
   T: 1.880_848,
   uid: "01HD4ARM2X130B6M2Q74JFKRW4",
   ε: -4.553_432,
@@ -70,7 +92,7 @@ export const jupiter: PlanetOrbital = {
   m: 317.828_133,
   name: "Jupiter",
   r: 69_911_000,
-  symbol: "♃",
+  symbol: "Jupiter",
   T: 11.862_615,
   uid: "01HD4AYRMZP734M8FVQGXDB5BV",
   ε: 34.396_441,
@@ -86,7 +108,7 @@ export const saturn: PlanetOrbital = {
   m: 95.160_904,
   name: "Saturn",
   r: 58_232_000,
-  symbol: "♄",
+  symbol: "Saturn",
   T: 29.447_498,
   uid: "01HD4AYZAHS15TJJMZDQWV1TET",
   ε: 49.954_244,
@@ -102,7 +124,7 @@ export const uranus: PlanetOrbital = {
   m: 14.535_757,
   name: "Uranus",
   r: 25_362_000,
-  symbol: "♅",
+  symbol: "Uranus",
   T: 84.016_846,
   uid: "01HD4AZ66TP0P2KY9A8XFMRQ4T",
   ε: 313.238_104,
@@ -118,7 +140,7 @@ export const neptune: PlanetOrbital = {
   m: 17.147_241,
   name: "Neptune",
   r: 24_622_000,
-  symbol: "♆",
+  symbol: "Neptune",
   T: 164.791_32,
   uid: "01HD4AZGMADD008W4XT4HEV9ZC",
   ε: -55.120_029,

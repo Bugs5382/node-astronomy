@@ -1,5 +1,17 @@
 # Mode Astronomy
 
+## v0.2.0 - 2026-06-10
+
+### What Changed 👀
+
+#### 🚀 Features
+
+- feat: v0.2.0 @Bugs5382 (#19)
+
+### Extra
+
+**Full Changelog**: https://github.com/Bugs5382/node-astronomy/compare/v0.1.0...v0.2.0
+
 ## v0.1.0 - 2025-09-16
 
 ### What Changed 👀

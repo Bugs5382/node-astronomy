@@ -1,5 +1,17 @@
 # Mode Astronomy
 
+## v0.2.1 - 2026-06-12
+
+### What Changed 👀
+
+#### 🧩 Dependency Updates
+
+- chore(deps): update date-fns requirement from ^4.1.0 to ^4.4.0 in the production-dependencies group @[dependabot[bot]](https://github.com/apps/dependabot) (#24)
+
+### Extra
+
+**Full Changelog**: https://github.com/Bugs5382/node-astronomy/compare/v0.2.0...v0.2.1
+
 ## v0.2.0 - 2026-06-10
 
 ### What Changed 👀

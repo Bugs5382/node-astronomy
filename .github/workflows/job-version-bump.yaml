@@ -77,6 +77,12 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore(pre-release): v${{ steps.drafter.outputs.resolved_version }} [skip ci]"
+          # Commit as the owner, not github-actions[bot]. The push still goes
+          # through the release App token (bypass actor) so the [skip ci] commit
+          # is accepted on main; only the commit identity is the owner.
+          commit_user_name: Bugs5382
+          commit_user_email: 12115015+Bugs5382@users.noreply.github.com
+          commit_author: Bugs5382 <12115015+Bugs5382@users.noreply.github.com>
 
       - name: 🏷️ Publish Release
         if: contains(github.event.head_commit.author.name, 'dependabot') || contains(github.event.head_commit.message, 'dependabot')

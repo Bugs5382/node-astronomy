@@ -28,7 +28,7 @@ jobs:
       # dependabot.yml, so the check below still passes.
       - name: Apply labels from PR title
         continue-on-error: true
-        uses: release-drafter/release-drafter@v6
+        uses: release-drafter/release-drafter@v7
         with:
           disable-releaser: true
         env:

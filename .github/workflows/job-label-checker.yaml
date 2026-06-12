@@ -22,7 +22,12 @@ jobs:
     name: Autolabel
     runs-on: ubuntu-latest
     steps:
+      # Best-effort: Dependabot-triggered runs get a read-only GITHUB_TOKEN, so
+      # release-drafter cannot apply a label. Don't fail the job on that --
+      # Dependabot already sets a categorizing label (`dependencies`) from
+      # dependabot.yml, so the check below still passes.
       - name: Apply labels from PR title
+        continue-on-error: true
         uses: release-drafter/release-drafter@v6
         with:
           disable-releaser: true
@@ -32,6 +37,9 @@ jobs:
   categorizing-label:
     name: Categorizing label present
     needs: [autolabel]
+    # Run even if autolabel was skipped/failed (e.g. a Dependabot read-only
+    # token); the label may already be present from the PR title or dependabot.yml.
+    if: always()
     runs-on: ubuntu-latest
     steps:
       - uses: danielchabr/pr-labels-checker@v3.3

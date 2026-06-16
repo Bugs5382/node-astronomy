@@ -1,5 +1,19 @@
 # Mode Astronomy
 
+## v0.2.2 - 2026-06-16
+
+### What Changed 👀
+
+- ci: Release Manager commits as the owner, not github-actions[bot] @Bugs5382 (#30)
+
+#### 🧩 Dependency Updates
+
+- chore(deps): bump the github-actions group across 1 directory with 8 updates @[dependabot[bot]](https://github.com/apps/dependabot) (#25)
+
+### Extra
+
+**Full Changelog**: https://github.com/Bugs5382/node-astronomy/compare/v0.2.1...v0.2.2
+
 ## v0.2.1 - 2026-06-12
 
 ### What Changed 👀

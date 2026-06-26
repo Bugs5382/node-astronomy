@@ -23,7 +23,7 @@ jobs:
       matrix:
         node-version: [24.x, 'lts/*', 'latest']
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Generate lockfile
         run: npm install --package-lock-only --ignore-scripts --legacy-peer-deps

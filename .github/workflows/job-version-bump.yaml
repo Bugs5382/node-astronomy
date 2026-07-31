@@ -25,14 +25,14 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: 📂 Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
       - name: 📝 Release Drafter (Anticipate Version)
         id: drafter
-        uses: release-drafter/release-drafter@v7
+        uses: release-drafter/release-drafter@v7.6.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -66,7 +66,7 @@ jobs:
           RELEASE_NOTES: >-
             ${{ steps.drafter.outputs.body }}
           RELEASE_VERSION: v${{ steps.drafter.outputs.resolved_version }}
-        uses: bugs5382/changelog-updater-action@v0.3.2
+        uses: bugs5382/changelog-updater-action@v0.4.0
         with:
           tag: ${{ env.RELEASE_VERSION }}
           notes: ${{ env.RELEASE_NOTES }}
@@ -86,7 +86,7 @@ jobs:
 
       - name: 🏷️ Publish Release
         if: contains(github.event.head_commit.author.name, 'dependabot') || contains(github.event.head_commit.message, 'dependabot')
-        uses: release-drafter/release-drafter@v7
+        uses: release-drafter/release-drafter@v7.6.0
         with:
           publish: true
           commitish: main

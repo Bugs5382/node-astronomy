@@ -1,6 +1,8 @@
-# Node Astronomy
+# Node Astronomy 🔭
 
-This package is my desire to track certain celestial elements of our solar system to be used in NodeJS applications around the world. Using this bundle you can calculate the position of the 🌙 moon, 🌎 earth, ☀️ sun, and 🪐 planets of our solar system. When we pass longitude and latitude into certain functions, we can also calculate the rise, set, and events of certain celestial events.
+> 🌌 This package is my desire to track certain celestial elements of our solar system to be used in NodeJS applications around the world.
+
+Using this bundle you can calculate the position of the moon, earth, sun, and planets of our solar system. When we pass longitude and latitude into certain functions, we can also calculate the rise, set, and events of certain celestial events.
 
 ## 📖 Documentation
 

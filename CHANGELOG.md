@@ -1,5 +1,17 @@
 # Mode Astronomy
 
+## v0.2.3 - 2026-09-26
+
+### What Changed 👀
+
+#### 📄 Documentation
+
+- docs(readme): apply the lite emoji treatment @Bugs5382 (#49)
+
+### Extra
+
+**Full Changelog**: https://github.com/Bugs5382/node-astronomy/compare/v0.2.2...v0.2.3
+
 ## v0.2.2 - 2026-06-16
 
 ### What Changed 👀

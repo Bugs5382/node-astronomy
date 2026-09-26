@@ -6,6 +6,7 @@
 
 #### 📄 Documentation
 
+- docs(readme): fix the reference to the missing example folder @Bugs5382 (#53)
 - docs(readme): apply the lite emoji treatment @Bugs5382 (#49)
 
 ### Extra

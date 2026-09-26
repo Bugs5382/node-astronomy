@@ -83,12 +83,3 @@ jobs:
           commit_user_name: Bugs5382
           commit_user_email: 12115015+Bugs5382@users.noreply.github.com
           commit_author: Bugs5382 <12115015+Bugs5382@users.noreply.github.com>
-
-      - name: 🏷️ Publish Release
-        if: contains(github.event.head_commit.author.name, 'dependabot') || contains(github.event.head_commit.message, 'dependabot')
-        uses: release-drafter/release-drafter@v7
-        with:
-          publish: true
-          commitish: main
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}

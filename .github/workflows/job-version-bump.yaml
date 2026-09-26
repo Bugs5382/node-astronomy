@@ -33,8 +33,8 @@ jobs:
       - name: 📝 Release Drafter (Anticipate Version)
         id: drafter
         uses: release-drafter/release-drafter@v7
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔎 Detect releasable changes
         id: releasable
@@ -51,12 +51,9 @@ jobs:
             echo "yes=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Set Release Version
+      - name: 🔢 Bump Package Version
         if: steps.releasable.outputs.yes == 'true'
-        # Inlines what the template's `task update-version` does — keeps
-        # this workflow self-contained without requiring a Taskfile.
-        run: |
-          npm version v${{ steps.drafter.outputs.resolved_version }} --no-git-tag-version --allow-same-version
+        run: npm version "v${{ steps.drafter.outputs.resolved_version }}" --no-git-tag-version --allow-same-version
 
       - name: 📤 Run Changelog Action
         if: steps.releasable.outputs.yes == 'true'

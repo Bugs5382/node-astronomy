@@ -52,7 +52,9 @@ mars.eclipticCoordinate(); // { longitude: number /* 0..360 */, latitude: number
 
 ## Build, test, lint
 
-- Build: `npm run build` (tsdown -> ESM+CJS in `lib/`, with type declarations).
+- Build: `npm run build` (tsdown -> ESM+CJS in `lib/`, with type declarations, no source maps).
+- Package check: `npm run check:pack` after a build. It fails if `npm pack --dry-run` would ship a
+  `.map` file or a non-runtime folder (CI runs it in `action-test`).
 - Test: `npm test` (vitest; no broker/service needed). Coverage: `npm run test:coverage`.
 - Lint: `npm run lint` (`eslint | snazzy`); `npm run lint:fix` to autofix.
 - Docs: `npm run typedoc` — `typedoc.json` sets `treatWarningsAsErrors`, so a dangling or

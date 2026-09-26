@@ -41,6 +41,7 @@
   "scripts": {
     "build": "tsdown",
     "build:local": "npm run build && npm run pack",
+    "check:pack": "node scripts/checkPack.mjs",
     "lint": "eslint | snazzy",
     "lint:fix": "eslint --fix | snazzy",
     "lint:npm": "npmPkgJsonLint .",

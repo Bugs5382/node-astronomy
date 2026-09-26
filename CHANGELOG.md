@@ -4,6 +4,10 @@
 
 ### What Changed 👀
 
+#### 🐛 Bug Fixes
+
+- fix(build): keep source maps out of the npm package @Bugs5382 (#56)
+
 #### 📄 Documentation
 
 - docs(readme): fix the reference to the missing example folder @Bugs5382 (#53)

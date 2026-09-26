@@ -8,8 +8,15 @@ Using this bundle you can calculate the position of the moon, earth, sun, and pl
 
 Documentation is in two flavors:
 
-- TypeDoc Output
-- Documents located in [pages](pages/index.md) - This includes more detail examples supplementing the `example` folder.
+- [TypeDoc API reference](https://bugs5382.github.io/node-astronomy/), generated from the source.
+- Usage guides with worked examples in [pages](pages/index.md):
+  - [Sun times](pages/suntimes.md)
+  - [Moon](pages/moon.md)
+  - [Planets](pages/planets.md)
+  - [Stars](pages/stars.md)
+  - [Constellations](pages/constellations.md)
+
+The test suite in `__tests__/` also shows each class in use against pinned reference times.
 
 ## 🙏 Acknowledgements
 

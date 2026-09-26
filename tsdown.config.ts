@@ -23,8 +23,12 @@ OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 import { defineConfig } from "tsdown";
 
 /**
- * tsdown build config — produces dual ESM + CJS output, both minified, both
- * with sourcemaps and ambient `.d.ts` declarations.
+ * tsdown build config — produces dual ESM + CJS output, both minified, with
+ * ambient `.d.ts` declarations.
+ *
+ * No source maps: they were about 1.2 MB of the 1.6 MB package and are not
+ * published (#54). `declarationMap` is off in tsconfig.json for the same
+ * reason, since tsdown always emits declaration maps when it is on.
  *
  * Mirrors the previous `tsup.config.ts` shape so consumers see no change in
  * the published `lib/esm/` and `lib/cjs/` layout. The `@/*` path alias from
@@ -40,18 +44,18 @@ export default defineConfig([
     format: "esm",
     minify: true,
     outDir: "lib/esm",
-    sourcemap: true,
+    sourcemap: false,
     target: "esnext",
     tsconfig: "./tsconfig.json",
   },
   {
-    clean: false,
+    clean: true,
     dts: false,
     entry: ["src/index.ts"],
     format: "cjs",
     minify: true,
     outDir: "lib/cjs",
-    sourcemap: true,
+    sourcemap: false,
     target: "esnext",
     tsconfig: "./tsconfig.json",
   },

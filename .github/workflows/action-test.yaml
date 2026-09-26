@@ -51,6 +51,11 @@ jobs:
         run: |
           npm run build
 
+      # Fails if the tarball would ship source maps or non-runtime folders.
+      - name: Check package contents
+        run: |
+          npm run check:pack
+
       # Gate on the docs build too: typedoc.json sets treatWarningsAsErrors,
       # so a dangling/undocumented reference fails the PR instead of slipping in.
       - name: Build Docs (warnings fail the build)

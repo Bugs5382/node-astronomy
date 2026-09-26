@@ -16,7 +16,7 @@ Documentation is in two flavors:
   - [Stars](pages/stars.md)
   - [Constellations](pages/constellations.md)
 
-The test suite in [`__tests__`](__tests__) also shows each class in use against pinned reference times.
+The test suite in `__tests__/` also shows each class in use against pinned reference times.
 
 ## 🙏 Acknowledgements
 

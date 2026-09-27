@@ -1,8 +1,8 @@
 name: Test
+# Draft PRs are skipped; the run happens when the PR is marked ready. The job
+# still runs for workflow_dispatch and when the publish workflow calls it.
+# Nothing reruns on push: the PR run covers what merges.
 on:
-  push:
-    paths-ignore:
-      - '**.md'
   workflow_dispatch:
   workflow_call:
   pull_request:
@@ -14,11 +14,13 @@ on:
       - ready_for_review
       - synchronize
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
   Build:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       matrix:
         node-version: [24.x, 'lts/*', 'latest']

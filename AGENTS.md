@@ -68,3 +68,4 @@ mars.eclipticCoordinate(); // { longitude: number /* 0..360 */, latitude: number
 - No Unicode glyphs in source — astronomical/astrological symbols are stored as words (the emoji scan
   blocks raw glyphs). Keep new doc comments to ASCII (`->`, `approx`) rather than `→`, `≈`.
 - Times are UTC; rise/set and twilight computations also need an observer location.
+- Open every PR as a draft. CI skips drafts, so run the full checks locally, push once they pass, and mark the PR ready when the work is finished; see CLAUDE.md "CI and Actions minutes".

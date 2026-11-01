@@ -1,5 +1,17 @@
 # Mode Astronomy
 
+## v0.2.4 - 2026-11-01
+
+### What Changed 👀
+
+#### 🐛 Bug Fixes
+
+- fix(ci): read npm pack output from npm 12 in the pack checks @Bugs5382 (#66)
+
+### Extra
+
+**Full Changelog**: https://github.com/Bugs5382/node-astronomy/compare/v0.2.3...v0.2.4
+
 ## v0.2.3 - 2026-09-26
 
 ### What Changed 👀

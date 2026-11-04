@@ -4,7 +4,7 @@ Three layers:
 
 - **Per-planet snapshot classes** — `Mercury`, `Venus`, `Mars`, `Jupiter`, `Saturn`, `Uranus`, `Neptune`, `Pluto`. Observer-free; expose ecliptic / equatorial coordinate, distances, symbol.
 - **`Earth`** — separate shape; exposes orbital info (eccentricity, obliquity, distance from Sun, heliocentric position) but no observer-aware methods (rise/set from Earth on Earth makes no sense).
-- **`PlanetTimes`** — observer-aware. Position (alt/az), rise/set, arc/track, peak. Takes a `planet` field; works for every planet *except* Earth.
+- **`PlanetTimes`** — observer-aware. Position (alt/az), rise/set, arc/track, peak. Takes a `planet` field; works for every planet _except_ Earth.
 
 ## 🌌 Snapshots
 
@@ -13,13 +13,13 @@ import { Mars, Jupiter, Pluto } from "node-astronomy";
 
 const mars = new Mars({ time: new Date("2026-04-30T22:00:00Z") });
 
-mars.eclipticCoordinate();      // { longitude, latitude }, degrees
-mars.equatorialCoordinate();    // { ra, dec }, degrees
-mars.heliocentricDistance();    // AU
-mars.geocentricDistance();      // AU (approximate)
-mars.heliocentricPosition();    // { longitude, latitude, radius }
-mars.symbol();                  // "♂"
-mars.displayName();             // "Mars"
+mars.eclipticCoordinate(); // { longitude, latitude }, degrees
+mars.equatorialCoordinate(); // { ra, dec }, degrees
+mars.heliocentricDistance(); // AU
+mars.geocentricDistance(); // AU (approximate)
+mars.heliocentricPosition(); // { longitude, latitude, radius }
+mars.symbol(); // "♂"
+mars.displayName(); // "Mars"
 ```
 
 The same shape works for every concrete planet class.
@@ -31,10 +31,10 @@ import { Earth } from "node-astronomy";
 
 const earth = new Earth({ time: new Date("2026-04-30T22:00:00Z") });
 
-earth.eccentricity();          // ≈ 0.0167
-earth.obliquityOfEcliptic();   // ≈ 23.44° at J2000, decreasing slowly
-earth.distanceFromSun();       // AU, ~0.983 (perihelion) to ~1.017 (aphelion)
-earth.heliocentricPosition();  // { longitude, latitude, radius }
+earth.eccentricity(); // ≈ 0.0167
+earth.obliquityOfEcliptic(); // ≈ 23.44° at J2000, decreasing slowly
+earth.distanceFromSun(); // AU, ~0.983 (perihelion) to ~1.017 (aphelion)
+earth.heliocentricPosition(); // { longitude, latitude, radius }
 ```
 
 Earth deliberately has **no** `EarthTimes` form. Looking at Earth from Earth doesn't have a meaningful rise/set — use `SunTimes` if you wanted "when does the sun rise here".
@@ -52,15 +52,15 @@ const m = new PlanetTimes({
   time: new Date("2026-04-30T22:00:00Z"),
 });
 
-m.position();                   // { altitude, azimuth }
+m.position(); // { altitude, azimuth }
 m.altitudeAt(date);
-m.apparentAltitudeAt(date);     // adds Bennett refraction
+m.apparentAltitudeAt(date); // adds Bennett refraction
 m.azimuthAt(date);
 
 m.isAboveHorizon();
-m.isCircumpolar();              // true for Polaris-style high-dec at high lat
+m.isCircumpolar(); // true for Polaris-style high-dec at high lat
 
-m.nextRise();                   // { from, fromTz, ... } | undefined
+m.nextRise(); // { from, fromTz, ... } | undefined
 m.nextSet();
 ```
 
@@ -81,7 +81,7 @@ The default `arc()` window is `nextRise()` → following `nextSet()` with 60 eve
 
 ## ♇ Pluto
 
-Astrometry doesn't ship Pluto; we hand-roll the ephemeris in `src/astronomicalObject/planet/pluto/ephemeris.ts`. The propagator uses J2000 mean elements with simple Keplerian propagation — accurate to ≈ arc-minute level over 1900–2100. For sub-arcsecond precision, use a higher-order solution (Meeus *Astronomical Algorithms* Ch 37 periodic terms or JPL Horizons).
+Astrometry doesn't ship Pluto; we hand-roll the ephemeris in `src/astronomicalObject/planet/pluto/ephemeris.ts`. The propagator uses J2000 mean elements with simple Keplerian propagation — accurate to ≈ arc-minute level over 1900–2100. For sub-arcsecond precision, use a higher-order solution (Meeus _Astronomical Algorithms_ Ch 37 periodic terms or JPL Horizons).
 
 `Pluto` and `PlanetTimes({ planet: "pluto" })` work identically to the other planets.
 

@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./node_modules/@bugs5382/node-oxlint-config/configs/base.json"],
+  "ignorePatterns": [
+    "lib/**",
+    "coverage/**",
+    "docs/**",
+    "src/astrometry/constellations/data.ts"
+  ],
+  "rules": {
+    "eslint/func-style": "off",
+    "import/no-default-export": "off",
+    "unicorn/numeric-separators-style": "off",
+    "unicorn-js/prefer-includes-over-repeated-comparisons": "off",
+    "unicorn/prefer-module": "off"
+  }
+}

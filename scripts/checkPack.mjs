@@ -28,13 +28,20 @@ import { execFileSync } from "node:child_process";
 
 const FORBIDDEN = [
   { pattern: /\.map$/, reason: "source map" },
-  { pattern: /^(src|__tests__|docs|pages|scripts)\//, reason: "non-runtime folder" },
+  {
+    pattern: /^(src|__tests__|docs|pages|scripts)\//,
+    reason: "non-runtime folder",
+  },
 ];
 
-const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], {
-  encoding: "utf8",
-  stdio: ["ignore", "pipe", "inherit"],
-});
+const out = execFileSync(
+  "npm",
+  ["pack", "--dry-run", "--json", "--ignore-scripts"],
+  {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "inherit"],
+  },
+);
 // npm 12 prints an object keyed by package name; earlier versions print an array.
 const parsed = JSON.parse(out);
 const [pack] = Array.isArray(parsed) ? parsed : Object.values(parsed);

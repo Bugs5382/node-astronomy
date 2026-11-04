@@ -14,11 +14,11 @@ Plus `findConstellationAt({ ra, dec })` — reverse lookup from RA/Dec to its en
 import { Constellation } from "node-astronomy";
 
 const orion = new Constellation({ constellation: "Orion" });
-orion.constellationName;   // "Orion"
-orion.abbreviation;        // "Ori"
-orion.meaning;             // "The Hunter"
-orion.centroid;            // { ra, dec } in degrees
-orion.feature();           // GeoJSON FeatureCollection of the IAU boundary
+orion.constellationName; // "Orion"
+orion.abbreviation; // "Ori"
+orion.meaning; // "The Hunter"
+orion.centroid; // { ra, dec } in degrees
+orion.feature(); // GeoJSON FeatureCollection of the IAU boundary
 ```
 
 The centroid is the unit-vector centroid of every coordinate in the constellation's GeoJSON, computed once at module load. Using unit vectors handles RA wrap-around (some constellations straddle RA = 0°).
@@ -33,12 +33,12 @@ const v = new ConstellationVisibility({
   latitude: 40.7128,
   longitude: -74.006,
   time: new Date("2026-01-15T03:00:00Z"),
-  direction: "west-east",   // optional direction filter — see below
+  direction: "west-east", // optional direction filter — see below
 });
 
-v.isAboveHorizon();   // boolean — centroid altitude > 0
-v.isVisible();        // above horizon AND inside direction window
-v.centerAltAz();      // { altitude, azimuth }
+v.isAboveHorizon(); // boolean — centroid altitude > 0
+v.isVisible(); // above horizon AND inside direction window
+v.centerAltAz(); // { altitude, azimuth }
 ```
 
 ## 🌍 Top-level helper
@@ -50,7 +50,7 @@ const list = visibleConstellations({
   latitude: 40.7128,
   longitude: -74.006,
   time: new Date("2026-01-15T03:00:00Z"),
-  direction: "west-east",   // optional
+  direction: "west-east", // optional
 });
 
 list.map((c) => c.constellationName);
@@ -64,7 +64,7 @@ The `direction` field accepts three forms:
 ### 1. Single compass point
 
 ```ts
-direction: "N" | "NE" | "E" | "SE" | "S" | "SW" | "W" | "NW"
+direction: "N" | "NE" | "E" | "SE" | "S" | "SW" | "W" | "NW";
 ```
 
 Each maps to a ±45° window centred on its azimuth. Lower-case (`'n'`) and long form (`'north'`) also work.
@@ -73,12 +73,12 @@ Each maps to a ±45° window centred on its azimuth. Lower-case (`'n'`) and long
 
 These four cases are explicit and unambiguous:
 
-| Direction | Window | Half-dome |
-|---|---|---|
-| `'west-east'` | 270° → 180° → 90° | **Southern** (a south-facing observer reads W on the left, E on the right) |
-| `'east-west'` | 90° → 0° → 270° | **Northern** |
-| `'north-south'` | 0° → 90° → 180° | **Eastern** |
-| `'south-north'` | 180° → 270° → 0° | **Western** |
+| Direction       | Window            | Half-dome                                                                  |
+| --------------- | ----------------- | -------------------------------------------------------------------------- |
+| `'west-east'`   | 270° → 180° → 90° | **Southern** (a south-facing observer reads W on the left, E on the right) |
+| `'east-west'`   | 90° → 0° → 270°   | **Northern**                                                               |
+| `'north-south'` | 0° → 90° → 180°   | **Eastern**                                                                |
+| `'south-north'` | 180° → 270° → 0°  | **Western**                                                                |
 
 ### 3. Hyphenated pair — other compass combinations
 

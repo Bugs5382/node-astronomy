@@ -29,8 +29,8 @@ If you are an agent consuming this package, the contract:
 import { Mars, type PlanetName } from "node-astronomy";
 
 const mars = new Mars({ time: new Date("2026-04-30T22:00:00Z") });
-mars.planet;               // "mars"
-mars.symbol();             // "Mars"  (a word, not the astronomical glyph)
+mars.planet; // "mars"
+mars.symbol(); // "Mars"  (a word, not the astronomical glyph)
 mars.eclipticCoordinate(); // { longitude: number /* 0..360 */, latitude: number /* -90..90 */ }
 ```
 
@@ -56,7 +56,7 @@ mars.eclipticCoordinate(); // { longitude: number /* 0..360 */, latitude: number
 - Package check: `npm run check:pack` after a build. It fails if `npm pack --dry-run` would ship a
   `.map` file or a non-runtime folder (CI runs it in `action-test`).
 - Test: `npm test` (vitest; no broker/service needed). Coverage: `npm run test:coverage`.
-- Lint: `npm run lint` (`eslint | snazzy`); `npm run lint:fix` to autofix.
+- Lint: `npm run lint` (`oxlint`); `npm run lint:fix` to autofix; `npm run format` runs oxfmt.
 - Docs: `npm run typedoc` — `typedoc.json` sets `treatWarningsAsErrors`, so a dangling or
   undocumented reference fails the build (and the PR, since `action-test` runs it).
 - License headers: `task license` verifies the MIT header (CI); `task license:fix` injects it.

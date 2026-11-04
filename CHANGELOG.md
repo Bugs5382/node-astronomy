@@ -1,6 +1,6 @@
 # Mode Astronomy
 
-## v0.2.4 - 2026-11-01
+## v0.2.4 - 2026-11-04
 
 ### What Changed 👀
 

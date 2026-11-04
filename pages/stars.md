@@ -35,13 +35,13 @@ import { Star } from "node-astronomy";
 
 const polaris = new Star({ star: "Polaris" });
 
-polaris.starName;              // "Polaris"
-polaris.bayer();               // "α UMi"
-polaris.constellation();       // "Ursa Minor"
+polaris.starName; // "Polaris"
+polaris.bayer(); // "α UMi"
+polaris.constellation(); // "Ursa Minor"
 polaris.equatorialCoordinate(); // { ra ≈ 38°, dec ≈ 89° }
-polaris.magnitude();           // 1.98
-polaris.spectralClass();       // "F7Ib"
-polaris.hip();                 // 11767
+polaris.magnitude(); // 1.98
+polaris.spectralClass(); // "F7Ib"
+polaris.hip(); // 11767
 ```
 
 ## 🧭 `StarTimes` — observer-aware
@@ -57,13 +57,13 @@ const polaris = new StarTimes({
   time: new Date("2026-04-30T22:00:00Z"),
 });
 
-polaris.position();         // { altitude, azimuth }
+polaris.position(); // { altitude, azimuth }
 polaris.altitudeAt(date);
-polaris.apparentAltitudeAt(date);  // adds Bennett refraction
+polaris.apparentAltitudeAt(date); // adds Bennett refraction
 polaris.azimuthAt(date);
 
 polaris.isAboveHorizon();
-polaris.isCircumpolar();    // true at NYC, false at Sydney
+polaris.isCircumpolar(); // true at NYC, false at Sydney
 ```
 
 ## 🌌 Circumpolar handling — the Polaris case
@@ -71,10 +71,10 @@ polaris.isCircumpolar();    // true at NYC, false at Sydney
 Polaris is circumpolar at every northern-hemisphere observer with latitude > ~1°. For circumpolar stars, `nextRise()` and `nextSet()` return `undefined` (they never happen), and `arc()` returns `[]`. Use `dailyTrack({ samples })` instead for a 24-hour evenly-spaced loop:
 
 ```ts
-polaris.nextRise();     // undefined (circumpolar at NYC)
-polaris.nextSet();      // undefined
-polaris.arc();          // []
-polaris.dailyTrack({ samples: 144 });  // 144 points covering 24h
+polaris.nextRise(); // undefined (circumpolar at NYC)
+polaris.nextSet(); // undefined
+polaris.arc(); // []
+polaris.dailyTrack({ samples: 144 }); // 144 points covering 24h
 ```
 
 For non-circumpolar stars (Sirius, Vega, etc.), `arc()` works the usual way: default window is `nextRise()` → following `nextSet()`.
@@ -84,8 +84,8 @@ For non-circumpolar stars (Sirius, Vega, etc.), `arc()` works the usual way: def
 ```ts
 import { getNamedStar, listNamedStars } from "node-astronomy";
 
-listNamedStars();              // ["Polaris", "Sirius", "Canopus", ...]
-getNamedStar("Sirius");        // full IStarCatalogEntry
+listNamedStars(); // ["Polaris", "Sirius", "Canopus", ...]
+getNamedStar("Sirius"); // full IStarCatalogEntry
 ```
 
 ## 📏 Conventions

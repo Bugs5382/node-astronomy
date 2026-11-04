@@ -16,17 +16,17 @@ import { Moon, MoonPhase } from "node-astronomy";
 
 const moon = new Moon({ time: new Date("2026-04-30T22:00:00Z") });
 
-moon.phase();              // MoonPhase.WaxingGibbous, MoonPhase.Full, ...
-moon.phaseAngle();         // degrees, 0 = new, 180 = full
-moon.illumination();       // fraction in [0, 1]
-moon.distance();           // km, ~356_500..406_700
-moon.age();                // days since the last new moon
+moon.phase(); // MoonPhase.WaxingGibbous, MoonPhase.Full, ...
+moon.phaseAngle(); // degrees, 0 = new, 180 = full
+moon.illumination(); // fraction in [0, 1]
+moon.distance(); // km, ~356_500..406_700
+moon.age(); // days since the last new moon
 moon.equatorialCoordinate(); // { ra, dec } in degrees
-moon.isFull();             // boolean
-moon.isNew();              // boolean
-moon.isBlue();             // boolean — second full moon in a calendar month
-moon.nextNewMoon();        // Date — next new moon after `time`
-moon.nextFullMoon();       // Date
+moon.isFull(); // boolean
+moon.isNew(); // boolean
+moon.isBlue(); // boolean — second full moon in a calendar month
+moon.nextNewMoon(); // Date — next new moon after `time`
+moon.nextFullMoon(); // Date
 ```
 
 Every method takes an optional `Date` so you can sweep one snapshot across multiple instants without rebuilding it.
@@ -42,18 +42,18 @@ const m = new MoonTimes({
   timezone: "America/New_York",
   time: new Date("2026-04-30T22:00:00Z"),
   // optional:
-  elevation: 0,            // metres above sea level (used only by angularDiameter)
+  elevation: 0, // metres above sea level (used only by angularDiameter)
 });
 
-m.position();              // { altitude, azimuth } in degrees
-m.altitudeAt(date);        // geometric, no refraction
+m.position(); // { altitude, azimuth } in degrees
+m.altitudeAt(date); // geometric, no refraction
 m.apparentAltitudeAt(date); // geometric + Bennett refraction (≥ 0)
 m.azimuthAt(date);
 
-m.isAboveHorizon();        // boolean
-m.isCircumpolar();         // boolean — moon never sets at this lat/dec
+m.isAboveHorizon(); // boolean
+m.isCircumpolar(); // boolean — moon never sets at this lat/dec
 
-m.nextRise();              // { from, fromTz, ... } or undefined
+m.nextRise(); // { from, fromTz, ... } or undefined
 m.nextSet();
 ```
 
